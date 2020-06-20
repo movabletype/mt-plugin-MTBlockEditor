@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        // Search under node_modules for non-relative imports.
+        "moduleResolution": "node",
+        // Process & infer types from .js files.
+        "allowJs": true,
+        // Don't emit; allow Babel to transform files.
+        "noEmit": true,
+        // Enable strictest settings like strictNullChecks & noImplicitAny.
+        "strict": true,
+        // Disallow features that require cross-file information for emit.
+        "isolatedModules": true,
+        // Import non-ES modules as default imports.
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "typeRoots": ["node_modules/@types", "mt-static/plugins/MTBlockEditor/typings/*"],
+        "noImplicitAny": false,
+        "jsx": "preserve",
+        "baseUrl": ".",
+        "paths": {
+          "*": [ "./mt-static/plugins/MTBlockEditor/src/*" ]
+        }
+    },
+    "include": [
+      "mt-static/plugins/MTBlockEditor/src",
+      "mt-static/plugins/MTBlockEditor/typings"
+    ],
+  }

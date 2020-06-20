@@ -1,0 +1,89 @@
+<mt:setvar name="page_title" value="<__trans phrase="Movable Type Block Editor Settings">">
+
+<mt:setvarblock name="system_msg">
+<mt:if name="error">
+  <mtapp:statusmsg
+     id="generic-error"
+     class="error"
+     can_close="0">
+    <mt:var name="error">
+  </mtapp:statusmsg>
+</mt:if>
+<mt:if name="saved">
+  <mtapp:statusmsg
+     id="saved"
+     class="success"
+     can_close="1">
+    <__trans phrase="Your preferences have been saved.">
+  </mtapp:statusmsg>
+</mt:if>
+</mt:setvarblock>
+
+<mt:setvarblock name="page_content">
+<mtapp:form id="mt_be_config_update" name="mt_be_config_update" mode="mt_be_config_update">
+  <mtapp:settinggroup id="display-settings">
+    <legend class="h3"><__trans phrase="Block Display Settings"></legend>
+
+    <mtapp:setting
+       id="block_display_options"
+       label=""
+       hint="<__trans phrase="You can change the display / non-display and order of blocks.">"
+       hint_id="blockDisplayOptions"
+       show_hint="1">
+
+      <div class="row mt-draggable border-0 flex-row-reverse">
+        <div class="col-auto w-25">
+          <div class="row">
+            <span class="col-auto w-50 text-right">
+              <__trans phrase="Panel">
+            </span>
+            <span class="col-auto w-50 text-right">
+              <__trans phrase="Shortcut">
+            </span>
+          </div>
+        </div>
+      </div>
+      <div id="block_display_options-list" data-type="common">
+      <mt:Loop name="block_types">
+      <mt:Unless name="is_form_element">
+        <div class="mt-draggable sort-enabled row" data-type-id="<mt:Var name="type_id" />" draggable="true" aria-grabbed="false">
+
+          <div class="col-auto mt-ic_move"><mtapp:svgicon id="ic_move" title="Draggable"></div>
+          <div class="col" for="block-show-<mt:Var name="type_id" />"><mt:Var name="label" /></div>
+          <div class="col-auto w-25">
+            <div class="row">
+              <span class="col-auto w-50 text-right">
+                <input type="checkbox" name="panel" class="align-middle" <mt:If name="is_default_visible"> checked="checked"</mt:If>/>
+              </span>
+              <span class="col-auto w-50 text-right">
+                <input type="checkbox" name="shortcut" class="align-middle" <mt:Unless name="block_display_options"><mt:If name="__counter__" le="$shortcut_count_default"> checked="checked"</mt:If></mt:Unless> />
+              </span>
+            </div>
+          </div>
+        </div>
+      </mt:Unless>
+      </mt:Loop>
+      </div>
+      <input type="hidden" id="block_display_options" name="block_display_options" value="<mt:Var name="block_display_options" encode_html="1" />" />
+    </mtapp:setting>
+  </mtapp:settinggroup>
+
+  <mt:setvarblock name="action_buttons" id="action-buttons">
+      <button
+          type="submit"
+          accesskey="s"
+          title="<__trans phrase="Save changes to these settings (s)">"
+          class="save action primary button btn btn-primary">
+        <__trans phrase="Save Changes">
+      </button>
+  </mt:setvarblock>
+  <mt:include name="include/actions_bar.tmpl" bar_position="bottom" hide_pager="1" settings_bar="1">
+</mtapp:form>
+</mt:setvarblock>
+
+<mt:setvarblock name="js_include" append="1">
+<script src="<$mt:var name="static_uri"$>plugins/MTBlockEditor/dist/config.min.js?v=<mt:Var name="mt_block_editor_version" />" type="module"></script>
+</mt:setvarblock>
+
+<mt:include name="layout/default.tmpl">
+<mt:var name="layout">

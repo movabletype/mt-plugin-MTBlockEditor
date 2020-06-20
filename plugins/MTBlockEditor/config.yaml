@@ -1,0 +1,227 @@
+id: MTBlockEditor
+name: MTBlockEditor
+version: 0.0.3-alpha
+author_link: http://www.movabletype.org/
+author_name: Six Apart Ltd.
+description: <MT_TRANS phrase="Movable Type Block Editor.">
+l10n_class: MT::Plugin::MTBlockEditor::L10N
+
+schema_version: 0.02
+object_types:
+  be_block: MT::Plugin::MTBlockEditor::Block
+  be_config: MT::Plugin::MTBlockEditor::Config
+
+text_filters:
+  block_editor:
+    label: Movable Type Block Editor
+    condition: |
+      sub {
+        my $app = MT->instance;
+        my $type = $app->param('_type') or return 0;
+        if( $type eq 'content_data' ){
+          return 1;
+        }
+        return 0;
+      }
+    docs: 'https://movabletype.github.io/mt-block-editor/'
+    code: |
+      sub {
+        my $text = shift;
+        $text =~ s{<!--\s+/?mt-beb.*?-->}{}g;
+        $text;
+      }
+
+tags:
+  block:
+    BlockEditorBlocks: $MTBlockEditor::MT::Plugin::MTBlockEditor::Tag::_hdlr_blocks
+    BlockEditorBlockAsset: $MTBlockEditor::MT::Plugin::MTBlockEditor::Tag::_hdlr_block_asset
+
+applications:
+  cms:
+    enable_object_methods:
+      be_block:
+        delete: 1
+        save: 1
+    menus:
+      settings:mt_be:
+        label: Movable Type Block Editor
+        order: 1000
+        mode: mt_be_config_view
+        view:
+          - website
+          - blog
+      custom_blocks:
+        label: Custom Blocks
+        order: 1310
+      custom_blocks:manage:
+        label: Manage
+        order: 100
+        mode: list
+        args:
+          _type: be_block
+        view:
+          - blog
+          - website
+          - system
+        condition: |
+          sub {
+              my $app = MT->instance;
+              my $user = $app->user;
+              my $blog = $app->blog;
+              return 1 if $user->is_superuser;
+
+              my $terms;
+              push @$terms, { author_id => $user->id };
+              if ( $blog ) {
+                  my @blog_ids;
+                  push @blog_ids, $blog->id;
+                  if ( !$blog->is_blog ) {
+                      push @blog_ids, map { $_->id } @{$blog->blogs};
+                  }
+                  push @$terms, [ '-and', [
+                      {
+                          blog_id => \@blog_ids,
+                          permissions => { like => "\%'edit_templates'\%" },
+                      },
+                      '-or',
+                      {
+                          blog_id => 0,
+                          permissions => { like => "\%'edit_templates'\%" },
+                      },
+                  ] ];
+              } else {
+                  push @$terms, [ '-and',
+                      [
+                          {
+                              blog_id => 0,
+                              permissions => { like => "\%'edit_templates'\%" },
+                          },
+                          '-or',
+                          {
+                              blog_id => \' > 0',
+                              permissions => { like => "\%'edit_templates'\%" },
+                          }
+                      ]
+                  ];
+              }
+
+              my $cnt = MT->model('permission')->count( $terms );
+              return ( $cnt && $cnt > 0 ) ? 1 : 0;
+          }
+      custom_blocks:create:
+        label: New
+        order: 200
+        mode: view
+        args:
+          _type: be_block
+        view:
+          - blog
+          - website
+          - system
+        permission: edit_templates
+        system_permission: edit_templates
+      custom_blocks:save:
+        order: 10000
+        mode: save
+        args:
+          _type: be_block
+        permission: edit_templates
+        system_permission: edit_templates
+        view:
+          - blog
+          - website
+          - system
+        display: 0
+    methods:
+      mt_be_oembed: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Oembed::resolve
+      mt_be_config_view: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::view
+      mt_be_config_update: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::update
+      view_be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::edit_be_block
+    callbacks:
+      init_app: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::init_app
+      template_param.edit_content_data: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_param_edit_content_data
+      cms_save_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::cms_save_filter_be_block
+      cms_save_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::can_save
+      cms_delete_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::can_delete
+
+permissions:
+  blog.administer_site:
+    permitted_action:
+      edit_be_blocks: 1
+  blog.edit_templates:
+    permitted_action:
+      edit_be_blocks: 1
+
+listing_screens:
+  be_block:
+    object_label: Custom Block
+    primary: label
+    permission: administer_site,edit_templates
+    data_api_permission: ~
+    data_api_scope_mode: strict
+
+list_properties:
+  be_block:
+    label:
+      label: Label
+      auto: 1
+      order: 100
+      display: force
+      html: |
+        sub {
+            my $prop = shift;
+            my ( $obj, $app, $opts ) = @_;
+            my $label =  MT::Util::encode_html($obj->label, 1);
+            my $link = $app->uri(
+                mode => 'view',
+                args => {
+                  _type => 'be_block',
+                  id => $obj->id,
+                  blog_id => $obj->blog_id,
+                },
+            );
+            qq{<a href="$link">$label</a>};
+        }
+    identifier:
+      label: Identifier
+      order: 200
+      auto: 1
+      display: default
+    blog_name:
+      base: __virtual.blog_name
+      label: Site Name
+      order: 300
+      view:
+        - system
+
+list_actions:
+  be_block:
+    delete:
+      label: Delete
+      order: 100
+      continue_prompt_handler: >
+        sub {
+            my $app = MT->component('MTBlockEditor');
+            $app->translate('Are you sure you want to delete the selected Custom Block?')
+        }
+      mode: delete
+      button: 1
+      js_message: delete
+      condition: |
+        sub {
+            my $app  = MT->instance;
+            my $user = $app->user;
+            return 1 if $user->is_superuser;
+            my $blog = $app->blog;
+            if ( !$blog ) {
+                return $user->can_do( 'edit_be_blocks',
+                    at_least_one => 1 );
+            }
+
+            my $blog_ids = [ 0, $blog->id ];
+            return $user->can_do(
+                'edit_be_blocks',
+                at_least_one => 1,
+                blog_id      => $blog_ids
+            );
+        }
