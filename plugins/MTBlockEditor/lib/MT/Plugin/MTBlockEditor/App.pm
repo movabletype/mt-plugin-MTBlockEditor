@@ -91,7 +91,7 @@ sub load_extensions {
                 {
                     push(
                         @{ $tmpls->{ $k . 's' } },
-                        { %$conf, tmpl => $tmpl }
+                        { %$conf, tmpl => $tmpl, v => $plugin->version }
                     );
                 }
             }
