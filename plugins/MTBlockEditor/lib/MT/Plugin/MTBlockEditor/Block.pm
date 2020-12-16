@@ -65,7 +65,36 @@ __PACKAGE__->install_properties(
 
 __PACKAGE__->mk_accessors(qw(is_default_block is_default_hidden is_form_element));
 
+my $plugin_block_type_loaded = 0;
+my @plugin_block_types = ();
+sub plugin_block_types {
+    if ($plugin_block_type_loaded) {
+        return @plugin_block_types;
+    }
+    $plugin_block_type_loaded = 1;
+
+
+    my $regs = MT::Component->registry( 'editors', 'block_editor', 'block_types' );
+    if ( $regs && ref $regs eq 'ARRAY' ) {
+        for my $reg (@$regs) {
+            for my $identifier ( keys %$reg ) {
+                my $d = $reg->{$identifier};
+                push @plugin_block_types, __PACKAGE__->new(
+                    is_default_block => 1,
+                    identifier       => $identifier,
+                    map { $_ => ($d->{$_} // '') . "" }
+                        qw(label is_default_hidden is_form_element identifier)
+                );
+            }
+        }
+    }
+
+    return @plugin_block_types;
+}
+
+
 sub DEFAULT_BLOCKS {
+
     [   map( { __PACKAGE__->new(
                     is_default_block => 1,
                     identifier       => $_,
@@ -80,6 +109,7 @@ sub DEFAULT_BLOCKS {
                     identifier        => $_,
                     label             => MT->translate( 'BLOCK_LABEL_' . ( uc($_) =~ s/-/_/gr ) ),
         ) } qw(sixapart-input sixapart-textarea sixapart-select) ),
+        plugin_block_types(),
     ];
 }
 
