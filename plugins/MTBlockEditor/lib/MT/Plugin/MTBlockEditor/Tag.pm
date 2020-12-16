@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use utf8;
 
+use Encode;
 use JSON;
 use MT::BlockEditor::Parser;
 use MT::Plugin::MTBlockEditor qw(translate);
@@ -40,7 +41,7 @@ sub _hdlr_blocks {
             }
 
             $value
-                ? MT::BlockEditor::Parser->new( json => JSON->new )->parse($value)
+                ? MT::BlockEditor::Parser->new( json => JSON->new )->parse(Encode::encode('UTF-8', $value))
                 : [];
         }
         elsif ( my $block = $ctx->{__stash}{block_editor_block} ) {
