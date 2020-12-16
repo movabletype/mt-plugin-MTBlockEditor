@@ -55,9 +55,6 @@ async function initSelect(select) {
           }
         });
         panelBlockTypes.push(...typeIds);
-
-        console.log(shortcutBlockTypes);
-        console.log(panelBlockTypes);
       } else {
         panelBlockTypes = JSON.parse(dataset.mtBlockTypeIds || "[]");
         shortcutBlockTypes = panelBlockTypes.slice(
