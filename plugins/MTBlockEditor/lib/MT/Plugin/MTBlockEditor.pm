@@ -27,14 +27,12 @@ sub plugin {
 }
 
 sub tmpl_param {
-    +{
-        mt_block_editor_version => plugin()->version,
-    };
+    +{ mt_block_editor_version => plugin()->version, };
 }
 
 sub load_tmpl {
     my $tmpl = plugin()->load_tmpl(@_);
-    $tmpl->param(tmpl_param());
+    $tmpl->param( tmpl_param() );
     $tmpl;
 }
 
@@ -52,7 +50,11 @@ sub blocks {
     );
     [   map {
             my $obj = $_;
-            +{  map { $_ => $obj->$_ } @column_names,
+            +{  map {
+                    my $v = $obj->$_;
+                    $v = $v->() if ref($v) eq 'CODE';
+                    $_ => $v
+                } @column_names,
                 qw(
                     type_id is_default_visible
                     is_default_block is_default_hidden is_form_element
