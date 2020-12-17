@@ -5,7 +5,7 @@ This plugin enables you to use Movable Type Block Editor.
 
 ## Installation
 
-1. Download an archive file from [releases](https://github.com/usualoma/mt-plugin-MTBlockEditor/releases).
+1. Download an archive file from [releases](https://github.com/movabletype/mt-plugin-MTBlockEditor/releases).
 1. Unpack an archive file.
 1. Upload unpacked files to your MT directory.
 
