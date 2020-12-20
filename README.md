@@ -1,7 +1,9 @@
 # Movable Type Block Editor
 
 This is a plugin for the Movable Type.
-This plugin enables you to use Movable Type Block Editor.
+This plugin enables you to use [Movable Type Block Editor](https://movabletype.github.io/mt-block-editor/).
+
+![Screenshot](https://raw.githubusercontent.com/movabletype/mt-plugin-MTBlockEditor/main/artwork/screenshot.jpg)
 
 ## Installation
 
