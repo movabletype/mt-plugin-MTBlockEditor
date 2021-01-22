@@ -1,6 +1,6 @@
 id: MTBlockEditor
 name: MTBlockEditor
-version: 0.0.8-alpha
+version: 0.0.9-alpha
 author_link: http://www.movabletype.org/
 author_name: Six Apart Ltd.
 description: <MT_TRANS phrase="Movable Type Block Editor.">
@@ -392,6 +392,7 @@ content_actions:
 
 upgrade_functions:
   upgrade_blog_be_config:
+    version_limit: 0.05
     code: |
       sub {
         my $iter = MT->model('be_config')->load_iter;
