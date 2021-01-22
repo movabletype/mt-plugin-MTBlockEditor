@@ -31,6 +31,8 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     "BLOCK_LABEL_SIXAPART_TEXTAREA"   => "テキスト(複数行)",
     "BLOCK_LABEL_SIXAPART_SELECT"     => "ドロップダウン",
 
+    'Preset For Movable Type Block Editor' => 'MTブロックエディタのプリセット',
+
     'Block Display Settings' => 'ブロックの表示設定',
     'Panel'                  => 'パネル',
     'Shortcut'               => 'ショートカット',
@@ -41,6 +43,13 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     "Create Custom Block" => "カスタムブロックの作成",
     "Edit Custom Block"   => "カスタムブロックの編集",
 
+    "Custom Block Preset"        => "プリセット",
+    "Custom Block Presets"       => "プリセット",
+    "Create Custom Block Preset" => "プリセットの作成",
+    "Edit Custom Block Preset"   => "プリセットの編集",
+
+    "Manage Custom Block"        => 'カスタムブロック',
+    "Manage Custom Block Preset" => 'プリセット',
     "Import Custom Block" => '読み込む',
     "Export Custom Block" => '書き出す',
     'Icon'                => 'アイコン',
@@ -62,17 +71,14 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     "If you change the identifier, you will not be able to edit the block contained in the saved data as the same block." => "識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。",
     "* You can import custom block from your JSON file." => "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
 
-#    "Block Editor" => "ブロックエディタ",
-#    "List Custom Blocks" => "カスタムブロック一覧",
-#    "Block" => "ブロック",
-#    "Block Preferences" => "ブロックエディタの表示設定",
-#    "Please select an image." => "画像を選択してください",
-#    "Please select a file." => "ファイルを選択してください",
+    'Are you sure you want to delete the selected Custom Block?' => '選択したブロックを削除してもよろしいですか？',
+    'Are you sure you want to delete the selected Custom Block Preset?' => '選択したプリセットを削除してもよろしいですか？',
 
     (   $block_editor_plugin
         ? ()
-        : ( 'Movable Type Block Editor'          => 'ブロックエディタ',
-            'Movable Type Block Editor Settings' => 'ブロックエディタの設定',
+        : ( 'Movable Type Block Editor'            => 'ブロックエディタ',
+            'Movable Type Block Editor Settings'   => 'ブロックエディタの設定',
+            'Preset For Movable Type Block Editor' => 'ブロックエディタのプリセット',
         )
     ),
 );

@@ -13,4 +13,7 @@ $("#block_display_options-list").sortable({
 });
 
 unserializeBlockPreferences();
-$("#block_display_options-list :input").on("change", serializeBlockPreferences);
+$("#block_display_options-list :input")
+  .on("change.MTBlockEditor", serializeBlockPreferences)
+  .first()
+  .triggerHandler("change.MTBlockEditor");

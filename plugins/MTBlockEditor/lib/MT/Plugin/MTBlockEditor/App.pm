@@ -8,6 +8,7 @@ use strict;
 use warnings;
 use utf8;
 
+use MT::Util qw(encode_html);
 use Class::Method::Modifiers qw(around);
 use MT::Plugin::MTBlockEditor qw(plugin blocks tmpl_param);
 
@@ -119,12 +120,61 @@ sub template_param_edit_content_data {
     my @block_types = grep { $_->{is_default_visible} } @{ blocks( { blog_id => $blog_id } ) };
     $param->{block_types}    = \@block_types;
     $param->{block_type_ids} = [ map { $_->{type_id} } @block_types ];
-    if (my $obj = MT->model('be_config')->load( { blog_id => $blog_id } )) {
-        $param->{blog_block_display_options} = $obj->block_display_options;
+
+    my %block_display_options_map;
+    for (MT->model('be_config')->load( { blog_id => [0, $blog_id] } ))  {
+        $block_display_options_map{$_->id} = $_->block_display_options;
     }
+    $param->{block_display_options_map} = \%block_display_options_map;
 
     load_extensions( $param );
     insert_after( $tmpl, 'content_data', 'loader.tmpl' );
+}
+
+sub template_source_multi_line_text {
+    my ( $cb, $app, $tmpl ) = @_;
+
+    my $blog    = $app->blog;
+    my $blog_id = $blog ? $blog->id : 0;
+
+    my $configs = [MT->model('be_config')->load( { blog_id => [0, $blog_id] } )];
+
+    return unless @$configs;
+
+    $$tmpl =~ s{(</mtapp:ContentFieldOptionScript>)}{
+this.options.be_configs = {
+@{[ map { my $id = $_->id; qq{$id: '',} } @$configs ]}
+};
+if ( this.options.be_config ) {
+  this.options.be_configs[this.options.be_config] = "selected"
+}
+
+$1
+}i;
+
+    $$tmpl =~ s{(</mt:app:ContentFieldOptionGroup>)}{
+<__trans_section component="@{[plugin()->id]}">
+<mtapp:ContentFieldOption
+   id="multi_line_text-be_config"
+   label="<__trans phrase="Preset For Movable Type Block Editor">">
+  <select ref="be_config" name="be_config" id="multi_line_text-be_config" class="custom-select form-control">
+    @{[ map { my ($id, $label) = ($_->id, encode_html($_->label)); qq{
+      <option value="$id" selected={ options.be_configs[$id] }>$label</option>
+    } } @$configs ]}
+  </select>
+</mtapp:ContentFieldOption>
+</__trans_section>
+
+$1
+}i;
+}
+
+sub template_source_field_html_multi_line_text {
+    my ( $cb, $app, $tmpl ) = @_;
+
+    $$tmpl .= <<MTML;
+<input type="hidden" id="content-field-<mt:var name="content_field_id">-be_config" value="<mt:var name="options{be_config}" escape="html">" />
+MTML
 }
 
 1;

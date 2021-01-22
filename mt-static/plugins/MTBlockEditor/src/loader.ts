@@ -37,10 +37,19 @@ async function initSelect(select) {
         return;
       }
 
+      const fieldId = select.id.match(/(\d+)$/)[1];
+      const blockDisplayOptionId = (document.getElementById(
+        `content-field-${fieldId}-be_config`
+      ) as HTMLInputElement).value;
+      const blockDisplayOptionsJSON =
+        JSON.parse(dataset.mtBlockDisplayOptionsMap || "{}")[
+          blockDisplayOptionId
+        ] || null;
+
       let panelBlockTypes: string[] = [];
       let shortcutBlockTypes: string[] = [];
-      if (dataset.mtBlockDisplayOptions) {
-        const blockDisplayOptions = JSON.parse(dataset.mtBlockDisplayOptions);
+      if (blockDisplayOptionsJSON) {
+        const blockDisplayOptions = JSON.parse(blockDisplayOptionsJSON);
         const typeIds = JSON.parse(dataset.mtBlockTypeIds || "[]");
         blockDisplayOptions["common"].forEach((bt) => {
           const i = typeIds.indexOf(bt.typeId);
