@@ -97,7 +97,7 @@ sub DEFAULT_BLOCKS {
     [   map( { __PACKAGE__->new(
                     is_default_block => 1,
                     identifier       => $_,
-                    label            => MT->translate( 'BLOCK_LABEL_' . ( uc($_) =~ s/-/_/gr ) ),
+                    label            => translate( 'BLOCK_LABEL_' . ( uc($_) =~ s/-/_/gr ) ),
             ) }
             qw(core-text mt-image mt-file core-html sixapart-oembed core-horizontalrule core-table core-columns)
         ),
@@ -106,7 +106,7 @@ sub DEFAULT_BLOCKS {
                     is_default_hidden => 1,
                     is_form_element   => 1,
                     identifier        => $_,
-                    label             => MT->translate( 'BLOCK_LABEL_' . ( uc($_) =~ s/-/_/gr ) ),
+                    label             => translate( 'BLOCK_LABEL_' . ( uc($_) =~ s/-/_/gr ) ),
         ) } qw(sixapart-input sixapart-textarea sixapart-select) ),
         plugin_block_types(),
     ];
@@ -125,8 +125,71 @@ sub type_id {
     $self->is_default_block ? $self->identifier : 'custom-' . $self->identifier;
 }
 
+sub should_be_compiled {
+    my $self = shift;
+    $self->preview_header =~ m/<\s*script/i;
+}
+
 sub is_default_visible {
     !shift->is_default_hidden;
+}
+
+sub save {
+    my $self = shift;
+
+    return unless $self->_validate_label;
+    return unless $self->_validate_identifier;
+    return unless $self->_validate_icon;
+
+    $self->SUPER::save(@_);
+}
+
+sub _validate_label {
+    my $self = shift;
+
+    return $self->error( translate("Invalid value") )
+        unless defined( $self->label ) && $self->label ne '';
+
+    return 1;
+}
+
+sub _validate_identifier {
+    my $self       = shift;
+    my $identifier = $self->identifier;
+
+    return $self->error( translate('The identifier is required.') )
+        unless defined($identifier) && $identifier ne '';
+
+    return $self->error( translate('Invalid value') )
+        unless $identifier =~ m/\A[a-zA-Z0-9_]+\z/;
+
+    my @same_identifiers = ref($self)->load(
+        {   ( $self->id ? ( id => { op => '!=', value => $self->id } ) : () ),
+            identifier => $identifier,
+        },
+        { fetchonly => { blog_id => 1 }, }
+    );
+
+    return $self->error(
+        translate( 'An identifier "[_1]" is already used in the site scope.', $identifier ) )
+        if $self->blog_id
+        ? grep { $self->blog_id == $_->blog_id } @same_identifiers
+        : grep { $_->blog_id } @same_identifiers;
+
+    return $self->error(
+        translate( 'An identifier "[_1]" is already used in the global scope.', $identifier ) )
+        if grep { !$_->blog_id } @same_identifiers;
+
+    return 1;
+}
+
+sub _validate_icon {
+    my $self = shift;
+
+    return $self->error( translate('Invalid value') )
+        if length $self->icon > MAX_ICON_SIZE_HARD;
+
+    return 1;
 }
 
 1;

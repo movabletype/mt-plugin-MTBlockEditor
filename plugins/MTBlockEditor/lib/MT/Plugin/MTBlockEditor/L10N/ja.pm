@@ -72,7 +72,10 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     "* You can import custom block from your JSON file." => "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
 
     'Are you sure you want to delete the selected Custom Block?' => '選択したブロックを削除してもよろしいですか？',
-    'Are you sure you want to delete the selected Custom Block Preset?' => '選択したプリセットを削除してもよろしいですか？',
+
+    'The identifier is required.' => '識別子は必須です',
+    'An identifier "[_1]" is already used in the site scope.' => '"[_1]"という識別子はサイトですでに使われています。',
+    'An identifier "[_1]" is already used in the global scope.' => '"[_1]"という識別子はグローバルなブロックですでに使われています。',
 
     (   $block_editor_plugin
         ? ()
