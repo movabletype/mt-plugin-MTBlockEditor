@@ -10,19 +10,13 @@ schema_version: 0.05
 object_types:
   be_block: MT::Plugin::MTBlockEditor::Block
   be_config: MT::Plugin::MTBlockEditor::Config
+  blog:
+    be_entry_config_id: integer meta
+    be_page_config_id: integer meta
 
 text_filters:
   block_editor:
     label: Movable Type Block Editor
-    condition: |
-      sub {
-        my $app = MT->instance;
-        my $type = $app->param('_type') or return 0;
-        if( $type eq 'content_data' ){
-          return 1;
-        }
-        return 0;
-      }
     docs: 'https://movabletype.github.io/mt-block-editor/'
     code: |
       sub {
@@ -215,9 +209,12 @@ applications:
       view_be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::edit_be_config
     callbacks:
       init_app: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::init_app
+      template_param.edit_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_param_edit_entry
       template_param.edit_content_data: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_param_edit_content_data
+      template_param.cfg_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_param_cfg_entry
       template_source.multi_line_text: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_source_multi_line_text
       template_source.field_html_multi_line_text: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_source_field_html_multi_line_text
+      cms_pre_save.blog: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::cms_pre_save_blog
       cms_save_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::cms_save_filter_be_block
       cms_save_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::can_save_be_block
       cms_delete_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::can_delete_be_block

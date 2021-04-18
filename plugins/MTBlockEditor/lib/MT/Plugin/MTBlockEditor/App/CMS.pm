@@ -41,7 +41,7 @@ sub edit_be_block {
     $param->{block_types}      = \@block_types;
     $param->{block_type_ids}   = [ map { $_->{type_id} } @block_types ];
     $param->{max_icon_size}    = MT->model('be_block')->MAX_ICON_SIZE;
-    $param->{max_icon_size_hr} = (MT->model('be_block')->MAX_ICON_SIZE / 1024) . 'KB';
+    $param->{max_icon_size_hr} = ( MT->model('be_block')->MAX_ICON_SIZE / 1024 ) . 'KB';
 
     $app->add_breadcrumb(
         plugin()->translate("Custom Blocks"),
@@ -53,6 +53,7 @@ sub edit_be_block {
             },
         )
     );
+
     if ( $param->{id} ) {
         $app->add_breadcrumb( $param->{label} );
     }
@@ -61,7 +62,7 @@ sub edit_be_block {
     }
 
     $app->setup_editor_param($param);
-    MT::Plugin::MTBlockEditor::App::load_extensions( $param );
+    MT::Plugin::MTBlockEditor::App::load_extensions($param);
     $app->build_page( load_tmpl('edit_block.tmpl'), $param );
 }
 
@@ -73,7 +74,7 @@ sub cms_save_filter_be_block {
         ? MT->model('be_block')->ROOT_BLOCK_DEFAULT
         : ''
     );
-    $app->param(can_remove_block => $app->param('can_remove_block') ? 1 : 0);
+    $app->param( can_remove_block => $app->param('can_remove_block') ? 1 : 0 );
 
     1;
 }
@@ -114,7 +115,6 @@ sub can_delete_be_block {
 
     return $author->permissions($blog_id)->can_do('edit_be_blocks');
 }
-
 
 sub edit_be_config {
     my ( $app, $param ) = @_;
@@ -194,6 +194,20 @@ sub can_delete_be_config {
     my $blog_id = $obj ? $obj->blog_id : ( $app->blog ? $app->blog->id : 0 );
 
     return $author->permissions($blog_id)->can_do('edit_be_configs');
+}
+
+sub cms_pre_save_blog {
+    my ( $eh, $app, $obj ) = @_;
+
+    if ( $app->can_do('save_blog_config') ) {
+        for my $k (qw(be_entry_config_id be_page_config_id)) {
+            if ( defined( my $id = $app->param($k) ) ) {
+                $obj->$k($id);
+            }
+        }
+    }
+
+    1;
 }
 
 1;

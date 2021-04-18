@@ -72,3 +72,14 @@ export function unserializeBlockPreferences(): void {
     });
   });
 }
+
+export async function waitFor(func: () => boolean): Promise<void> {
+  return new Promise<void>((resolve) => {
+    const timerId = setInterval(() => {
+      if (func()) {
+        clearInterval(timerId);
+        resolve();
+      }
+    }, 100);
+  });
+}

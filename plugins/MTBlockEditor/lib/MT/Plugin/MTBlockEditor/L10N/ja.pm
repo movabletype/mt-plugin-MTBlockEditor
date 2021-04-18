@@ -50,10 +50,10 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
 
     "Manage Custom Block"        => 'カスタムブロック',
     "Manage Custom Block Preset" => 'プリセット',
-    "Import Custom Block" => '読み込む',
-    "Export Custom Block" => '書き出す',
-    'Icon'                => 'アイコン',
-    'Block'               => "ブロック",
+    "Import Custom Block"        => '読み込む',
+    "Export Custom Block"        => '書き出す',
+    'Icon'                       => 'アイコン',
+    'Block'                      => "ブロック",
     "You can upload image files of size [_1] or less." =>
         "[_1]以下のサイズの画像ファイルをアップロードできます。",
     "Custom Script" => "カスタムスクリプト",
@@ -68,20 +68,30 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
         "コンテナ要素にクラス名を指定することができます。",
     "Addable blocks" => "追加可能なブロック",
 
-    "If you change the identifier, you will not be able to edit the block contained in the saved data as the same block." => "識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。",
-    "* You can import custom block from your JSON file." => "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
+    "If you change the identifier, you will not be able to edit the block contained in the saved data as the same block."
+        => "識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。",
+    "* You can import custom block from your JSON file." =>
+        "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
 
-    'Are you sure you want to delete the selected Custom Block?' => '選択したブロックを削除してもよろしいですか？',
+    'Are you sure you want to delete the selected Custom Block?' =>
+        '選択したブロックを削除してもよろしいですか？',
 
     'The identifier is required.' => '識別子は必須です',
-    'An identifier "[_1]" is already used in the site scope.' => '"[_1]"という識別子はサイトですでに使われています。',
-    'An identifier "[_1]" is already used in the global scope.' => '"[_1]"という識別子はグローバルなブロックですでに使われています。',
+    'An identifier "[_1]" is already used in the site scope.' =>
+        '"[_1]"という識別子はサイトですでに使われています。',
+    'An identifier "[_1]" is already used in the global scope.' =>
+        '"[_1]"という識別子はグローバルなブロックですでに使われています。',
+
+    'MT Block Editor Setting' => 'MTブロックエディタの設定',
+    'Preset For Entry'        => '記事編集時に利用するプリセット',
+    'Preset For Page'         => 'ウェブページ編集時に利用するプリセット',
 
     (   $block_editor_plugin
         ? ()
         : ( 'Movable Type Block Editor'            => 'ブロックエディタ',
             'Movable Type Block Editor Settings'   => 'ブロックエディタの設定',
             'Preset For Movable Type Block Editor' => 'ブロックエディタのプリセット',
+            'MT Block Editor Setting'              => 'ブロックエディタの設定',
         )
     ),
 );

@@ -14,8 +14,8 @@ async function initSelect(select) {
   const inputElm = document.createElement("INPUT") as HTMLInputElement;
   inputElm.id = select.dataset.target + "-mt-be";
   const wrap = document.createElement("DIV");
+  wrap.classList.add("mt-block-editor-wrap");
   wrap.appendChild(inputElm);
-  wrap.style.marginTop = "20px";
 
   serializeMethods.push(async () => {
     if (!editor) {
@@ -27,6 +27,9 @@ async function initSelect(select) {
   });
 
   async function handleSelect() {
+    const oldLastValue = lastValue;
+    lastValue = select.value;
+
     if (select.value === "block_editor") {
       inputElm.value = target.value;
       select.closest(".mt-contentblock").appendChild(wrap);
@@ -82,8 +85,10 @@ async function initSelect(select) {
         .closest(".mt-contentblock")
         .querySelector(".editor-content")
         .classList.add("d-none");
-    } else if (lastValue === "block_editor") {
-      window.MTBlockEditor.unload({
+
+      return;
+    } else if (oldLastValue === "block_editor") {
+      return window.MTBlockEditor.unload({
         id: inputElm.id,
       }).then(() => {
         editor = null;
@@ -95,11 +100,22 @@ async function initSelect(select) {
           .classList.remove("d-none");
       });
     }
-
-    lastValue = select.value;
   }
 
-  select.addEventListener("change", handleSelect);
+  select.addEventListener("change", (ev) => {
+    if (!ev.isTrusted) {
+      return;
+    }
+
+    ev.stopImmediatePropagation();
+    ev.stopPropagation();
+    ev.preventDefault();
+
+    handleSelect().then(() => {
+      const changeEv = new Event("change");
+      select.dispatchEvent(changeEv);
+    });
+  });
   handleSelect();
 }
 
