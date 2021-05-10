@@ -1,9 +1,6 @@
 import $ from "jquery";
-import {
-  JSONStringify,
-  serializeBlockPreferences,
-  unserializeBlockPreferences,
-} from "./util";
+import { serializeBlockPreferences, unserializeBlockPreferences } from "./util";
+import JSON from "./util/JSON";
 import { isSupportedEnvironment, apply, unload } from "./block-editor";
 
 let editor;
@@ -204,7 +201,7 @@ async function applyBlockEditorForSetup() {
         };
       })
       .sort((a, b) => a.index - b.index);
-    form.block_display_options.value = JSONStringify({
+    form.block_display_options.value = JSON.stringify({
       common: blockDisplayOptions,
     });
   }
@@ -216,7 +213,7 @@ async function applyBlockEditorForSetup() {
 
       const a = document.createElement("a");
       a.href = URL.createObjectURL(
-        new Blob([JSONStringify(data)], {
+        new Blob([JSON.stringify(data)], {
           type: "application/json",
         })
       );

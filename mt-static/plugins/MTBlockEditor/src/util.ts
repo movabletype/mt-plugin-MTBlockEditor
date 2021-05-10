@@ -1,4 +1,5 @@
 import $ from "jquery";
+import JSON from "./util/JSON";
 
 type BlockPref = {
   typeId: string;
@@ -6,23 +7,6 @@ type BlockPref = {
   panel?: boolean;
   shortcut?: boolean;
 };
-
-export function JSONStringify(data: any): string {
-  const prototype = (Array.prototype as any) as {
-    toJSON: ((obj: any) => string) | null;
-  };
-
-  const customToJSON = prototype.toJSON;
-  if (customToJSON) {
-    Reflect.deleteProperty(prototype, "toJSON");
-  }
-  const value = JSON.stringify(data);
-  if (customToJSON) {
-    prototype.toJSON = customToJSON;
-  }
-
-  return value;
-}
 
 export function serializeBlockPreferences(): void {
   const data = {};
@@ -47,7 +31,7 @@ export function serializeBlockPreferences(): void {
     data[$ul.data("type")] = d;
   });
 
-  const value = JSONStringify(data);
+  const value = JSON.stringify(data);
   $("#block_display_options").val(value);
 }
 
