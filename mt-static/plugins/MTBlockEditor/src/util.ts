@@ -73,13 +73,23 @@ export function unserializeBlockPreferences(): void {
   });
 }
 
-export async function waitFor(func: () => boolean): Promise<void> {
+export async function waitFor(
+  func: () =>
+    | boolean
+    | null
+    | HTMLElement
+    | Promise<boolean | null | HTMLElement>
+): Promise<void> {
   return new Promise<void>((resolve) => {
-    const timerId = setInterval(() => {
-      if (func()) {
-        clearInterval(timerId);
-        resolve();
+    function check() {
+      const res = func();
+      if (res) {
+        Promise.resolve(res).then(resolve);
+      } else {
+        setTimeout(check, 100);
       }
-    }, 100);
+    }
+    // check in async
+    setTimeout(check);
   });
 }
