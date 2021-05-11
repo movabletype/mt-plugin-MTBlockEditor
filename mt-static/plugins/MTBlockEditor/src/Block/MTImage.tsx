@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { t } from "../i18n";
-import { waitFor } from "../util";
 import { nl2br } from "mt-block-editor-block/util";
+import { Editor as MTBlockEditor } from "mt-block-editor-block";
 import React, { useState } from "mt-block-editor-block/React";
 import { blockProperty } from "mt-block-editor-block/decorator";
 import {
@@ -14,7 +14,6 @@ import Block, {
   Metadata,
   NewFromHtmlOptions,
   EditorOptions,
-  SerializeOptions,
 } from "mt-block-editor-block/Block";
 import { useEditorContext } from "mt-block-editor-block/Context";
 import { edit as editIcon } from "mt-block-editor-block/icon";
@@ -42,10 +41,10 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
     return <p>{blankMessage}</p>;
   }
 
-  async function showModal() {
+  async function showModal(): Promise<void> {
     setModalActive(true);
 
-    const newData = {};
+    const newData: Partial<MTImage> = {};
 
     const blogId = (document.querySelector(
       "[name=blog_id]"
@@ -57,15 +56,18 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
         insertContent(html) {
           const template = document.createElement("template");
           template.innerHTML = html;
-          const img = template.content.querySelector("img");
+          const img = template.content.querySelector("img") as HTMLImageElement;
 
           Object.assign(newData, {
             assetUrl: img.dataset.url,
             url: img.src,
-            imageHeight:
-              Math.round((newData["imageWidth"] / img.width) * img.height) + "",
+            imageHeight: newData.imageWidth
+              ? Math.round(
+                  (parseInt(newData.imageWidth) / img.width) * img.height
+                ) + ""
+              : "",
             alignment: img.className?.replace(/^mt-image-/, ""),
-            hasCaption: (newData["caption"] || "") !== "",
+            hasCaption: (newData.caption || "") !== "",
           });
 
           addEditUpdateBlock(editor, block, newData);
@@ -86,27 +88,27 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
           _type: "asset",
           edit_field: dummyFieldId,
           blog_id: blogId,
-          dialog_view: 1,
+          dialog_view: "1",
           filter: "class",
           filter_val: "image",
-        }),
+        } as Record<string, string>),
       { large: true }
     );
 
-    await initModal(block);
+    await initModal({ block, blogId, dummyFieldId });
 
     // handle insert options
-    waitForInsertOptionsForm().then((form) => {
-      newData["assetId"] = form.querySelector(
+    waitForInsertOptionsForm().then((form: HTMLFormElement) => {
+      newData["assetId"] = (form.querySelector(
         "[data-asset-id]"
-      ).dataset.assetId;
+      ) as HTMLElement).dataset.assetId;
 
-      const doc = form.ownerDocument.document;
+      const doc = form.ownerDocument;
 
       // hide unused elements
-      const style = doc.createElement("style");
+      const style = doc.createElement("style") as HTMLStyleElement;
       doc.head.appendChild(style);
-      style.sheet.insertRule(
+      style.sheet?.insertRule(
         `
 [id^="display_asset_prefs-"],
 [id^="link_to_popup-"] .custom-radio,
@@ -118,7 +120,9 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       );
 
       // extra fields
-      const placeholder = doc.querySelector("[id^=include_prefs-]");
+      const placeholder = doc.querySelector(
+        "[id^=include_prefs-]"
+      ) as HTMLInputElement;
       const extraFields = doc.createElement("template");
       extraFields.innerHTML = `
 <div class="row">
@@ -142,10 +146,10 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
 </div>
 </div>
 `;
-      placeholder.parentElement.insertBefore(extraFields.content, placeholder);
+      placeholder.parentElement?.insertBefore(extraFields.content, placeholder);
 
       ["alternativeText", "caption", "imageWidth"].forEach((k) => {
-        const elm = doc.querySelector(`#${k}`);
+        const elm = doc.querySelector(`#${k}`) as HTMLInputElement;
         newData[k] = elm.value = block[k];
         elm.addEventListener("input", () => {
           newData[k] = elm.value;
@@ -155,16 +159,18 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       // thumbnail
       const createThumbnail = doc.querySelector(
         `input[id^="create_thumbnail-"]`
-      );
+      ) as HTMLInputElement;
       createThumbnail.checked = block.useThumbnail;
       createThumbnail.addEventListener("change", () => {
         block.useThumbnail = createThumbnail.checked;
       });
 
       // image and thumbnail width
-      const thumbWidth = doc.querySelector(`input[id^="thumb_width-"]`);
-      thumbWidth.parentElement.classList.add("d-none");
-      const imageWidth = doc.querySelector("#imageWidth");
+      const thumbWidth = doc.querySelector(
+        `input[id^="thumb_width-"]`
+      ) as HTMLInputElement;
+      thumbWidth.parentElement?.classList.add("d-none");
+      const imageWidth = doc.querySelector("#imageWidth") as HTMLInputElement;
       if (!imageWidth.value) {
         imageWidth.value = thumbWidth.value;
       }
@@ -174,7 +180,9 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       imageWidth.dispatchEvent(new Event("input"));
 
       // link to original asset
-      const linkToOriginal = doc.querySelector("input[id^=link_to_popup-]");
+      const linkToOriginal = doc.querySelector(
+        "input[id^=link_to_popup-]"
+      ) as HTMLInputElement;
       newData.linkToOriginal = linkToOriginal.checked = block.linkToOriginal;
       linkToOriginal.addEventListener("change", () => {
         newData.linkToOriginal = linkToOriginal.checked;
@@ -383,7 +391,7 @@ class MTImage extends Block {
     });
   }
 
-  public editor({ focus, focusBlock }: EditorOptions): JSX.Element {
+  public editor({ focus }: EditorOptions): JSX.Element {
     return <Editor key={this.id} focus={focus} block={this} />;
   }
 
@@ -391,7 +399,7 @@ class MTImage extends Block {
     return <Html block={this} />;
   }
 
-  static async new({ editor }): Promise<MTImage> {
+  static async new({ editor }: { editor: MTBlockEditor }): Promise<MTImage> {
     const opts = editor.opts.block["mt-image"] || {};
     const showModal =
       typeof opts.showModalOnNew === "boolean" ? opts.showModalOnNew : true;
@@ -399,7 +407,6 @@ class MTImage extends Block {
   }
 
   static async newFromHtml({
-    node,
     html,
     meta,
   }: NewFromHtmlOptions): Promise<MTImage> {

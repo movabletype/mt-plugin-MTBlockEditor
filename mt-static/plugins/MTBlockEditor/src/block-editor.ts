@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { EditorOptions } from "mt-block-editor-block";
+import { Editor, EditorOptions } from "mt-block-editor-block";
 import { Settings as TinyMCESettings } from "tinymce";
 
 //const GLOBAL_ATTRIBUTES = [
@@ -23,8 +23,8 @@ export function apply(
   opts: Partial<EditorOptions> & {
     tinyMCEDefaultSettings?: Partial<TinyMCESettings>;
   }
-) {
-  function setDirty({ editor }) {
+): Promise<Editor> {
+  function setDirty({ editor }): void {
     // TODO: set dirty
     editor.off("change", setDirty);
   }
@@ -80,11 +80,11 @@ export function apply(
   });
 }
 
-export function isSupportedEnvironment() {
+export function isSupportedEnvironment(): boolean {
   return window.MTBlockEditor && window.MTBlockEditor.isSupportedEnvironment();
 }
 
-export function unload(opt) {
+export function unload(opt: { id: string }): Promise<void> {
   return window.MTBlockEditor
     ? window.MTBlockEditor.unload(opt)
     : Promise.resolve();

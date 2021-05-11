@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { t } from "../i18n";
+import { Editor as MTBlockEditor } from "mt-block-editor-block";
 import React, { useState } from "mt-block-editor-block/React";
 import { blockProperty } from "mt-block-editor-block/decorator";
 import {
@@ -12,7 +13,6 @@ import Block, {
   Metadata,
   NewFromHtmlOptions,
   EditorOptions,
-  SerializeOptions,
 } from "mt-block-editor-block/Block";
 import { useEditorContext } from "mt-block-editor-block/Context";
 import { edit as editIcon } from "mt-block-editor-block/icon";
@@ -36,7 +36,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
   const [modalActive, setModalActive] = useState(false);
   const blankMessage = t("Please select an file");
 
-  async function showModal() {
+  async function showModal(): Promise<void> {
     setModalActive(true);
 
     const newData = {};
@@ -51,7 +51,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
         insertContent(html) {
           const template = document.createElement("template");
           template.innerHTML = html;
-          const a = template.content.querySelector("a");
+          const a = template.content.querySelector("a") as HTMLAnchorElement;
 
           Object.assign(newData, {
             assetUrl: a.href,
@@ -74,18 +74,18 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
           _type: "asset",
           edit_field: dummyFieldId,
           blog_id: blogId,
-          dialog_view: 1,
+          dialog_view: "1",
         }),
       { large: true }
     );
 
-    await initModal(block);
+    await initModal({ block, blogId, dummyFieldId });
 
     // handle insert options
     waitForInsertOptionsForm().then((form) => {
-      newData["assetId"] = form.querySelector(
+      newData["assetId"] = (form.querySelector(
         "[data-asset-id]"
-      ).dataset.assetId;
+      ) as HTMLElement).dataset.assetId;
     });
   }
 
@@ -182,7 +182,7 @@ class MTFile extends Block {
     return this.metadataByOwnKeys({ keys: ["assetId"] });
   }
 
-  public editor({ focus, focusBlock }: EditorOptions): JSX.Element {
+  public editor({ focus }: EditorOptions): JSX.Element {
     return <Editor key={this.id} focus={focus} block={this} />;
   }
 
@@ -190,7 +190,7 @@ class MTFile extends Block {
     return <Html block={this} />;
   }
 
-  static async new({ editor }): Promise<MTFile> {
+  static async new({ editor }: { editor: MTBlockEditor }): Promise<MTFile> {
     const opts = editor.opts.block["mt-file"] || {};
     const showModal =
       typeof opts.showModalOnNew === "boolean" ? opts.showModalOnNew : true;
@@ -198,7 +198,6 @@ class MTFile extends Block {
   }
 
   static async newFromHtml({
-    node,
     html,
     meta,
   }: NewFromHtmlOptions): Promise<MTFile> {

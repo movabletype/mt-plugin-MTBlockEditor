@@ -6,14 +6,14 @@ type SerializeMethod = () => Promise<void>;
 
 const serializeMethods: SerializeMethod[] = [];
 
-async function initSelect(select) {
+async function initSelect(select): Promise<void> {
   const targets = [
     ...document.querySelectorAll(
       "#editor-input-content, #editor-input-extended"
     ),
-  ];
+  ] as HTMLInputElement[];
 
-  const handlers = targets.map((target) => {
+  const handlers = targets.map((target: HTMLInputElement) => {
     let editor: Editor | null = null;
     let lastValue = "";
 
@@ -40,7 +40,7 @@ async function initSelect(select) {
         await waitFor(() => !!target.closest(".mt-editor-manager-wrap"));
 
         inputElm.value = target.value;
-        target.closest(".mt-editor-manager-wrap").appendChild(wrap);
+        target.closest(".mt-editor-manager-wrap")?.appendChild(wrap);
 
         const scriptElm = document.getElementById("mt-block-editor-loader");
         const dataset = scriptElm ? scriptElm.dataset : null;
@@ -92,17 +92,17 @@ async function initSelect(select) {
           () =>
             !!target
               .closest(".mt-editor-manager-wrap")
-              .querySelector(".tox-tinymce")
+              ?.querySelector(".tox-tinymce")
         );
 
         target
           .closest(".mt-editor-manager-wrap")
-          .querySelector(".tox-tinymce")
-          .classList.add("d-none");
+          ?.querySelector(".tox-tinymce")
+          ?.classList.add("d-none");
 
         return;
       } else if (oldLastValue === "block_editor") {
-        return window.MTBlockEditor.unload({
+        return unload({
           id: inputElm.id,
         }).then(() => {
           editor = null;
@@ -110,8 +110,8 @@ async function initSelect(select) {
           wrap.remove();
           target
             .closest(".mt-editor-manager-wrap")
-            .querySelector(".tox-tinymce")
-            .classList.remove("d-none");
+            ?.querySelector(".tox-tinymce")
+            ?.classList.remove("d-none");
         });
       }
     };
@@ -135,7 +135,7 @@ async function initSelect(select) {
   handlers.forEach((f) => f());
 }
 
-function initButton(elm) {
+function initButton(elm): void {
   let doClick = false;
   elm.addEventListener("click", (ev) => {
     if (doClick) {

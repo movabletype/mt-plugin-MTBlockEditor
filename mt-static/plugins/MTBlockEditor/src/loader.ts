@@ -5,7 +5,7 @@ type SerializeMethod = () => Promise<void>;
 
 const serializeMethods: SerializeMethod[] = [];
 
-async function initSelect(select) {
+async function initSelect(select): Promise<void> {
   let editor: Editor | null = null;
   let lastValue = "";
   const target = document.getElementById(
@@ -26,7 +26,7 @@ async function initSelect(select) {
     });
   });
 
-  async function handleSelect() {
+  async function handleSelect(): Promise<void> {
     const oldLastValue = lastValue;
     lastValue = select.value;
 
@@ -88,7 +88,7 @@ async function initSelect(select) {
 
       return;
     } else if (oldLastValue === "block_editor") {
-      return window.MTBlockEditor.unload({
+      return unload({
         id: inputElm.id,
       }).then(() => {
         editor = null;
@@ -119,7 +119,7 @@ async function initSelect(select) {
   handleSelect();
 }
 
-function initButton(elm) {
+function initButton(elm): void {
   let doClick = false;
   elm.addEventListener("click", (ev) => {
     if (doClick) {

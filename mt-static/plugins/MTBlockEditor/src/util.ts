@@ -61,11 +61,12 @@ export async function waitFor(
   func: () =>
     | boolean
     | null
-    | HTMLElement
-    | Promise<boolean | null | HTMLElement>
-): Promise<void> {
-  return new Promise<void>((resolve) => {
-    function check() {
+    | undefined
+    | Element
+    | Promise<boolean | null | undefined | Element>
+): Promise<boolean | null | Element> {
+  return new Promise((resolve) => {
+    function check(): void {
       const res = func();
       if (res) {
         Promise.resolve(res).then(resolve);
