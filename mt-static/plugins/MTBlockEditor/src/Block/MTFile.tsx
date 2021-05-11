@@ -19,6 +19,7 @@ import { edit as editIcon } from "mt-block-editor-block/icon";
 
 import fileIcon from "../img/icon/file.svg";
 import { addEditUpdateBlock } from "./edit";
+import { initModal, waitForInsertOptionsForm } from "./modal";
 
 interface EditorProps {
   focus: boolean;
@@ -35,56 +36,57 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
   const [modalActive, setModalActive] = useState(false);
   const blankMessage = t("Please select an file");
 
-  function showModal() {
-    block.files = [];
-
+  async function showModal() {
     setModalActive(true);
 
-    function openDialog(mode, param) {
-      const url = window.ScriptURI + "?" + "__mode=" + mode + "&amp;" + param;
-      $.fn.mtModal.open(url, { large: true });
-    }
+    const newData = {};
+
     const blogId = (document.querySelector(
       "[name=blog_id]"
     ) as HTMLInputElement).value;
-    const dummyFieldId = `mt-block-editor-${block.id}`;
-    const div = document.createElement("DIV");
-    div.id = dummyFieldId;
-    $(div)
-      .appendTo("body")
-      .data("mt-editor", {
-        currentEditor: {
-          insertContent(html) {
-            const $html = $(html);
-            const $a = $html.is("A") ? $html : $html.find("A");
+    const dummyFieldId = `mt-block-editor-${block.id}-${new Date().getTime()}`;
+    const $div = $("<div/>", { id: dummyFieldId });
+    $div.appendTo("body").data("mt-editor", {
+      currentEditor: {
+        insertContent(html) {
+          const template = document.createElement("template");
+          template.innerHTML = html;
+          const a = template.content.querySelector("a");
 
-            const curData = Object.assign(
-              {
-                // assetId: asset.id,
-                assetUrl: $a.attr("href"),
-                text: $a.text(),
-              }
-              // options
-            );
+          Object.assign(newData, {
+            assetUrl: a.href,
+            text: a.textContent,
+          });
 
-            addEditUpdateBlock(editor, block, curData);
+          addEditUpdateBlock(editor, block, newData);
 
-            Object.assign(block, curData);
-            setBlock(Object.assign({}, block));
-            setModalActive(false);
-          },
+          Object.assign(block, newData);
+          setBlock(Object.assign({}, block));
+          setModalActive(false);
         },
-      });
-    openDialog(
-      //'blockeditor_dialog_list_asset',
-      //'edit_field=xxx&amp;blog_id=' + blogId + '&amp;filter=class&amp;filter_val=image&amp;next_mode=blockeditor_dialog_insert_options&amp;asset_select=1'
-      "dialog_asset_modal",
-      "_type=asset&amp;edit_field=" +
-        dummyFieldId +
-        "&amp;blog_id=" +
-        blogId +
-        "&amp;dialog_view=1"
+      },
+    });
+    $.fn.mtModal.open(
+      window.ScriptURI +
+        "?" +
+        new URLSearchParams({
+          __mode: "dialog_asset_modal",
+          _type: "asset",
+          edit_field: dummyFieldId,
+          blog_id: blogId,
+          dialog_view: 1,
+        }),
+      { large: true }
     );
+
+    await initModal(block);
+
+    // handle insert options
+    waitForInsertOptionsForm().then((form) => {
+      newData["assetId"] = form.querySelector(
+        "[data-asset-id]"
+      ).dataset.assetId;
+    });
   }
 
   if (block.showModal) {
