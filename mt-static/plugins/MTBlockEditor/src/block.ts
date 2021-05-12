@@ -25,7 +25,7 @@ blockTypes
       canRemoveBlock: !!bt.can_remove_block,
       rootBlock: bt.root_block,
       previewHeader: bt.preview_header,
-      shouldBeCompiled: bt.should_be_compiled,
+      shouldBeCompiled: !!bt.should_be_compiled,
       addableBlockTypesData: JSON.parse(bt.addable_block_types),
     };
 

@@ -1,13 +1,10 @@
 import $ from "jquery";
-import {
-  JSONStringify,
-  serializeBlockPreferences,
-  unserializeBlockPreferences,
-} from "./util";
-import { isSupportedEnvironment, apply, unload } from "./block-editor";
+import { serializeBlockPreferences, unserializeBlockPreferences } from "./util";
+import JSON from "./util/JSON";
+import { apply, unload } from "./block-editor";
 
 let editor;
-async function applyBlockEditorForSetup() {
+async function applyBlockEditorForSetup(): Promise<void> {
   editor = await apply({
     id: "html",
     mode: "setup",
@@ -99,9 +96,10 @@ async function applyBlockEditorForSetup() {
   await applyBlockEditorForSetup();
 
   const htmlElm = document.querySelector("#html") as HTMLInputElement;
+  const form = htmlElm.form as HTMLFormElement;
 
   let doClick = false;
-  [...htmlElm.form!.querySelectorAll("button")].forEach((elm) => {
+  [...form.querySelectorAll("button")].forEach((elm) => {
     elm.addEventListener("click", (ev) => {
       if (doClick) {
         doClick = false;
@@ -121,7 +119,7 @@ async function applyBlockEditorForSetup() {
 })();
 
 (() => {
-  async function readAsText(file: File) {
+  async function readAsText(file: File): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       if (!file) {
         reject();
@@ -139,13 +137,13 @@ async function applyBlockEditorForSetup() {
       };
 
       reader.readAsText(file);
-    }).catch((e) => {
-      return;
+    }).catch(() => {
+      return "";
     });
   }
 
-  function serializeBlock(form) {
-    const data: any = {};
+  function serializeBlock(form): Record<string, unknown> {
+    const data: Record<string, unknown> = {};
 
     [
       "class_name",
@@ -161,20 +159,23 @@ async function applyBlockEditorForSetup() {
       data[k] = e.type === "checkbox" ? e.checked : e.value;
     });
 
-    data.block_display_options = {};
-    const blockDisplayOptions = JSON.parse(form.block_display_options.value);
-    blockDisplayOptions.common.forEach((b) => {
-      data["block_display_options"][b.typeId] = {
+    const blockDisplayOptions: MTBlockEditor.Export.BlockDisplayOptions = {};
+    const blockDisplayOptionsData = JSON.parse(
+      form.block_display_options.value
+    );
+    blockDisplayOptionsData.common.forEach((b) => {
+      blockDisplayOptions[b.typeId] = {
         order: b.index,
         panel: !!b.panel,
         shortcut: !!b.shortcut,
       };
     });
+    data["block_display_options"] = blockDisplayOptions;
 
     return data;
   }
 
-  function unserializeBlock(form, data) {
+  function unserializeBlock(form, data): void {
     [
       "class_name",
       "html",
@@ -204,7 +205,7 @@ async function applyBlockEditorForSetup() {
         };
       })
       .sort((a, b) => a.index - b.index);
-    form.block_display_options.value = JSONStringify({
+    form.block_display_options.value = JSON.stringify({
       common: blockDisplayOptions,
     });
   }
@@ -216,7 +217,7 @@ async function applyBlockEditorForSetup() {
 
       const a = document.createElement("a");
       a.href = URL.createObjectURL(
-        new Blob([JSONStringify(data)], {
+        new Blob([JSON.stringify(data)], {
           type: "application/json",
         })
       );
