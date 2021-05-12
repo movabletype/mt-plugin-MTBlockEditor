@@ -23,6 +23,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
   return;
 }
 
+// icon
 (() => {
   const $icon = $("#icon");
   const $iconImage = $("#icon-image");
@@ -92,6 +93,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
   });
 })();
 
+// serialize before saving
 (async () => {
   await applyBlockEditorForSetup();
 
@@ -118,6 +120,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
   });
 })();
 
+// export and import
 (() => {
   async function readAsText(file: File): Promise<string> {
     return new Promise<string>((resolve, reject) => {
