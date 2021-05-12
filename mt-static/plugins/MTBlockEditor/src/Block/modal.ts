@@ -72,7 +72,7 @@ export async function initModal({
         filter: "id",
         filter_val: block.assetId,
       };
-      template.innerHTML = await fetch(
+      const assetRowHtml = await fetch(
         window.CMSScriptURI + "?" + new URLSearchParams(params),
         {
           headers: {
@@ -81,20 +81,27 @@ export async function initModal({
         }
       )
         .then((res) => res.json())
-        .then((res) => res.html.replace(/^\s*<tbody>|<\/tbody>\s*$/g, ""));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      assetRow = (template.content as any) as Element;
+        .then((res) => res.html.replace(/^\s*<tbody>|<\/tbody>\s*$/g, ""))
+        .catch(() => "");
+
+      if (assetRowHtml) {
+        template.innerHTML = assetRowHtml;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        assetRow = (template.content as any) as Element;
+      }
 
       win.jQuery(".indicator, #listing-table-overlay").hide();
       win.jQuery("#asset-table tbody, #actions-bar .page-item").show();
     }
 
-    // move to first
-    assetTableBody.prepend(assetRow);
-    // DOM tree has been updated and we need to find from top level again
-    (doc.querySelector(
-      `#asset-${block.assetId} input[name="id"]`
-    ) as HTMLInputElement).click();
+    if (assetRow) {
+      // move to first
+      assetTableBody.prepend(assetRow);
+      // DOM tree has been updated and we need to find from top level again
+      (doc.querySelector(
+        `#asset-${block.assetId} input[name="id"]`
+      ) as HTMLInputElement).click();
+    }
   }
 }
 
