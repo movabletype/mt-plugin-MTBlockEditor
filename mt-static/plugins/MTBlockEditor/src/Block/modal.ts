@@ -55,9 +55,8 @@ export async function initModal({
     if (!assetRow) {
       // This asset is not included in recent items, so we need to lookup.
 
-      const winJQuery: typeof jQuery = win.jQuery;
-      winJQuery(".indicator, #listing-table-overlay").show();
-      winJQuery("#asset-table tbody, #actions-bar .page-item").hide();
+      win.jQuery(".indicator, #listing-table-overlay").show();
+      win.jQuery("#asset-table tbody, #actions-bar .page-item").hide();
 
       const template = doc.createElement("template");
 
@@ -86,8 +85,8 @@ export async function initModal({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       assetRow = (template.content as any) as Element;
 
-      winJQuery(".indicator, #listing-table-overlay").hide();
-      winJQuery("#asset-table tbody, #actions-bar .page-item").show();
+      win.jQuery(".indicator, #listing-table-overlay").hide();
+      win.jQuery("#asset-table tbody, #actions-bar .page-item").show();
     }
 
     // move to first
