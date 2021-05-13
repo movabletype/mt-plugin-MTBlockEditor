@@ -25,7 +25,10 @@ export function apply(
   }
 ): Promise<Editor> {
   function setDirty({ editor }): void {
-    // TODO: set dirty
+    window.setDirty(true);
+    if (window.app) {
+      window.app.getIndirectMethod("setDirty")();
+    }
     editor.off("change", setDirty);
   }
 
