@@ -1,4 +1,3 @@
-import $ from "jquery";
 import { Editor, EditorOptions } from "mt-block-editor-block";
 import { Settings as TinyMCESettings } from "tinymce";
 
@@ -39,13 +38,16 @@ export function apply(
     block: {
       "sixapart-oembed": {
         resolver: ({ url, maxwidth, maxheight }) => {
-          return $.getJSON(
-            `${location.origin}${
-              window.CMSScriptURI
-            }?__mode=mt_be_oembed&url=${url}&maxwidth=${
-              maxwidth || ""
-            }&maxheight=${maxheight || ""}`
-          ).then((data) => data);
+          return fetch(
+            window.CMSScriptURI +
+              "?" +
+              new URLSearchParams({
+                __mode: "mt_be_oembed",
+                url: url,
+                maxwidth: maxwidth || "",
+                maxheight: maxheight || "",
+              })
+          ).then((res) => res.json());
         },
       },
     },

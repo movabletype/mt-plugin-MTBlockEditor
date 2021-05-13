@@ -139,9 +139,9 @@ function initButton(elm): void {
 }
 
 (() => {
-  const selects = [
-    ...document.querySelectorAll(".custom-select.convert_breaks"),
-  ] as HTMLSelectElement[];
+  const selects = document.querySelectorAll(
+    ".custom-select.convert_breaks"
+  ) as NodeListOf<HTMLSelectElement>;
 
   if (selects.length === 0) {
     return;
@@ -150,5 +150,5 @@ function initButton(elm): void {
   const form = selects[0].form as HTMLFormElement;
 
   selects.forEach(initSelect);
-  [...form.querySelectorAll("button")].forEach(initButton);
+  form.querySelectorAll("button").forEach(initButton);
 })();

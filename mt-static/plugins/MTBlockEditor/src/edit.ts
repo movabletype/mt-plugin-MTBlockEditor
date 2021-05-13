@@ -25,39 +25,42 @@ async function applyBlockEditorForSetup(): Promise<void> {
 
 // icon
 (() => {
-  const $icon = $("#icon");
-  const $iconImage = $("#icon-image");
-  const $iconFile = $("#icon-file");
-  const $resetIconImage = $("#reset-icon-image");
-  const maxIconSize = $iconFile.data("maxIconSize");
+  const icon = document.querySelector("#icon") as HTMLInputElement;
+  const iconImage = document.querySelector("#icon-image") as HTMLInputElement;
+  const iconFile = document.querySelector("#icon-file") as HTMLInputElement;
+  const resetIconImage = document.querySelector(
+    "#reset-icon-image"
+  ) as HTMLAnchorElement;
+  const maxIconSize = parseInt(iconFile.dataset.maxIconSize || "0");
 
-  $icon
-    .on("change", () => {
-      const value = String($icon.val());
-      if (!value) {
-        $iconImage.addClass("d-none");
-        $resetIconImage.addClass("d-none");
-        $iconFile.removeClass("d-none");
-        return;
-      }
+  icon.addEventListener("change", () => {
+    const value = icon.value;
+    if (!value) {
+      iconImage.classList.add("d-none");
+      resetIconImage.classList.add("d-none");
+      iconFile.classList.remove("d-none");
+      return;
+    }
 
-      $iconImage.attr("src", value).removeClass("d-none");
-      $resetIconImage.removeClass("d-none");
-      $iconFile.addClass("d-none");
-    })
-    .triggerHandler("change");
+    iconImage.src = value;
+    iconImage.classList.remove("d-none");
+    resetIconImage.classList.remove("d-none");
+    iconFile.classList.add("d-none");
+  });
+  icon.dispatchEvent(new Event("change"));
 
-  $resetIconImage.on("click", (ev) => {
+  resetIconImage.addEventListener("click", (ev) => {
     ev.preventDefault();
     try {
-      $iconFile.val("");
+      iconFile.value = "";
     } catch (e) {
       // ignore
     }
-    $icon.val("").triggerHandler("change");
+    icon.value = "";
+    icon.dispatchEvent(new Event("change"));
   });
 
-  $iconFile.on("change", (ev) => {
+  iconFile.addEventListener("change", (ev) => {
     const files = (ev.target as HTMLInputElement).files;
     const file = files && files[0];
     if (!file) {
@@ -66,7 +69,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
 
     if (!/^image/.test(file.type) || file.size > maxIconSize) {
       try {
-        $iconFile.val("");
+        iconFile.value = "";
       } catch (e) {
         // ignore
       }
@@ -84,9 +87,8 @@ async function applyBlockEditorForSetup(): Promise<void> {
 
     reader.onload = (e) => {
       const result = e.target?.result;
-      $icon
-        .val(typeof result === "string" ? result : "")
-        .triggerHandler("change");
+      icon.value = typeof result === "string" ? result : "";
+      icon.dispatchEvent(new Event("change"));
     };
 
     reader.readAsDataURL(file);
@@ -101,7 +103,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
   const form = htmlElm.form as HTMLFormElement;
 
   let doClick = false;
-  [...form.querySelectorAll("button")].forEach((elm) => {
+  form.querySelectorAll("button").forEach((elm) => {
     elm.addEventListener("click", (ev) => {
       if (doClick) {
         doClick = false;
@@ -269,9 +271,11 @@ async function applyBlockEditorForSetup(): Promise<void> {
 
       unserializeBlockPreferences();
       await applyBlockEditorForSetup();
-      $("#icon, #wrap_root_block, #can_remove_block").each((i, elm) => {
-        $(elm).triggerHandler("change");
-      });
+      document
+        .querySelectorAll("#icon, #wrap_root_block, #can_remove_block")
+        .forEach((elm) => {
+          elm.dispatchEvent(new Event("change"));
+        });
 
       $("#import-block-modal").modal("hide");
     });
@@ -289,4 +293,7 @@ $("#block_display_options-list").sortable({
 });
 
 unserializeBlockPreferences();
-$("#block_display_options-list :input").on("change", serializeBlockPreferences);
+serializeBlockPreferences();
+document
+  .querySelector("#block_display_options-list :input")
+  ?.addEventListener("change", serializeBlockPreferences);

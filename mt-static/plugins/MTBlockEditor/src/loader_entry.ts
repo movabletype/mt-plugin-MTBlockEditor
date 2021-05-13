@@ -11,7 +11,7 @@ async function initSelect(select): Promise<void> {
     ...document.querySelectorAll(
       "#editor-input-content, #editor-input-extended"
     ),
-  ] as HTMLInputElement[];
+  ] as HTMLInputElement[]; // convert to array in order to invoke targets.map
 
   const handlers = targets.map((target: HTMLInputElement) => {
     let editor: Editor | null = null;
@@ -159,5 +159,5 @@ function initButton(elm): void {
   const form = select.form as HTMLFormElement;
 
   initSelect(select);
-  [...form.querySelectorAll("button")].forEach(initButton);
+  form.querySelectorAll("button").forEach(initButton);
 })();

@@ -1,4 +1,3 @@
-import $ from "jquery";
 import JSON from "./util/JSON";
 
 type BlockPref = {
@@ -10,49 +9,66 @@ type BlockPref = {
 
 export function serializeBlockPreferences(): void {
   const data = {};
-  $("#block_display_options-list").each((index, elem) => {
-    const $ul = $(elem);
+  (document.querySelectorAll(
+    "#block_display_options-list"
+  ) as NodeListOf<HTMLInputElement>).forEach((list) => {
     const d: BlockPref[] = [];
-    $ul.find("> div").each((i, el) => {
-      const $li = $(el);
-      const t: BlockPref = {
-        typeId: $li.data("type-id"),
-        index: i,
-      };
-      if ($li.find(`[name="panel"]`).length) {
-        t.panel = $li.find(`[name="panel"]`).prop("checked");
-      }
-      if ($li.find(`[name="shortcut"]`).length) {
-        t.shortcut = $li.find(`[name="shortcut"]`).prop("checked");
-      }
+    (list.querySelectorAll("> div") as NodeListOf<HTMLElement>).forEach(
+      (item, i) => {
+        const t: BlockPref = {
+          typeId: String(item.dataset.typeId),
+          index: i,
+        };
 
-      d.push(t);
-    });
-    data[$ul.data("type")] = d;
+        const panel = item.querySelector(
+          `[name="panel"]`
+        ) as HTMLInputElement | null;
+        const shortcut = item.querySelector(
+          `[name="shortcut"]`
+        ) as HTMLInputElement | null;
+        if (panel) {
+          t.panel = panel.checked;
+        }
+        if (shortcut) {
+          t.shortcut = shortcut.checked;
+        }
+
+        d.push(t);
+      }
+    );
+    data[String(list.dataset.type)] = d;
   });
 
-  const value = JSON.stringify(data);
-  $("#block_display_options").val(value);
+  const blockDisplayOptions = document.querySelector(
+    "#block_display_options"
+  ) as HTMLInputElement;
+  blockDisplayOptions.value = JSON.stringify(data);
 }
 
 export function unserializeBlockPreferences(): void {
   const options = JSON.parse(
     (document.getElementById("block_display_options") as HTMLInputElement).value
-  );
-  $.each(options, function (type, data) {
-    let $prevLi;
-    $.each(data, function (i, block) {
-      const $curLi = $(
-        `div[data-type="${String(type)}"] div[data-type-id="${block.typeId}"]`
-      );
+  ) as Record<string, Array<Record<string, unknown>>>;
+  Object.entries(options).forEach(([type, data]) => {
+    const list = document.querySelector(
+      `div[data-type="${type}"]`
+    ) as HTMLElement;
 
-      if ($prevLi) {
-        $curLi.insertAfter($prevLi);
-      }
-      $prevLi = $curLi;
+    let insertMarker: ChildNode | null = null;
+    data.forEach((block) => {
+      const curItem = list.querySelector(
+        `div[data-type-id="${block.typeId}"]`
+      ) as HTMLElement;
 
-      $curLi.find(`[name="panel"]`).prop("checked", !!block.panel);
-      $curLi.find(`[name="shortcut"]`).prop("checked", !!block.shortcut);
+      list.insertBefore(curItem, insertMarker);
+      insertMarker = curItem.nextSibling;
+
+      (curItem.querySelector(
+        `[name="panel"]`
+      ) as HTMLInputElement).checked = !!block.panel;
+      (curItem.querySelector(
+        `[name="shortcut"]`
+      ) as HTMLInputElement).checked = !!block.shortcut;
     });
   });
 }
