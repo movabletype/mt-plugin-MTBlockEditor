@@ -2,22 +2,22 @@ import $ from "jquery";
 import { Editor, EditorOptions } from "mt-block-editor-block";
 import { Settings as TinyMCESettings } from "tinymce";
 
-//const GLOBAL_ATTRIBUTES = [
-//  "id",
-//  "class",
-//  "style",
-//  "title",
-//  "accesskey",
-//  "tabindex",
-//  "lang",
-//  "dir",
-//  "draggable",
-//  "dropzone",
-//  "contextmenu",
-//  "hidden",
-//].join("|");
-//
-//const ALLOWED_EVENT_ATTRIBUTES = ["onclick"].join("|");
+const GLOBAL_ATTRIBUTES = [
+  "id",
+  "class",
+  "style",
+  "title",
+  "accesskey",
+  "tabindex",
+  "lang",
+  "dir",
+  "draggable",
+  "dropzone",
+  "contextmenu",
+  "hidden",
+].join("|");
+
+const ALLOWED_EVENT_ATTRIBUTES = ["onclick"].join("|");
 
 export function apply(
   opts: Partial<EditorOptions> & {
@@ -67,15 +67,14 @@ export function apply(
     ed.on("buildTinyMCESettings", ({ settings }) => {
       Object.assign(settings, tinyMCEDefaultSettings);
 
-      // settings.plugins += " mt_xxx";
-      // settings.extended_valid_elements = [
-      //   // we embed 'a[onclick]' by inserting image with popup
-      //   `a[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}|href|target|name]`,
-      //   // allow SPAN element without attributes
-      //   `span[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}]`,
-      //   // allow SCRIPT element
-      //   "script[id|name|type|src|integrity|crossorigin]",
-      // ].join(",");
+      settings.extended_valid_elements = [
+        // we embed 'a[onclick]' by inserting image with popup
+        `a[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}|href|target|name]`,
+        // allow SPAN element without attributes
+        `span[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}]`,
+        // allow SCRIPT element
+        "script[id|name|type|src|integrity|crossorigin]",
+      ].join(",");
     });
     ed.on("change", setDirty);
 
