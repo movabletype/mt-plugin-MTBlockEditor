@@ -1,8 +1,12 @@
 import { Editor } from "mt-block-editor-block";
-import { apply, unload } from "./block-editor";
+import { apply, unload, ApplyOptions } from "./block-editor";
+import {
+  assignBlockTypeOptions,
+  assignCommonApplyOptions,
+  initButton,
+  SerializeMethod,
+} from "./loader/common";
 import { waitFor } from "./util";
-
-type SerializeMethod = () => Promise<void>;
 
 const serializeMethods: SerializeMethod[] = [];
 
@@ -42,51 +46,17 @@ async function initSelect(select): Promise<void> {
         inputElm.value = target.value;
         target.closest(".mt-editor-manager-wrap")?.appendChild(wrap);
 
-        const scriptElm = document.getElementById("mt-block-editor-loader");
-        const dataset = scriptElm ? scriptElm.dataset : null;
-        if (!dataset) {
-          return;
-        }
+        const opts: ApplyOptions = {
+          id: inputElm.id,
+        };
 
         const blockDisplayOptionId = (document.getElementById(
           "text-be_config"
         ) as HTMLInputElement).value;
-        const blockDisplayOptionsJSON =
-          JSON.parse(dataset.mtBlockDisplayOptionsMap || "{}")[
-            blockDisplayOptionId
-          ] || null;
+        assignBlockTypeOptions(blockDisplayOptionId, opts);
+        assignCommonApplyOptions(opts);
 
-        let panelBlockTypes: string[] = [];
-        let shortcutBlockTypes: string[] = [];
-        if (blockDisplayOptionsJSON) {
-          const blockDisplayOptions = JSON.parse(blockDisplayOptionsJSON);
-          const typeIds = JSON.parse(dataset.mtBlockTypeIds || "[]");
-          blockDisplayOptions["common"].forEach((bt) => {
-            const i = typeIds.indexOf(bt.typeId);
-            if (i !== -1) {
-              typeIds.splice(i, 1);
-            }
-            if (bt.shortcut) {
-              shortcutBlockTypes.push(bt.typeId);
-            }
-            if (bt.panel) {
-              panelBlockTypes.push(bt.typeId);
-            }
-          });
-          panelBlockTypes.push(...typeIds);
-        } else {
-          panelBlockTypes = JSON.parse(dataset.mtBlockTypeIds || "[]");
-          shortcutBlockTypes = panelBlockTypes.slice(
-            0,
-            parseInt(dataset.mtBlockEditorShortcutCountDefault || "", 10)
-          );
-        }
-
-        editor = await apply({
-          id: inputElm.id,
-          shortcutBlockTypes,
-          panelBlockTypes,
-        });
+        editor = await apply(opts);
 
         await waitFor(
           () =>
@@ -135,29 +105,12 @@ async function initSelect(select): Promise<void> {
   handlers.forEach((f) => f());
 }
 
-function initButton(elm): void {
-  let doClick = false;
-  elm.addEventListener("click", (ev) => {
-    if (doClick) {
-      doClick = false;
-      return;
-    }
-
-    ev.stopImmediatePropagation();
-    ev.stopPropagation();
-    ev.preventDefault();
-
-    Promise.all(serializeMethods.map((f) => f())).then(() => {
-      doClick = true;
-      elm.click();
-    });
-  });
-}
-
 (async () => {
   const select = document.getElementById("convert_breaks") as HTMLSelectElement;
   const form = select.form as HTMLFormElement;
 
   initSelect(select);
-  form.querySelectorAll("button").forEach(initButton);
+  form.querySelectorAll("button").forEach((elm) => {
+    initButton(elm, serializeMethods);
+  });
 })();

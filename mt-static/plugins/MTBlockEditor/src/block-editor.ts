@@ -1,6 +1,10 @@
 import { Editor, EditorOptions } from "mt-block-editor-block";
 import { Settings as TinyMCESettings } from "tinymce";
 
+export type ApplyOptions = Partial<EditorOptions> & {
+  tinyMCEDefaultSettings?: Partial<TinyMCESettings>;
+};
+
 const GLOBAL_ATTRIBUTES = [
   "id",
   "class",
@@ -18,11 +22,7 @@ const GLOBAL_ATTRIBUTES = [
 
 const ALLOWED_EVENT_ATTRIBUTES = ["onclick"].join("|");
 
-export function apply(
-  opts: Partial<EditorOptions> & {
-    tinyMCEDefaultSettings?: Partial<TinyMCESettings>;
-  }
-): Promise<Editor> {
+export function apply(opts: ApplyOptions): Promise<Editor> {
   function setDirty({ editor }): void {
     window.setDirty(true);
     if (window.app) {
