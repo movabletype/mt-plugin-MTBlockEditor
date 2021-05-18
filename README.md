@@ -31,6 +31,17 @@ Should look like this when installed:
 * Firefox
 * Safari
 
+## Development
+
+### Build distribution files
+
+```
+$ npm install
+$ export MT_HOME=/path/to/movabletype
+$ perl Makefile.PL
+$ make build
+```
+
 ## LICENSE
 
 Copyright (c) Six Apart Ltd. All Rights Reserved.
