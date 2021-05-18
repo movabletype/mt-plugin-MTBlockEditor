@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { t } from "../i18n";
 import { nl2br } from "mt-block-editor-block/util";
 import { Editor as MTBlockEditor } from "mt-block-editor-block";
 import React, { useState } from "mt-block-editor-block/React";
@@ -35,7 +34,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
   const { editor } = useEditorContext();
   const [, setBlock] = useState(Object.assign({}, block));
   const [modalActive, setModalActive] = useState(false);
-  const blankMessage = t("Please select an image");
+  const blankMessage = window.trans("Please select an image");
 
   if (!focus && !block.url && editor.opts.mode === "setup") {
     return <p>{blankMessage}</p>;
@@ -129,17 +128,17 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
 <div class="col-md-6">
 
 <div class="form-group">
-  <label class="form-control-label">${t("Alternative Text")}</label>
+  <label class="form-control-label">${window.trans("Alternative Text")}</label>
   <input type="text" id="alternativeText" class="form-control">
 </div>
 
 <div class="form-group">
-  <label class="form-control-label">${t("Caption")}</label>
+  <label class="form-control-label">${window.trans("Caption")}</label>
   <textarea id="caption" class="form-control" rows="2"></textarea>
 </div>
 
 <div class="form-group">
-  <label class="form-control-label">${t("Width")}</label>
+  <label class="form-control-label">${window.trans("Width")}</label>
   <input type="number" id="imageWidth" class="form-control">
 </div>
 
@@ -271,7 +270,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
         <BlockToolbar>
           <BlockToolbarButton
             icon={editIcon}
-            label={t("Edit")}
+            label={window.trans("Edit")}
             onClick={showModal}
           />
         </BlockToolbar>
@@ -346,7 +345,7 @@ class MTImage extends Block {
   public static selectable = true;
   public static icon = imageIcon;
   public static get label(): string {
-    return t("MTImage");
+    return window.trans("MTImage");
   }
 
   public assetId: string;

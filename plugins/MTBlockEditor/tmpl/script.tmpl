@@ -1,4 +1,10 @@
 <mt:setvarblock name="js_include" append="1">
+<mt:if name="local_lang_id" eq="en-us">
+  <script src="<$mt:var name="static_uri"$>plugins/MTBlockEditor/locales/en_us.js?v=<mt:Var name="mt_block_editor_version" />"></script>
+<mt:else>
+  <script src="<$mt:var name="static_uri"$>plugins/MTBlockEditor/locales/<$mt:var name="local_lang_id"$>.js?v=<mt:Var name="mt_block_editor_version" />"></script>
+</mt:if>
+
 <script src="<$mt:var name="static_uri"$>plugins/MTBlockEditor/dist/mt-block-editor/1.1.6/mt-block-editor.js" type="module"></script>
 <link rel="stylesheet" href="<$mt:var name="static_uri"$>plugins/MTBlockEditor/dist/mt-block-editor/1.1.6/mt-block-editor.css" />
 

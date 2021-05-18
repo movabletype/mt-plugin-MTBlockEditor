@@ -14,6 +14,14 @@ sub MY::top_targets {
     << 'Makefile';
 build:
 	npm run build
+	for f in plugins/MTBlockEditor/lib/MT/Plugin/MTBlockEditor/L10N/*.pm; do \
+        l=$$(basename $$f .pm); \
+        d=mt-static/plugins/MTBlockEditor/locales/$${l}.js; \
+        \
+        echo '(function() { var lexicon =' > $$d; \
+        perl -Iplugins/MTBlockEditor/lib -I$$MT_HOME/lib -MMT::Plugin::MTBlockEditor::L10N::$$l -MJSON::XS -e "print(encode_json(\%MT::Plugin::MTBlockEditor::L10N::$$l::Lexicon))" >> $$d; \
+        echo '; for (k in lexicon) { window.Lexicon[k] = lexicon[k] } })()' >> $$d; \
+    done
 
 create_distdir :
 	$(RM_RF) $(DISTVNAME)

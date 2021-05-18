@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { t } from "./i18n";
 import {
   showAlert,
   serializeBlockPreferences,
@@ -80,9 +79,10 @@ async function applyBlockEditorForSetup(): Promise<void> {
       }
 
       showAlert({
-        msg: t("You can upload image files of size {{_1}} or less.", {
-          _1: `${Math.round(maxIconSize / 1024)}KB`,
-        }),
+        msg: window.trans(
+          "You can upload image files of size {{_1}} or less.",
+          `${Math.round(maxIconSize / 1024)}KB`
+        ),
       });
 
       return;
@@ -245,7 +245,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
         "identifier"
       ) as HTMLInputElement).value;
       if (identifierValue !== "") {
-        window.confirm(t("Are you sure you want to overwrite it?"));
+        window.confirm(window.trans("Are you sure you want to overwrite it?"));
       }
 
       const json = await readAsText(
@@ -262,7 +262,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
         : null;
 
       if (!json || !data) {
-        showAlert({ msg: t("Failed to read the file.") });
+        showAlert({ msg: window.trans("Failed to read the file.") });
         return;
       }
 

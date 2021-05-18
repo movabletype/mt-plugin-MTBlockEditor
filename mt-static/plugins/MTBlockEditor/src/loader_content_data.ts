@@ -1,5 +1,10 @@
 import { Editor } from "mt-block-editor-block";
-import { apply, unload, ApplyOptions } from "./block-editor";
+import {
+  apply,
+  unload,
+  isSupportedEnvironment,
+  ApplyOptions,
+} from "./block-editor";
 import {
   assignBlockTypeOptions,
   assignCommonApplyOptions,
@@ -49,7 +54,17 @@ async function initSelect(select): Promise<void> {
       assignBlockTypeOptions(blockDisplayOptionId, opts);
       assignCommonApplyOptions(opts);
 
-      editor = await apply(opts);
+      if (isSupportedEnvironment()) {
+        editor = await apply(opts);
+      } else {
+        wrap.innerHTML = `
+        <div class="card m-5"><div class="card-body">
+        ${window.trans(
+          "This format does not support this web browser. Please switch to another format."
+        )}
+        </div></div>
+        `;
+      }
 
       select
         .closest(".mt-contentblock")
