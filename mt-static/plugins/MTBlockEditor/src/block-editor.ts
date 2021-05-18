@@ -1,31 +1,33 @@
-import $ from "jquery";
 import { Editor, EditorOptions } from "mt-block-editor-block";
 import { Settings as TinyMCESettings } from "tinymce";
 
-//const GLOBAL_ATTRIBUTES = [
-//  "id",
-//  "class",
-//  "style",
-//  "title",
-//  "accesskey",
-//  "tabindex",
-//  "lang",
-//  "dir",
-//  "draggable",
-//  "dropzone",
-//  "contextmenu",
-//  "hidden",
-//].join("|");
-//
-//const ALLOWED_EVENT_ATTRIBUTES = ["onclick"].join("|");
+export type ApplyOptions = Partial<EditorOptions> & {
+  tinyMCEDefaultSettings?: Partial<TinyMCESettings>;
+};
 
-export function apply(
-  opts: Partial<EditorOptions> & {
-    tinyMCEDefaultSettings?: Partial<TinyMCESettings>;
-  }
-): Promise<Editor> {
+const GLOBAL_ATTRIBUTES = [
+  "id",
+  "class",
+  "style",
+  "title",
+  "accesskey",
+  "tabindex",
+  "lang",
+  "dir",
+  "draggable",
+  "dropzone",
+  "contextmenu",
+  "hidden",
+].join("|");
+
+const ALLOWED_EVENT_ATTRIBUTES = ["onclick"].join("|");
+
+export function apply(opts: ApplyOptions): Promise<Editor> {
   function setDirty({ editor }): void {
-    // TODO: set dirty
+    window.setDirty(true);
+    if (window.app) {
+      window.app.getIndirectMethod("setDirty")();
+    }
     editor.off("change", setDirty);
   }
 
@@ -36,13 +38,16 @@ export function apply(
     block: {
       "sixapart-oembed": {
         resolver: ({ url, maxwidth, maxheight }) => {
-          return $.getJSON(
-            `${location.origin}${
-              window.CMSScriptURI
-            }?__mode=mt_be_oembed&url=${url}&maxwidth=${
-              maxwidth || ""
-            }&maxheight=${maxheight || ""}`
-          ).then((data) => data);
+          return fetch(
+            window.CMSScriptURI +
+              "?" +
+              new URLSearchParams({
+                __mode: "mt_be_oembed",
+                url: url,
+                maxwidth: maxwidth || "",
+                maxheight: maxheight || "",
+              })
+          ).then((res) => res.json());
         },
       },
     },
@@ -64,15 +69,14 @@ export function apply(
     ed.on("buildTinyMCESettings", ({ settings }) => {
       Object.assign(settings, tinyMCEDefaultSettings);
 
-      // settings.plugins += " mt_xxx";
-      // settings.extended_valid_elements = [
-      //   // we embed 'a[onclick]' by inserting image with popup
-      //   `a[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}|href|target|name]`,
-      //   // allow SPAN element without attributes
-      //   `span[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}]`,
-      //   // allow SCRIPT element
-      //   "script[id|name|type|src|integrity|crossorigin]",
-      // ].join(",");
+      settings.extended_valid_elements = [
+        // we embed 'a[onclick]' by inserting image with popup
+        `a[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}|href|target|name]`,
+        // allow SPAN element without attributes
+        `span[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}]`,
+        // allow SCRIPT element
+        "script[id|name|type|src|integrity|crossorigin]",
+      ].join(",");
     });
     ed.on("change", setDirty);
 

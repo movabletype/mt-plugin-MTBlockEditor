@@ -6,7 +6,7 @@ const config = {
   mode: "development",
   entry: {
     "block.min": ["./mt-static/plugins/MTBlockEditor/src/block.ts"],
-    "loader.min": ["./mt-static/plugins/MTBlockEditor/src/loader.ts"],
+    "loader_content_data.min": ["./mt-static/plugins/MTBlockEditor/src/loader_content_data.ts"],
     "loader_entry.min": ["./mt-static/plugins/MTBlockEditor/src/loader_entry.ts"],
     "config.min": ["./mt-static/plugins/MTBlockEditor/src/config.ts"],
     "edit.min": ["./mt-static/plugins/MTBlockEditor/src/edit.ts"],

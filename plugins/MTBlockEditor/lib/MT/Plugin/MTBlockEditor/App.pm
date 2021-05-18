@@ -134,7 +134,7 @@ sub _template_param_edit_content {
 }
 
 sub template_param_edit_content_data {
-    _template_param_edit_content( 'content_data', '', @_ );
+    _template_param_edit_content( 'content_data', '_content_data', @_ );
 }
 
 sub template_param_edit_entry {

@@ -8,6 +8,7 @@ package MT::Plugin::MTBlockEditor::L10N::ja;
 
 use strict;
 use warnings;
+use utf8;
 
 use base 'MT::Plugin::MTBlockEditor::L10N::en_us';
 use vars qw( %Lexicon );
@@ -72,6 +73,7 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
         => "識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。",
     "* You can import custom block from your JSON file." =>
         "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
+    "Failed to read the file." => "ファイルの読み込みに失敗しました。",
 
     'Are you sure you want to delete the selected Custom Block?' =>
         '選択したブロックを削除してもよろしいですか？',
@@ -85,6 +87,21 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     'MT Block Editor Setting' => 'MTブロックエディタの設定',
     'Preset For Entry'        => '記事編集時に利用するプリセット',
     'Preset For Page'         => 'ウェブページ編集時に利用するプリセット',
+
+    # mt-static/plugins/MTBlockEditor/src
+    'MTImage'                => '画像',
+    'MTFile'                 => 'ファイル',
+    'Please select an image' => '画像を選択してください。',
+    'Please select an file'  => 'ファイルを選択してください。',
+    'Width'                  => '幅',
+    'Link URL'               => 'リンク先URL',
+    'Text to display'        => 'リンク元テキスト',
+    'You can upload image files of size [_1] or less.' =>
+        '[_1]以下のサイズの画像ファイルをアップロードできます。',
+    'Failed to read the file.' => 'ファイルの読み込みに失敗しました。',
+    'Are you sure you want to overwrite it?' => '上書きしてもよろしいですか？',
+    'This format does not support this web browser. Please switch to another format.' =>
+        '現在ご利用のウェブブラウザではこのフォーマットを利用することができません。編集する場合には別のフォーマットを選択してください。',
 
     (   $block_editor_plugin
         ? ()

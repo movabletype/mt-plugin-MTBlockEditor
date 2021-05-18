@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { t } from "../i18n";
 import { Editor as MTBlockEditor } from "mt-block-editor-block";
 import React, { useState } from "mt-block-editor-block/React";
 import { blockProperty } from "mt-block-editor-block/decorator";
@@ -34,7 +33,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
   const { editor } = useEditorContext();
   const [, setBlock] = useState(Object.assign({}, block));
   const [modalActive, setModalActive] = useState(false);
-  const blankMessage = t("Please select an file");
+  const blankMessage = window.trans("Please select an file");
 
   async function showModal(): Promise<void> {
     setModalActive(true);
@@ -102,7 +101,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
           focus ? (
             <div>
               <label className="mt-be-label-name">
-                <div>{t("Link URL")}</div>
+                <div>{window.trans("Link URL")}</div>
                 <a
                   className="mt-be-input--static"
                   href={block.assetUrl}
@@ -113,7 +112,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
                 </a>
               </label>
               <label className="mt-be-label-name">
-                <div>{t("Text to display")}</div>
+                <div>{window.trans("Text to display")}</div>
                 <input name="text" style={{ width: "100%" }} />
               </label>
             </div>
@@ -134,7 +133,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
         <BlockToolbar>
           <BlockToolbarButton
             icon={editIcon}
-            label={t("Edit")}
+            label={window.trans("Edit")}
             onClick={showModal}
           />
         </BlockToolbar>
@@ -156,7 +155,7 @@ class MTFile extends Block {
   public static selectable = true;
   public static icon = fileIcon;
   public static get label(): string {
-    return t("MTFile");
+    return window.trans("MTFile");
   }
 
   public assetId: string;
