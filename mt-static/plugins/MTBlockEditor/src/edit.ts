@@ -244,11 +244,9 @@ async function applyBlockEditorForSetup(): Promise<void> {
       const identifierValue = (document.getElementById(
         "identifier"
       ) as HTMLInputElement).value;
-      const confirmation =
-        identifierValue === ""
-          ? Promise.resolve() // No need to confirm
-          : Promise.resolve(); // FIXME: need to confirm
-      await confirmation;
+      if (identifierValue !== "") {
+        window.confirm(t("Are you sure you want to overwrite it?"));
+      }
 
       const json = await readAsText(
         (ev.target as HTMLFormElement).file.files[0]
