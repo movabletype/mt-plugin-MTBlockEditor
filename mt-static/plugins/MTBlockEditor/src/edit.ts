@@ -264,7 +264,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
         : null;
 
       if (!json || !data) {
-        showAlert(t("Failed to read the file."));
+        showAlert({ msg: t("Failed to read the file.") });
         return;
       }
 
