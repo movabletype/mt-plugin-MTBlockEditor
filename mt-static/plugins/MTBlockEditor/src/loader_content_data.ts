@@ -1,3 +1,4 @@
+import $ from "jquery";
 import { Editor } from "mt-block-editor-block";
 import {
   apply,
@@ -70,20 +71,18 @@ async function initSelect(select): Promise<void> {
         .closest(".mt-contentblock")
         .querySelector(".editor-content")
         .classList.add("d-none");
-
-      return;
     } else if (oldLastValue === "block_editor") {
-      return unload({
+      await unload({
         id: inputElm.id,
-      }).then(() => {
-        editor = null;
-        target.value = inputElm.value;
-        wrap.remove();
-        select
-          .closest(".mt-contentblock")
-          .querySelector(".editor-content")
-          .classList.remove("d-none");
       });
+
+      editor = null;
+      target.value = inputElm.value;
+      wrap.remove();
+      select
+        .closest(".mt-contentblock")
+        .querySelector(".editor-content")
+        .classList.remove("d-none");
     }
   }
 
@@ -97,8 +96,7 @@ async function initSelect(select): Promise<void> {
     ev.preventDefault();
 
     handleSelect().then(() => {
-      const changeEv = new Event("change");
-      select.dispatchEvent(changeEv);
+      $(select).trigger("change");
     });
   });
   handleSelect();

@@ -1,3 +1,4 @@
+import $ from "jquery";
 import { Editor } from "mt-block-editor-block";
 import {
   apply,
@@ -86,17 +87,17 @@ async function initSelect(select): Promise<void> {
 
         return;
       } else if (oldLastValue === "block_editor") {
-        return unload({
+        await unload({
           id: inputElm.id,
-        }).then(() => {
-          editor = null;
-          target.value = inputElm.value;
-          wrap.remove();
-          target
-            .closest(".mt-editor-manager-wrap")
-            ?.querySelector(".tox-tinymce")
-            ?.classList.remove("d-none");
         });
+
+        editor = null;
+        target.value = inputElm.value;
+        wrap.remove();
+        target
+          .closest(".mt-editor-manager-wrap")
+          ?.querySelector(".tox-tinymce")
+          ?.classList.remove("d-none");
       }
     };
   });
@@ -111,8 +112,7 @@ async function initSelect(select): Promise<void> {
     ev.preventDefault();
 
     Promise.all(handlers.map((f) => f())).then(() => {
-      const changeEv = new Event("change");
-      select.dispatchEvent(changeEv);
+      $(select).trigger("change");
     });
   });
 
