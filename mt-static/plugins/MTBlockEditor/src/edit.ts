@@ -1,5 +1,10 @@
 import $ from "jquery";
-import { serializeBlockPreferences, unserializeBlockPreferences } from "./util";
+import { t } from "./i18n";
+import {
+  showAlert,
+  serializeBlockPreferences,
+  unserializeBlockPreferences,
+} from "./util";
 import JSON from "./util/JSON";
 import { apply, unload } from "./block-editor";
 
@@ -31,7 +36,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
   const resetIconImage = document.querySelector(
     "#reset-icon-image"
   ) as HTMLAnchorElement;
-  const maxIconSize = parseInt(iconFile.dataset.maxIconSize || "0");
+  const maxIconSize = parseInt(iconFile.dataset.mtMaxIconSize || "0");
 
   icon.addEventListener("change", () => {
     const value = icon.value;
@@ -74,11 +79,11 @@ async function applyBlockEditorForSetup(): Promise<void> {
         // ignore
       }
 
-      alert(
-        `You can upload image files of size ${Math.round(
-          maxIconSize / 1024
-        )} KB or less.`
-      );
+      showAlert({
+        msg: t("You can upload image files of size {{_1}} or less.", {
+          _1: `${Math.round(maxIconSize / 1024)}KB`,
+        }),
+      });
 
       return;
     }
@@ -259,7 +264,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
         : null;
 
       if (!json || !data) {
-        alert("Failed to read the file.");
+        showAlert(t("Failed to read the file."));
         return;
       }
 
@@ -295,5 +300,5 @@ $("#block_display_options-list").sortable({
 unserializeBlockPreferences();
 serializeBlockPreferences();
 document
-  .querySelector("#block_display_options-list :input")
-  ?.addEventListener("change", serializeBlockPreferences);
+  .querySelectorAll("#block_display_options-list input")
+  .forEach((elm) => elm.addEventListener("change", serializeBlockPreferences));

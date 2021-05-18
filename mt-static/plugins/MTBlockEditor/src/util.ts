@@ -13,7 +13,7 @@ export function serializeBlockPreferences(): void {
     "#block_display_options-list"
   ) as NodeListOf<HTMLInputElement>).forEach((list) => {
     const d: BlockPref[] = [];
-    (list.querySelectorAll("> div") as NodeListOf<HTMLElement>).forEach(
+    (list.querySelectorAll(":scope > div") as NodeListOf<HTMLElement>).forEach(
       (item, i) => {
         const t: BlockPref = {
           typeId: String(item.dataset.typeId),
@@ -93,4 +93,24 @@ export async function waitFor(
     // check in async
     setTimeout(check);
   });
+}
+
+export function showAlert({
+  msg,
+  alertClass,
+}: {
+  msg: string;
+  alertClass?: string;
+}): void {
+  alertClass ||= "danger";
+
+  const elm = document.querySelector("#msg-block") as HTMLElement;
+  elm.textContent = "";
+
+  const error = document.createElement("div");
+  error.classList.add("alert", "alert-dismissable", `alert-${alertClass}`);
+  error.innerHTML = `<button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>`;
+  error.insertAdjacentText("beforeend", msg);
+
+  elm.appendChild(error);
 }

@@ -5,5 +5,7 @@
   "Please select an file": "ファイルを選択してください。",
   "Width": "幅",
   "Link URL": "リンク先URL",
-  "Text to display": "リンク元テキスト"
+  "Text to display": "リンク元テキスト",
+  "You can upload image files of size {{_1}} or less.": "{{_1}}以下のサイズの画像ファイルをアップロードできます。",
+  "Failed to read the file.": "ファイルの読み込みに失敗しました。"
 }

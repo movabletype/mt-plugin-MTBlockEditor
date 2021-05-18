@@ -72,6 +72,7 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
         => "識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。",
     "* You can import custom block from your JSON file." =>
         "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
+    "Failed to read the file." => "ファイルの読み込みに失敗しました。",
 
     'Are you sure you want to delete the selected Custom Block?' =>
         '選択したブロックを削除してもよろしいですか？',
