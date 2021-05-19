@@ -50,22 +50,15 @@ export function assignBlockTypeOptions(
 }
 
 export function assignCommonApplyOptions(opts: ApplyOptions): void {
-  opts.tinyMCEDefaultSettings ||= {};
-
   const editorCommonOptions = window.MT?.Editor?.defaultCommonOptions || {};
   if (editorCommonOptions["content_css_list"]) {
     opts.stylesheets = editorCommonOptions["content_css_list"];
-    opts.tinyMCEDefaultSettings["content_css"] = editorCommonOptions[
-      "content_css_list"
-    ].join(",");
   }
   if (editorCommonOptions["body_class_list"]) {
     const list = editorCommonOptions["body_class_list"].filter(
       (c) => c !== "wysiwyg"
     );
-    opts.rootClassName = opts.tinyMCEDefaultSettings["body_class"] = list.join(
-      " "
-    );
+    opts.rootClassName = list.join(" ");
   }
 }
 
