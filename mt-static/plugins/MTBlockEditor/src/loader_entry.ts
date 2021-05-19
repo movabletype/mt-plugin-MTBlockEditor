@@ -52,8 +52,17 @@ async function initSelect(select): Promise<void> {
         inputElm.value = target.value;
         target.closest(".mt-editor-manager-wrap")?.appendChild(wrap);
 
+        const fieldLabel = (document.querySelector(
+          `#editor-header .tab[mt\\:command="set-editor-${target.id.replace(
+            /.*-/,
+            ""
+          )}"] a`
+        ) as HTMLElement).textContent;
         const opts: ApplyOptions = {
           id: inputElm.id,
+          rootAttributes: {
+            "data-field-label": fieldLabel,
+          },
         };
 
         const blockDisplayOptionId = (document.getElementById(
