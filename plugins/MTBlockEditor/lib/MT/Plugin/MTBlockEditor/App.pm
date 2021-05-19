@@ -134,6 +134,35 @@ sub _template_param_edit_content {
 }
 
 sub template_param_edit_content_data {
+    my ( $cb, $app, $param, $tmpl ) = @_;
+
+    my %field_data = ();
+
+    my $content_type_id = $app->param('content_type_id')
+        or return;
+    my $content_type = MT::ContentType->load($content_type_id)
+        or return;
+    $field_data{content_type} = {
+        name      => $content_type->name,
+        unique_id => $content_type->unique_id,
+    };
+
+    # FIXME: The core of MT breaks the cache data
+    delete $content_type->{__cached_fields};
+    for my $field ( @{ $content_type->field_objs } ) {
+        $field_data{fields}{ $field->id } = {
+            unique_id => $field->unique_id,
+            name      => $field->name,
+        };
+    }
+
+    my $before = $tmpl->getElementById('entry-publishing-widget');
+    my $t
+        = $tmpl->createTextNode(
+        qq{<input type="hidden" id="be-field-data" value="@{[encode_html(MT::Util::to_json(\%field_data))]}" />}
+        );
+    $tmpl->insertAfter( $t, $before );
+
     _template_param_edit_content( 'content_data', '_content_data', @_ );
 }
 

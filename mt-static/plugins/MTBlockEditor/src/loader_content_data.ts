@@ -36,6 +36,11 @@ async function initSelect(select): Promise<void> {
     });
   });
 
+  const fieldId = select.id.match(/(\d+)$/)[1];
+  const fieldData = JSON.parse(
+    (document.getElementById("be-field-data") as HTMLInputElement).value
+  );
+
   async function handleSelect(): Promise<void> {
     const oldLastValue = lastValue;
     lastValue = select.value;
@@ -46,9 +51,14 @@ async function initSelect(select): Promise<void> {
 
       const opts: ApplyOptions = {
         id: inputElm.id,
+        rootAttributes: {
+          "data-content-type-name": fieldData["content_type"]["name"],
+          "data-content-type-unique-id": fieldData["content_type"]["unique_id"],
+          "data-field-name": fieldData["fields"][fieldId]["name"],
+          "data-field-unique-id": fieldData["fields"][fieldId]["unique_id"],
+        },
       };
 
-      const fieldId = select.id.match(/(\d+)$/)[1];
       const blockDisplayOptionId = (document.getElementById(
         `content-field-${fieldId}-be_config`
       ) as HTMLInputElement).value;
