@@ -112,9 +112,6 @@ sub _hdlr_block_asset {
         && ( grep { $b->{type} eq $_ } qw (mt-image mt-file) )
         && $b->{meta}{assetId};
 
-    my $handler = $ctx->handler_for('canonicalurl');
-    my $url = $handler->invoke( $ctx, $args ) or return '';
-
     $ctx->handler_for('asset')->invoke($ctx, {id => $b->{meta}{assetId}}, $cond);
 }
 
