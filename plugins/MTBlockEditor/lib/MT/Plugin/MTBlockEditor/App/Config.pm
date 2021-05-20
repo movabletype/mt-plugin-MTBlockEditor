@@ -90,18 +90,4 @@ sub can_delete_be_config {
     return $author->permissions($blog_id)->can_do('edit_be_configs');
 }
 
-sub cms_pre_save_blog {
-    my ( $eh, $app, $obj ) = @_;
-
-    if ( $app->can_do('save_blog_config') ) {
-        for my $k (qw(be_entry_config_id be_page_config_id)) {
-            if ( defined( my $id = $app->param($k) ) ) {
-                $obj->$k($id);
-            }
-        }
-    }
-
-    1;
-}
-
 1;

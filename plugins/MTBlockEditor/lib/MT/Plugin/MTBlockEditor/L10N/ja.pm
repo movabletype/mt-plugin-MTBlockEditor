@@ -77,6 +77,8 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
 
     'Are you sure you want to delete the selected Custom Block?' =>
         '選択したブロックを削除してもよろしいですか？',
+    'Are you sure you want to delete the selected Custom Block Preset?' =>
+        '選択したプリセットを削除してもよろしいですか？',
 
     'The identifier is required.' => '識別子は必須です',
     'An identifier "[_1]" is already used in the site scope.' =>

@@ -244,4 +244,18 @@ sub template_source_field_html_multi_line_text {
 MTML
 }
 
+sub cms_pre_save_blog {
+    my ( $eh, $app, $obj ) = @_;
+
+    if ( $app->can_do('save_blog_config') ) {
+        for my $k (qw(be_entry_config_id be_page_config_id)) {
+            if ( defined( my $id = $app->param($k) ) ) {
+                $obj->$k($id);
+            }
+        }
+    }
+
+    1;
+}
+
 1;

@@ -63,7 +63,7 @@ sub edit_be_block {
     }
 
     $app->setup_editor_param($param);
-    MT::Plugin::MTBlockEditor::App::load_extensions($param);
+    MT::Plugin::MTBlockEditor::App::CMS::load_extensions($param);
     $app->build_page( load_tmpl('edit_block.tmpl'), $param );
 }
 

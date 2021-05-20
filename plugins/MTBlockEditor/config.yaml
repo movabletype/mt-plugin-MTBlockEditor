@@ -212,7 +212,7 @@ applications:
       template_param.cfg_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_cfg_entry
       template_source.multi_line_text: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_source_multi_line_text
       template_source.field_html_multi_line_text: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_source_field_html_multi_line_text
-      cms_pre_save.blog: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::cms_pre_save_blog
+      cms_pre_save.blog: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::cms_pre_save_blog
       cms_save_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::cms_save_filter_be_block
       cms_save_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::can_save_be_block
       cms_delete_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::can_delete_be_block
@@ -226,6 +226,7 @@ permissions:
       edit_be_configs: 1
   blog.edit_templates:
     permitted_action:
+      edit_be_blocks: 1
       edit_be_configs: 1
 
 listing_screens:
