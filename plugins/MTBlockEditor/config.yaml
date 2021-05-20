@@ -203,8 +203,6 @@ applications:
         display: 0
     methods:
       mt_be_oembed: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Oembed::resolve
-      mt_be_config_view: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::view
-      mt_be_config_update: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::update
       view_be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::edit_be_block
       view_be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::edit_be_config
     callbacks:
