@@ -15,5 +15,5 @@ $("#block_display_options-list").sortable({
 unserializeBlockPreferences();
 serializeBlockPreferences();
 document
-  .querySelector("#block_display_options-list :input")
+  .querySelector("#block_display_options-list input")
   ?.addEventListener("change", serializeBlockPreferences);
