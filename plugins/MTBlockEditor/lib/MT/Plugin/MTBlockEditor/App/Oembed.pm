@@ -76,10 +76,10 @@ sub error {
 }
 
 sub resolve {
-    my ($app)       = @_;
-    my ($url)       = $app->param('url');
-    my ($maxwidth)  = $app->param('maxwidth');
-    my ($maxheight) = $app->param('maxheight');
+    my ($app)     = @_;
+    my $url       = $app->param('url');
+    my $maxwidth  = $app->param('maxwidth');
+    my $maxheight = $app->param('maxheight');
 
     return error( $app, 'Invalid request', 400 ) unless $url;
 
@@ -91,8 +91,8 @@ sub resolve {
     my $res
         = $ua->get( $oembed_url
             . "&format=json"
-            . ( $maxwidth  ? `&maxwidth=${maxwidth}`   : "" )
-            . ( $maxheight ? `&maxheight=${maxheight}` : "" ) );
+            . ( $maxwidth  ? "&maxwidth=${maxwidth}"   : "" )
+            . ( $maxheight ? "&maxheight=${maxheight}" : "" ) );
 
     return error( "Can not get oEmbed data from URL: ${oembed_url}", 500 ) unless $res->is_success;
 
