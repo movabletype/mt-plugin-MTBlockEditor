@@ -14,8 +14,7 @@ use MT::Test::Env;
 our $test_env;
 
 BEGIN {
-    $test_env
-        = MT::Test::Env->new( PluginPath => [ Cwd::realpath("$FindBin::Bin/../../../plugins") ], );
+    $test_env = MT::Test::Env->new(PluginPath => [Cwd::realpath("$FindBin::Bin/../../../plugins")],);
 
     $ENV{MT_APP}    = 'MT::App::CMS';
     $ENV{MT_CONFIG} = $test_env->config_file;
@@ -33,18 +32,18 @@ my $website_name       = 'MTBlockEditor-website-' . time();
 my $deferent_site_name = 'MTBlockEditor-deferent_site-' . time();
 my $super              = 'super';
 
-my $objs = MT::Test::Fixture->prepare(
-    {   author  => [ { 'name' => $super }, ],
-        website => [
-            {   name     => $website_name,
-                site_url => 'http://example.com/blog/',
-            },
-            {   name     => $deferent_site_name,
-                site_url => 'http://example.com/blog/',
-            },
-        ],
-    }
-);
+my $objs = MT::Test::Fixture->prepare({
+    author  => [{ 'name' => $super },],
+    website => [{
+            name     => $website_name,
+            site_url => 'http://example.com/blog/',
+        },
+        {
+            name     => $deferent_site_name,
+            site_url => 'http://example.com/blog/',
+        },
+    ],
+});
 
 my $website       = $objs->{website}{$website_name};
 my $deferent_site = $objs->{website}{$deferent_site_name};
@@ -65,21 +64,21 @@ my %valid_params = (
 
 subtest 'create()' => sub {
     subtest 'identifier' => sub {
-        ok $model->new( %valid_params, ( identifier => create_md5_id(), ) )->save;
+        ok $model->new(%valid_params, (identifier => create_md5_id(),))->save;
 
-        ok $model->new( %valid_params, ( identifier => '0', ) )->save;
+        ok $model->new(%valid_params, (identifier => '0',))->save;
 
-        ok !$model->new( %valid_params, ( identifier => '', ) )->save;
+        ok !$model->new(%valid_params, (identifier => '',))->save;
 
-        ok !$model->new( %valid_params, ( identifier => 'a-b', ) )->save;
+        ok !$model->new(%valid_params, (identifier => 'a-b',))->save;
 
         subtest 'duplicated' => sub {
             subtest 'same site' => sub {
                 my $identifier = create_md5_id();
 
-                ok $model->new( %valid_params, ( identifier => $identifier ) )->save;
+                ok $model->new(%valid_params, (identifier => $identifier))->save;
 
-                ok !$model->new( %valid_params, ( identifier => $identifier ) )->save;
+                ok !$model->new(%valid_params, (identifier => $identifier))->save;
             };
 
             subtest 'deferent site' => sub {
@@ -87,12 +86,12 @@ subtest 'create()' => sub {
 
                 ok $model->new(
                     %valid_params,
-                    (   blog_id    => $deferent_site->id,
+                    (
+                        blog_id    => $deferent_site->id,
                         identifier => $identifier
-                    )
-                )->save;
+                    ))->save;
 
-                ok $model->new( %valid_params, ( identifier => $identifier ) )->save;
+                ok $model->new(%valid_params, (identifier => $identifier))->save;
             };
 
             subtest 'global then site ' => sub {
@@ -100,12 +99,12 @@ subtest 'create()' => sub {
 
                 ok $model->new(
                     %valid_params,
-                    (   blog_id    => 0,
+                    (
+                        blog_id    => 0,
                         identifier => $identifier
-                    )
-                )->save;
+                    ))->save;
 
-                ok !$model->new( %valid_params, ( identifier => $identifier ) )->save;
+                ok !$model->new(%valid_params, (identifier => $identifier))->save;
             };
 
             subtest 'global then global' => sub {
@@ -113,30 +112,30 @@ subtest 'create()' => sub {
 
                 ok $model->new(
                     %valid_params,
-                    (   blog_id    => 0,
+                    (
+                        blog_id    => 0,
                         identifier => $identifier
-                    )
-                )->save;
+                    ))->save;
 
                 ok !$model->new(
                     %valid_params,
-                    (   blog_id    => 0,
+                    (
+                        blog_id    => 0,
                         identifier => $identifier
-                    )
-                )->save;
+                    ))->save;
             };
 
             subtest 'site then global' => sub {
                 my $identifier = create_md5_id();
 
-                ok $model->new( %valid_params, ( identifier => $identifier ) )->save;
+                ok $model->new(%valid_params, (identifier => $identifier))->save;
 
                 ok !$model->new(
                     %valid_params,
-                    (   blog_id    => 0,
+                    (
+                        blog_id    => 0,
                         identifier => $identifier
-                    )
-                )->save;
+                    ))->save;
             };
         };
     };
@@ -144,47 +143,46 @@ subtest 'create()' => sub {
     subtest 'label' => sub {
         ok $model->new(
             %valid_params,
-            (   identifier => create_md5_id(),
+            (
+                identifier => create_md5_id(),
                 label      => '0',
-            )
-        )->save;
+            ))->save;
 
         ok !$model->new(
             %valid_params,
-            (   identifier => create_md5_id(),
+            (
+                identifier => create_md5_id(),
                 label      => '',
-            )
-        )->save;
+            ))->save;
     };
 
     subtest 'icon' => sub {
         ok $model->new(
             %valid_params,
-            (   identifier => create_md5_id(),
-                icon =>
-                    "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cstyle%3E.st0%7Bfill:%23666%7D%3C/style%3E%3Cpath class='st0' d='M464 448H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h416c26.5 0 48 21.5 48 48v288c0 26.5-21.5 48-48 48zM112 120c-30.9 0-56 25.1-56 56s25.1 56 56 56 56-25.1 56-56-25.1-56-56-56zM64 384h384V272l-87.5-87.5c-4.7-4.7-12.3-4.7-17 0L208 320l-55.5-55.5c-4.7-4.7-12.3-4.7-17 0L64 336v48z'/%3E%3C/svg%3E",
-            )
-        )->save;
+            (
+                identifier => create_md5_id(),
+                icon       => "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cstyle%3E.st0%7Bfill:%23666%7D%3C/style%3E%3Cpath class='st0' d='M464 448H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h416c26.5 0 48 21.5 48 48v288c0 26.5-21.5 48-48 48zM112 120c-30.9 0-56 25.1-56 56s25.1 56 56 56 56-25.1 56-56-25.1-56-56-56zM64 384h384V272l-87.5-87.5c-4.7-4.7-12.3-4.7-17 0L208 320l-55.5-55.5c-4.7-4.7-12.3-4.7-17 0L64 336v48z'/%3E%3C/svg%3E",
+            ))->save;
 
         ok $model->new(
             %valid_params,
-            (   identifier => create_md5_id(),
+            (
+                identifier => create_md5_id(),
                 icon       => "a" x $model->MAX_ICON_SIZE_HARD,
-            )
-        )->save;
+            ))->save;
 
         ok !$model->new(
             %valid_params,
-            (   identifier => create_md5_id(),
+            (
+                identifier => create_md5_id(),
                 icon       => "a" x $model->MAX_ICON_SIZE_HARD . "a",
-            )
-        )->save;
+            ))->save;
     };
 };
 
 subtest 'type_id()' => sub {
     subtest 'user defined block' => sub {
-        my $block = $model->new( %valid_params, ( identifier => create_md5_id(), ) );
+        my $block = $model->new(%valid_params, (identifier => create_md5_id(),));
         is $block->type_id, 'custom-' . $block->identifier;
     };
 
@@ -197,25 +195,25 @@ subtest 'should_be_compiled();' => sub {
     subtest 'has script element' => sub {
         my $block = $model->new(
             %valid_params,
-            (   preview_header => <<HTML,
+            (
+                preview_header => <<HTML,
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css"  />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
 HTML
                 identifier => create_md5_id(),
-            )
-        );
+            ));
         ok $block->should_be_compiled;
     };
 
     subtest 'has no script element' => sub {
         my $block = $model->new(
             %valid_params,
-            (   preview_header => <<HTML,
+            (
+                preview_header => <<HTML,
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/default.min.css" />
 HTML
                 identifier => create_md5_id(),
-            )
-        );
+            ));
         ok !$block->should_be_compiled;
     };
 };

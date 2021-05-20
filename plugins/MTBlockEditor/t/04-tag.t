@@ -33,41 +33,39 @@ my $website_name   = 'MTBlockEditor-tag-' . time();
 my $super          = 'super';
 my $entry_basename = 'block_editor';
 
-my $objs = MT::Test::Fixture->prepare(
-    {   author  => [ { 'name' => $super }, ],
-        blog => [
-            {   name     => $website_name,
-                site_url => 'http://example.com/blog/',
-            },
-        ],
-        entry => [
-            {
-                author => $super,
-                blog   => $website_name,
-                basename => $entry_basename,
-                convert_breaks => 'block_editor',
-                text           => <<TEXT,
+my $objs = MT::Test::Fixture->prepare({
+    author => [{ 'name' => $super },],
+    blog   => [{
+            name     => $website_name,
+            site_url => 'http://example.com/blog/',
+        },
+    ],
+    entry => [{
+            author         => $super,
+            blog           => $website_name,
+            basename       => $entry_basename,
+            convert_breaks => 'block_editor',
+            text           => <<TEXT,
 <!-- mt-beb t="core-text"--><p>test</p><!-- /mt-beb --><!-- mt-beb t="core-columns" --><div class="mt-block-editor-columns" style="display: flex"><!-- mt-beb t="core-column" --><div class="mt-block-editor-column"><!-- mt-beb t="core-text"--><p>left</p><!-- /mt-beb --></div><!-- /mt-beb --><!-- mt-beb t="core-column" --><div class="mt-block-editor-column"><!-- mt-beb t="core-text"--><p>right</p><!-- /mt-beb --></div><!-- /mt-beb --></div><!-- /mt-beb -->
 TEXT
-            },
-        ],
-        image => {
-            'test.jpg' => {
-                label       => 'Sample Image 1',
-                description => 'Sample photo',
-            },
         },
-    }
-);
+    ],
+    image => {
+        'test.jpg' => {
+            label       => 'Sample Image 1',
+            description => 'Sample photo',
+        },
+    },
+});
 our $author = $objs->{author}{$super};
-our $blog = $objs->{blog}{$website_name};
-our $entry = $objs->{entry}{$entry_basename};
-our $image = $objs->{image}{'test.jpg'};
-our $pdf = do {
+our $blog   = $objs->{blog}{$website_name};
+our $entry  = $objs->{entry}{$entry_basename};
+our $image  = $objs->{image}{'test.jpg'};
+our $pdf    = do {
     my $pdf = MT::Asset->new;
     $pdf->blog_id($blog->id);
     $pdf->url($blog->site_url . 'test.pdf');
-    $pdf->file_path(File::Spec->catfile( $ENV{MT_HOME}, "t", 'files', 'test.pdf' ));
+    $pdf->file_path(File::Spec->catfile($ENV{MT_HOME}, "t", 'files', 'test.pdf'));
     $pdf->file_name('test.pdf');
     $pdf->file_ext('pdf');
     $pdf->mime_type('application/pdf');
@@ -77,14 +75,16 @@ our $pdf = do {
     $pdf;
 };
 
-MT::Test::Tag->run_perl_tests($blog->id, sub {
-    my ($ctx, $block) = @_;
+MT::Test::Tag->run_perl_tests(
+    $blog->id,
+    sub {
+        my ($ctx, $block) = @_;
 
-    if (my $content = $block->content) {
-        $ctx->var('content', $content);
-    }
-    $ctx->stash('entry' => $entry);
-});
+        if (my $content = $block->content) {
+            $ctx->var('content', $content);
+        }
+        $ctx->stash('entry' => $entry);
+    });
 
 __END__
 

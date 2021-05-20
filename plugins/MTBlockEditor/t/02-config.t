@@ -14,8 +14,7 @@ use MT::Test::Env;
 our $test_env;
 
 BEGIN {
-    $test_env
-        = MT::Test::Env->new( PluginPath => [ Cwd::realpath("$FindBin::Bin/../../../plugins") ], );
+    $test_env = MT::Test::Env->new(PluginPath => [Cwd::realpath("$FindBin::Bin/../../../plugins")],);
 
     $ENV{MT_APP}    = 'MT::App::CMS';
     $ENV{MT_CONFIG} = $test_env->config_file;
@@ -29,66 +28,65 @@ MT::Test->init_app;
 
 $test_env->prepare_fixture('db');
 
-my $website_name       = 'MTBlockEditor-website-' . time();
-my $super              = 'super';
+my $website_name = 'MTBlockEditor-website-' . time();
+my $super        = 'super';
 
-my $objs = MT::Test::Fixture->prepare(
-    {   author  => [ { 'name' => $super }, ],
-        website => [
-            {   name     => $website_name,
-                site_url => 'http://example.com/blog/',
-            },
-        ],
-    }
-);
+my $objs = MT::Test::Fixture->prepare({
+    author  => [{ 'name' => $super },],
+    website => [{
+            name     => $website_name,
+            site_url => 'http://example.com/blog/',
+        },
+    ],
+});
 
-my $website       = $objs->{website}{$website_name};
+my $website = $objs->{website}{$website_name};
 
 my $model = MT->model('be_config');
 
 subtest 'create()' => sub {
     ok $model->new(
-        blog_id => $website->id,
-        label => create_uuid(),
+        blog_id               => $website->id,
+        label                 => create_uuid(),
         block_display_options => '{"common":[]}',
     )->save;
 
     subtest 'label' => sub {
         ok $model->new(
-            blog_id => $website->id,
-            label => '0',
+            blog_id               => $website->id,
+            label                 => '0',
             block_display_options => '{"common":[]}',
         )->save;
 
         ok !$model->new(
-            blog_id => $website->id,
-            label => '',
+            blog_id               => $website->id,
+            label                 => '',
             block_display_options => '{"common":[]}',
         )->save;
     };
 
     subtest 'block_display_options' => sub {
         ok $model->new(
-            blog_id => $website->id,
-            label => '0',
+            blog_id               => $website->id,
+            label                 => '0',
             block_display_options => '{"common":["xx"]}',
         )->save;
 
         ok !$model->new(
-            blog_id => $website->id,
-            label => '',
+            blog_id               => $website->id,
+            label                 => '',
             block_display_options => 'aaa',
         )->save;
 
         ok !$model->new(
-            blog_id => $website->id,
-            label => '',
+            blog_id               => $website->id,
+            label                 => '',
             block_display_options => '{}',
         )->save;
 
         ok !$model->new(
-            blog_id => $website->id,
-            label => '',
+            blog_id               => $website->id,
+            label                 => '',
             block_display_options => '{"post":[]}',
         )->save;
     };
