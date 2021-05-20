@@ -205,21 +205,21 @@ applications:
       mt_be_oembed: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Oembed::resolve
       mt_be_config_view: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::view
       mt_be_config_update: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::update
-      view_be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::edit_be_block
-      view_be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::edit_be_config
+      view_be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::edit_be_block
+      view_be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::edit_be_config
     callbacks:
-      init_app: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::init_app
-      template_param.edit_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_param_edit_entry
-      template_param.edit_content_data: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_param_edit_content_data
-      template_param.cfg_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_param_cfg_entry
-      template_source.multi_line_text: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_source_multi_line_text
-      template_source.field_html_multi_line_text: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::template_source_field_html_multi_line_text
-      cms_pre_save.blog: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::cms_pre_save_blog
-      cms_save_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::cms_save_filter_be_block
-      cms_save_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::can_save_be_block
-      cms_delete_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::can_delete_be_block
-      cms_save_permission_filter.be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::can_save_be_config
-      cms_delete_permission_filter.be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::can_delete_be_config
+      init_app: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::init_app
+      template_param.edit_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_edit_entry
+      template_param.edit_content_data: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_edit_content_data
+      template_param.cfg_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_cfg_entry
+      template_source.multi_line_text: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_source_multi_line_text
+      template_source.field_html_multi_line_text: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_source_field_html_multi_line_text
+      cms_pre_save.blog: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::cms_pre_save_blog
+      cms_save_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::cms_save_filter_be_block
+      cms_save_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::can_save_be_block
+      cms_delete_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::can_delete_be_block
+      cms_save_permission_filter.be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::can_save_be_config
+      cms_delete_permission_filter.be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::can_delete_be_config
 
 permissions:
   blog.administer_site:
