@@ -95,7 +95,8 @@ sub resolve {
             . ( $maxwidth  ? "&maxwidth=${maxwidth}"   : "" )
             . ( $maxheight ? "&maxheight=${maxheight}" : "" ) );
 
-    return error( "Can not get oEmbed data from URL: ${oembed_url}", 500 ) unless $res->is_success;
+    return error( $app, "Can not get oEmbed data from URL: ${oembed_url}", 500 )
+        unless $res->is_success;
 
     response( $app, $res->decoded_content );
 }
