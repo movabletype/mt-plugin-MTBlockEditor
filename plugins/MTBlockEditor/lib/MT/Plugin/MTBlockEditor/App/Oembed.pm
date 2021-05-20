@@ -47,11 +47,12 @@ sub get_oembed_url {
     return "https://publish.twitter.com/oembed?url=${url}"
         if $url =~ /twitter/i;
 
+    # FIXME: access token is required
     # instagram
-    if ( $url =~ /instagram|instagr\.am/i ) {
-        $url =~ s/^(.+)\?.+$/$1/;
-        return "https://api.instagram.com/oembed?url=${url}";
-    }
+    # if ( $url =~ /instagram|instagr\.am/i ) {
+    #     $url =~ s/^(.+)\?.+$/$1/;
+    #     return "https://graph.facebook.com/v10.0/instagram_oembed?url=${url}";
+    # }
 
     # tiktok
     return "https://www.tiktok.com/oembed?url=${url}"
