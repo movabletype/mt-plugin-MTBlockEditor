@@ -14,6 +14,7 @@ sub MY::top_targets {
     << 'Makefile';
 build:
 	npm run build
+	mkdir mt-static/plugins/MTBlockEditor/locales
 	for f in plugins/MTBlockEditor/lib/MT/Plugin/MTBlockEditor/L10N/*.pm; do \
         l=$$(basename $$f .pm); \
         d=mt-static/plugins/MTBlockEditor/locales/$${l}.js; \
