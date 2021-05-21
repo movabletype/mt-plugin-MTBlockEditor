@@ -2,9 +2,8 @@ use strict;
 use warnings;
 use utf8;
 
-use Cwd;
 use FindBin;
-use lib Cwd::realpath("./t/lib");
+use lib "$FindBin::Bin/../../../t/lib", "$FindBin::Bin/lib";
 
 use JSON::XS;
 use Test::Base;

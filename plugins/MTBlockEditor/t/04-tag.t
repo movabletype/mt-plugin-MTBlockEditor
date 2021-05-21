@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 
 use FindBin;
-use lib qw(lib extlib), "$FindBin::Bin/../lib";
+use lib "$FindBin::Bin/../../../t/lib";
 
 use Test::More;
 use MT::Test::Env;

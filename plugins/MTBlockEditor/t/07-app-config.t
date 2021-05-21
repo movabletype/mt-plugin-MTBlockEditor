@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use FindBin;
-use lib "$FindBin::Bin/../t/lib", "$FindBin::Bin/lib";
+use lib "$FindBin::Bin/../../../t/lib", "$FindBin::Bin/lib";
 use Test::More;
 use MT::Test::Env;
 our $test_env;
