@@ -17,7 +17,7 @@ object_types:
 text_filters:
   block_editor:
     label: Movable Type Block Editor
-    docs: 'https://movabletype.github.io/mt-block-editor/'
+    docs: "https://movabletype.github.io/mt-block-editor/"
     code: |
       sub {
         my $text = shift;
@@ -53,51 +53,7 @@ applications:
           - blog
           - website
           - system
-        condition: |
-          sub {
-              my $app = MT->instance;
-              my $user = $app->user;
-              my $blog = $app->blog;
-              return 1 if $user->is_superuser;
-
-              my $terms;
-              push @$terms, { author_id => $user->id };
-              if ( $blog ) {
-                  my @blog_ids;
-                  push @blog_ids, $blog->id;
-                  if ( !$blog->is_blog ) {
-                      push @blog_ids, map { $_->id } @{$blog->blogs};
-                  }
-                  push @$terms, [ '-and', [
-                      {
-                          blog_id => \@blog_ids,
-                          permissions => { like => "\%'edit_templates'\%" },
-                      },
-                      '-or',
-                      {
-                          blog_id => 0,
-                          permissions => { like => "\%'edit_templates'\%" },
-                      },
-                  ] ];
-              } else {
-                  push @$terms, [ '-and',
-                      [
-                          {
-                              blog_id => 0,
-                              permissions => { like => "\%'edit_templates'\%" },
-                          },
-                          '-or',
-                          {
-                              blog_id => \' > 0',
-                              permissions => { like => "\%'edit_templates'\%" },
-                          }
-                      ]
-                  ];
-              }
-
-              my $cnt = MT->model('permission')->count( $terms );
-              return ( $cnt && $cnt > 0 ) ? 1 : 0;
-          }
+        condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::menu_condition
       mt_be:create:
         order: 200
         mode: view
@@ -132,51 +88,7 @@ applications:
           - blog
           - website
           - system
-        condition: |
-          sub {
-              my $app = MT->instance;
-              my $user = $app->user;
-              my $blog = $app->blog;
-              return 1 if $user->is_superuser;
-
-              my $terms;
-              push @$terms, { author_id => $user->id };
-              if ( $blog ) {
-                  my @blog_ids;
-                  push @blog_ids, $blog->id;
-                  if ( !$blog->is_blog ) {
-                      push @blog_ids, map { $_->id } @{$blog->blogs};
-                  }
-                  push @$terms, [ '-and', [
-                      {
-                          blog_id => \@blog_ids,
-                          permissions => { like => "\%'edit_templates'\%" },
-                      },
-                      '-or',
-                      {
-                          blog_id => 0,
-                          permissions => { like => "\%'edit_templates'\%" },
-                      },
-                  ] ];
-              } else {
-                  push @$terms, [ '-and',
-                      [
-                          {
-                              blog_id => 0,
-                              permissions => { like => "\%'edit_templates'\%" },
-                          },
-                          '-or',
-                          {
-                              blog_id => \' > 0',
-                              permissions => { like => "\%'edit_templates'\%" },
-                          }
-                      ]
-                  ];
-              }
-
-              my $cnt = MT->model('permission')->count( $terms );
-              return ( $cnt && $cnt > 0 ) ? 1 : 0;
-          }
+        condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::menu_condition
       mt_be:create_config:
         order: 400
         mode: view
@@ -354,13 +266,13 @@ list_actions:
             return 1 if $user->is_superuser;
             my $blog = $app->blog;
             if ( !$blog ) {
-                return $user->can_do( 'edit_be_blocks',
+                return $user->can_do( 'edit_be_configs',
                     at_least_one => 1 );
             }
 
             my $blog_ids = [ 0, $blog->id ];
             return $user->can_do(
-                'edit_be_blocks',
+                'edit_be_configs',
                 at_least_one => 1,
                 blog_id      => $blog_ids
             );
