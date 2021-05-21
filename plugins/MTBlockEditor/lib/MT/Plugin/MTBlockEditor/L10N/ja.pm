@@ -54,7 +54,6 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     "Export Custom Block"                                     => '書き出す',
     'Icon'                                                    => 'アイコン',
     'Block'                                                   => "ブロック",
-    "You can upload image files of size [_1] or less."        => "[_1]以下のサイズの画像ファイルをアップロードできます。",
     "Custom Script"                                           => "カスタムスクリプト",
     "You can customize the display using JavaScript and CSS." => "JavaScriptやCSSを使って表示をカスタマイズすることができます。",
     "Can add and remove block"                                => "ブロックの追加と削除",
@@ -67,7 +66,6 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
 
     "If you change the identifier, you will not be able to edit the block contained in the saved data as the same block." => "識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。",
     "* You can import custom block from your JSON file."                                                                  => "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
-    "Failed to read the file."                                                                                            => "ファイルの読み込みに失敗しました。",
 
     'Are you sure you want to delete the selected Custom Block?'        => '選択したブロックを削除してもよろしいですか？',
     'Are you sure you want to delete the selected Custom Block Preset?' => '選択したプリセットを削除してもよろしいですか？',
