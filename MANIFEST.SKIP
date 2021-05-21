@@ -41,3 +41,7 @@ i18next-parser.config.js
 # source files
 mt-static/plugins/MTBlockEditor/typings/
 mt-static/plugins/MTBlockEditor/src/
+
+# test
+plugins/MTBlockEditor/t/
+plugins/MTBlockEditor/xt/
