@@ -34,82 +34,72 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
 
     'Preset For Movable Type Block Editor' => 'MTブロックエディタのプリセット',
 
-    'Block Display Settings' => 'ブロックの表示設定',
-    'Panel'                  => 'パネル',
-    'Shortcut'               => 'ショートカット',
-    "You can change the display / non-display and order of blocks." =>
-        "利用するブロックの表示・非表示、並び順を変更することができます。",
-    "Custom Block"        => "カスタムブロック",
-    "Custom Blocks"       => "カスタムブロック",
-    "Create Custom Block" => "カスタムブロックの作成",
-    "Edit Custom Block"   => "カスタムブロックの編集",
+    'Block Display Settings'                                        => 'ブロックの表示設定',
+    'Panel'                                                         => 'パネル',
+    'Shortcut'                                                      => 'ショートカット',
+    "You can change the display / non-display and order of blocks." => "利用するブロックの表示・非表示、並び順を変更することができます。",
+    "Custom Block"                                                  => "カスタムブロック",
+    "Custom Blocks"                                                 => "カスタムブロック",
+    "Create Custom Block"                                           => "カスタムブロックの作成",
+    "Edit Custom Block"                                             => "カスタムブロックの編集",
 
     "Custom Block Preset"        => "プリセット",
     "Custom Block Presets"       => "プリセット",
     "Create Custom Block Preset" => "プリセットの作成",
     "Edit Custom Block Preset"   => "プリセットの編集",
 
-    "Manage Custom Block"        => 'カスタムブロック',
-    "Manage Custom Block Preset" => 'プリセット',
-    "Import Custom Block"        => '読み込む',
-    "Export Custom Block"        => '書き出す',
-    'Icon'                       => 'アイコン',
-    'Block'                      => "ブロック",
-    "You can upload image files of size [_1] or less." =>
-        "[_1]以下のサイズの画像ファイルをアップロードできます。",
-    "Custom Script" => "カスタムスクリプト",
-    "You can customize the display using JavaScript and CSS." =>
-        "JavaScriptやCSSを使って表示をカスタマイズすることができます。",
-    "Can add and remove block"                 => "ブロックの追加と削除",
-    "Enabled to add and remove block."         => "ブロックの追加と削除を許可する",
-    "Wrap in root element"                     => "コンテナ要素で包む",
-    "Class Name"                               => "クラス名",
-    "Wrap edited content in root DIV element." => "編集した内容をDIV要素で囲む",
-    "You can set a class name for the root element." =>
-        "コンテナ要素にクラス名を指定することができます。",
-    "Addable blocks" => "追加可能なブロック",
+    "Manage Custom Block"                                     => 'カスタムブロック',
+    "Manage Custom Block Preset"                              => 'プリセット',
+    "Import Custom Block"                                     => '読み込む',
+    "Export Custom Block"                                     => '書き出す',
+    'Icon'                                                    => 'アイコン',
+    'Block'                                                   => "ブロック",
+    "You can upload image files of size [_1] or less."        => "[_1]以下のサイズの画像ファイルをアップロードできます。",
+    "Custom Script"                                           => "カスタムスクリプト",
+    "You can customize the display using JavaScript and CSS." => "JavaScriptやCSSを使って表示をカスタマイズすることができます。",
+    "Can add and remove block"                                => "ブロックの追加と削除",
+    "Enabled to add and remove block."                        => "ブロックの追加と削除を許可する",
+    "Wrap in root element"                                    => "コンテナ要素で包む",
+    "Class Name"                                              => "クラス名",
+    "Wrap edited content in root DIV element."                => "編集した内容をDIV要素で囲む",
+    "You can set a class name for the root element."          => "コンテナ要素にクラス名を指定することができます。",
+    "Addable blocks"                                          => "追加可能なブロック",
 
-    "If you change the identifier, you will not be able to edit the block contained in the saved data as the same block."
-        => "識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。",
-    "* You can import custom block from your JSON file." =>
-        "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
-    "Failed to read the file." => "ファイルの読み込みに失敗しました。",
+    "If you change the identifier, you will not be able to edit the block contained in the saved data as the same block." => "識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。",
+    "* You can import custom block from your JSON file."                                                                  => "※ JSON形式のファイルからカスタムブロックを読み込むことができます。",
+    "Failed to read the file."                                                                                            => "ファイルの読み込みに失敗しました。",
 
-    'Are you sure you want to delete the selected Custom Block?' =>
-        '選択したブロックを削除してもよろしいですか？',
-    'Are you sure you want to delete the selected Custom Block Preset?' =>
-        '選択したプリセットを削除してもよろしいですか？',
+    'Are you sure you want to delete the selected Custom Block?'        => '選択したブロックを削除してもよろしいですか？',
+    'Are you sure you want to delete the selected Custom Block Preset?' => '選択したプリセットを削除してもよろしいですか？',
 
-    'The identifier is required.' => '識別子は必須です',
-    'An identifier "[_1]" is already used in the site scope.' =>
-        '"[_1]"という識別子はサイトですでに使われています。',
-    'An identifier "[_1]" is already used in the global scope.' =>
-        '"[_1]"という識別子はグローバルなブロックですでに使われています。',
+    'The identifier is required.'                               => '識別子は必須です',
+    'An identifier "[_1]" is already used in the site scope.'   => '"[_1]"という識別子はサイトですでに使われています。',
+    'An identifier "[_1]" is already used in the global scope.' => '"[_1]"という識別子はグローバルなブロックですでに使われています。',
 
     'MT Block Editor Setting' => 'MTブロックエディタの設定',
     'Preset For Entry'        => '記事編集時に利用するプリセット',
     'Preset For Page'         => 'ウェブページ編集時に利用するプリセット',
 
     # mt-static/plugins/MTBlockEditor/src
-    'MTImage'                => '画像',
-    'MTFile'                 => 'ファイル',
-    'Please select an image' => '画像を選択してください。',
-    'Please select an file'  => 'ファイルを選択してください。',
-    'Alternative Text'       => '代替テキスト',
-    'Caption'                => 'キャプション',
-    'Width'                  => '幅',
-    'Link URL'               => 'リンク先URL',
-    'Text to display'        => 'リンク元テキスト',
-    'You can upload image files of size [_1] or less.' =>
-        '[_1]以下のサイズの画像ファイルをアップロードできます。',
-    'Failed to read the file.' => 'ファイルの読み込みに失敗しました。',
-    'Are you sure you want to overwrite it?' => '上書きしてもよろしいですか？',
-    'This format does not support this web browser. Please switch to another format.' =>
-        '現在ご利用のウェブブラウザではこのフォーマットを利用することができません。編集する場合には別のフォーマットを選択してください。',
+    'MTImage'                                                                         => '画像',
+    'MTFile'                                                                          => 'ファイル',
+    'Please select an image'                                                          => '画像を選択してください。',
+    'Please select an file'                                                           => 'ファイルを選択してください。',
+    'Alternative Text'                                                                => '代替テキスト',
+    'Caption'                                                                         => 'キャプション',
+    'Width'                                                                           => '幅',
+    'Link URL'                                                                        => 'リンク先URL',
+    'Text to display'                                                                 => 'リンク元テキスト',
+    'You can upload image files of size [_1] or less.'                                => '[_1]以下のサイズの画像ファイルをアップロードできます。',
+    'Failed to read the file.'                                                        => 'ファイルの読み込みに失敗しました。',
+    'Are you sure you want to overwrite it?'                                          => '上書きしてもよろしいですか？',
+    'This format does not support this web browser. Please switch to another format.' => '現在ご利用のウェブブラウザではこのフォーマットを利用することができません。編集する場合には別のフォーマットを選択してください。',
 
-    (   $block_editor_plugin
+    (
+        $block_editor_plugin
         ? ()
-        : ( 'Movable Type Block Editor'            => 'ブロックエディタ',
+        : (
+            'Movable Type Block Editor'            => 'ブロックエディタ',
             'Movable Type Block Editor Settings'   => 'ブロックエディタの設定',
             'Preset For Movable Type Block Editor' => 'ブロックエディタのプリセット',
             'MT Block Editor Setting'              => 'ブロックエディタの設定',

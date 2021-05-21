@@ -62,7 +62,7 @@ sub get_oembed_url {
 }
 
 sub response {
-    my ( $app, $json, $status ) = @_;
+    my ($app, $json, $status) = @_;
 
     $app->response_code($status)
         if defined $status;
@@ -72,8 +72,8 @@ sub response {
 }
 
 sub error {
-    my ( $app, $msg, $status ) = @_;
-    response( $app, MT::Util::to_json( { error => { message => $msg, }, } ), $status );
+    my ($app, $msg, $status) = @_;
+    response($app, MT::Util::to_json({ error => { message => $msg, }, }), $status);
 }
 
 sub resolve {
@@ -82,23 +82,19 @@ sub resolve {
     my $maxwidth  = $app->param('maxwidth');
     my $maxheight = $app->param('maxheight');
 
-    return error( $app, 'Invalid request', 400 ) unless $url;
+    return error($app, 'Invalid request', 400) unless $url;
 
     my $oembed_url = get_oembed_url($url);
 
-    return error( $app, "Unsupported URL: ${url}", 400 ) unless $oembed_url;
+    return error($app, "Unsupported URL: ${url}", 400) unless $oembed_url;
 
-    my $ua = MT->new_ua;
-    my $res
-        = $ua->get( $oembed_url
-            . "&format=json"
-            . ( $maxwidth  ? "&maxwidth=${maxwidth}"   : "" )
-            . ( $maxheight ? "&maxheight=${maxheight}" : "" ) );
+    my $ua  = MT->new_ua;
+    my $res = $ua->get($oembed_url . "&format=json" . ($maxwidth ? "&maxwidth=${maxwidth}" : "") . ($maxheight ? "&maxheight=${maxheight}" : ""));
 
-    return error( $app, "Can not get oEmbed data from URL: ${oembed_url}", 500 )
+    return error($app, "Can not get oEmbed data from URL: ${oembed_url}", 500)
         unless $res->is_success;
 
-    response( $app, $res->decoded_content );
+    response($app, $res->decoded_content);
 }
 
 1;

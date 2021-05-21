@@ -19,11 +19,11 @@ sub component {
 }
 
 sub translate {
-    MT->component( component() )->translate(@_);
+    MT->component(component())->translate(@_);
 }
 
 sub plugin {
-    MT->component( component() );
+    MT->component(component());
 }
 
 sub tmpl_param {
@@ -32,7 +32,7 @@ sub tmpl_param {
 
 sub load_tmpl {
     my $tmpl = plugin()->load_tmpl(@_);
-    $tmpl->param( tmpl_param() );
+    $tmpl->param(tmpl_param());
     $tmpl;
 }
 
@@ -43,14 +43,16 @@ sub blocks {
     my $model        = MT->model('be_block');
     my @column_names = @{ $model->column_names() };
     my @blocks       = $model->load(
-        { blog_id => [ 0, $blog_id ], },
-        {   sort      => 'id',
+        { blog_id => [0, $blog_id], },
+        {
+            sort      => 'id',
             direction => 'ascend',
-        }
-    );
-    [   map {
+        });
+    [
+        map {
             my $obj = $_;
-            +{  map {
+            +{
+                map {
                     my $v = $obj->$_;
                     $v = $v->() if ref($v) eq 'CODE';
                     $_ => $v
@@ -58,8 +60,7 @@ sub blocks {
                 qw(
                     type_id is_default_visible
                     is_default_block is_default_hidden is_form_element
-                    )
-            }
+                    ) }
         } @{ MT->model('be_block')->DEFAULT_BLOCKS },
         @blocks
     ];
