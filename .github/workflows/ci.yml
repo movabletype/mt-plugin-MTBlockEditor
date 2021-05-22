@@ -1,0 +1,51 @@
+name: Run unit test and build package
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          path: mt-plugin-MTBlockEditor
+      - name: Check out movabletype
+        uses: actions/checkout@v2
+        with:
+          repository: movabletype/movabletype
+          path: movabletype
+      - run: cp -r movabletype/* mt-plugin-MTBlockEditor
+      - run: cp movabletype/.proverc mt-plugin-MTBlockEditor
+      - run: docker run -t -v ${{ github.workspace }}/mt-plugin-MTBlockEditor:/mt -w /mt movabletype/test:trusty bash -c "prove plugins/MTBlockEditor/t"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libyaml-perl
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          path: mt-plugin-MTBlockEditor
+      - name: Check out movabletype
+        uses: actions/checkout@v2
+        with:
+          repository: movabletype/movabletype
+          path: movabletype
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+      - run: echo "MT_HOME=${{ github.workspace }}/movabletype" >> $GITHUB_ENV
+      - name: Build
+        run: |
+          cd mt-plugin-MTBlockEditor
+          npm install
+          perl Makefile.PL
+          make manifest
+          make distdir
+          mv MTBlockEditor-* ..
+      - name: Save package
+        uses: actions/upload-artifact@v2
+        with:
+          name: package
+          path: |
+            MTBlockEditor-*
