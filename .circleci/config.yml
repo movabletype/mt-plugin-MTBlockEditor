@@ -1,0 +1,44 @@
+version: 2.1
+
+jobs:
+  test:
+    docker:
+      - image: movabletype/test:trusty
+    steps:
+      - checkout
+      - run:
+          name: Test
+          command: |
+            git clone -b develop --depth 1  https://github.com/movabletype/movabletype.git mt
+            cp -r mt/* .
+            cp mt/.proverc .
+            prove -j4 -PMySQLPool=MT::Test::Env -It/lib plugins/MTBlockEditor/t
+
+  build:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - checkout
+      - run:
+          name: Install build dependency
+          command: |
+            sudo apt update
+            sudo apt --no-install-recommends -y install libjson-perl libyaml-perl
+      - run:
+          name: Build
+          command: |
+            perl Makefile.PL
+            make manifest
+            make zipdist
+            make dist
+            mkdir packages
+            mv MTBlockEditor-* packages
+      - store_artifacts:
+          path: packages
+
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+      - test
+      - build

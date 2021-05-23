@@ -1,6 +1,6 @@
 # Movable Type Block Editor
 
-[![Build Status](https://travis-ci.com/movabletype/mt-plugin-MTBlockEditor.svg?branch=main)](https://travis-ci.com/movabletype/mt-plugin-MTBlockEditor)
+[![CircleCI](https://circleci.com/gh/movabletype/mt-plugin-MTBlockEditor.svg?style=svg)](https://circleci.com/gh/movabletype/mt-plugin-MTBlockEditor)
 
 This is a plugin for the Movable Type.
 This plugin enables you to use [Movable Type Block Editor](https://movabletype.github.io/mt-block-editor/).
