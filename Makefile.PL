@@ -27,7 +27,7 @@ build-locales:
         d=mt-static/plugins/MTBlockEditor/locales/$${l}.js; \
         \
         echo '(function() { var lexicon =' > $$d; \
-        perl -Iplugins/MTBlockEditor/lib -MJSON::XS -e "BEGIN { package MT::Plugin::L10N { sub new {} } }; use MT::Plugin::MTBlockEditor::L10N::$$l; print(encode_json(\%MT::Plugin::MTBlockEditor::L10N::$$l::Lexicon))" >> $$d; \
+        perl -Iplugins/MTBlockEditor/lib -MJSON -e "BEGIN { package MT::Plugin::L10N { sub new {} } }; use MT::Plugin::MTBlockEditor::L10N::$$l; print(encode_json(\%MT::Plugin::MTBlockEditor::L10N::$$l::Lexicon))" >> $$d; \
         echo '; for (k in lexicon) { window.Lexicon[k] = lexicon[k] } })()' >> $$d; \
     done
 
