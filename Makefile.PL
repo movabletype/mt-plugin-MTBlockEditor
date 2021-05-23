@@ -1,11 +1,15 @@
 use ExtUtils::MakeMaker;
 use YAML;
 
-my $config = YAML::LoadFile((glob('./plugins/*/config.yaml'))[0]);
+my $config  = YAML::LoadFile((glob('./plugins/*/config.yaml'))[0]);
+my $version = $config->{version};
+
+use Getopt::Long 'GetOptions';
+GetOptions('version=s' => \$version);
 
 WriteMakefile(
     NAME     => $config->{name},
-    VERSION  => $config->{version},
+    VERSION  => $version,
     SKIP     => [qw(distdir)],
     DISTNAME => $config->{name},
 );
