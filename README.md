@@ -38,8 +38,6 @@ Should look like this when installed:
 ### Build distribution files
 
 ```
-$ npm install
-$ export MT_HOME=/path/to/movabletype
 $ perl Makefile.PL
 $ make build
 ```
