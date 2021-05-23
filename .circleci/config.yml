@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Build
           command: |
-            perl Makefile.PL
+            perl Makefile.PL --version $(git rev-parse --short HEAD)
             make manifest
             make zipdist
             make dist
