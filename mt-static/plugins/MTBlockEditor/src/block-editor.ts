@@ -24,7 +24,9 @@ const ALLOWED_EVENT_ATTRIBUTES = ["onclick"].join("|");
 
 export function apply(opts: ApplyOptions): Promise<Editor> {
   function setDirty({ editor }): void {
-    window.setDirty(true);
+    if (window.setDirty) {
+      window.setDirty(true);
+    }
     if (window.app) {
       window.app.getIndirectMethod("setDirty")();
     }
