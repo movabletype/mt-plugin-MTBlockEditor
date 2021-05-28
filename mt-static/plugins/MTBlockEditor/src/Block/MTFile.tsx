@@ -17,6 +17,7 @@ import { useEditorContext } from "mt-block-editor-block/Context";
 import { edit as editIcon } from "mt-block-editor-block/icon";
 
 import fileIcon from "../img/icon/file.svg";
+import { waitFor } from "../util";
 import { addEditUpdateBlock } from "./edit";
 import { initModal, waitForInsertOptionsForm } from "./modal";
 
@@ -50,12 +51,24 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
         insertContent(html) {
           const template = document.createElement("template");
           template.innerHTML = html;
-          const a = template.content.querySelector("a") as HTMLAnchorElement;
 
-          Object.assign(newData, {
-            assetUrl: a.href,
-            text: a.textContent,
-          });
+          const a = template.content.querySelector(
+            "a"
+          ) as HTMLAnchorElement | null;
+          if (a) {
+            Object.assign(newData, {
+              assetUrl: a.href,
+              text: block.text || a.textContent,
+            });
+          } else {
+            const img = template.content.querySelector(
+              "img"
+            ) as HTMLImageElement;
+            Object.assign(newData, {
+              assetUrl: img.dataset.url || img.src,
+              text: block.text || img.alt,
+            });
+          }
 
           addEditUpdateBlock(editor, block, newData);
 
@@ -81,10 +94,28 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
     await initModal({ block, blogId, dummyFieldId });
 
     // handle insert options
-    waitForInsertOptionsForm().then((form) => {
-      newData["assetId"] = (form.querySelector(
-        "[data-asset-id]"
-      ) as HTMLElement).dataset.assetId;
+    waitForInsertOptionsForm().then(async (form: HTMLFormElement) => {
+      const assetIdElm = (await waitFor(() =>
+        form.querySelector("[data-asset-id]")
+      )) as HTMLElement;
+      newData["assetId"] = assetIdElm.dataset.assetId;
+
+      const doc = form.ownerDocument;
+      // hide all the element
+      const style = doc.createElement("style") as HTMLStyleElement;
+      doc.head.appendChild(style);
+      style.sheet?.insertRule(
+        `
+body { display: none }
+      `
+      );
+
+      const button = form.querySelector("button.primary") as HTMLButtonElement;
+      await waitFor(() => {
+        const events = doc.defaultView?.jQuery._data(button, "events");
+        return !!(events && events["click"]);
+      });
+      button.click();
     });
   }
 

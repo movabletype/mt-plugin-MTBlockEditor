@@ -7,6 +7,10 @@ interface JQuery {
   };
 }
 
+interface JQueryStatic {
+  _data: (elm: HTMLElement, key: string) => Record<string, unknown>;
+}
+
 interface EditorDisplayOptions {
   content_css_list?: string[];
   body_class_list?: string[];
