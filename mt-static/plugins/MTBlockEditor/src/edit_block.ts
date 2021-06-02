@@ -221,6 +221,56 @@ async function applyBlockEditorForSetup(): Promise<void> {
     });
   }
 
+  async function importBlock(fileInputElm): Promise<void> {
+    const identifierValue = (document.getElementById(
+      "identifier"
+    ) as HTMLInputElement).value;
+    if (identifierValue !== "") {
+      window.confirm(window.trans("Are you sure you want to overwrite it?"));
+    }
+
+    const json = await readAsText(fileInputElm.files[0]);
+    const data = json
+      ? (() => {
+          try {
+            return JSON.parse(json);
+          } catch (e) {
+            return null;
+          }
+        })()
+      : null;
+
+    if (!json || !data) {
+      showAlert({ msg: window.trans("Failed to read the file.") });
+      return;
+    }
+
+    await unload({
+      id: "html",
+    });
+
+    unserializeBlock(document.getElementById("block-form"), data);
+
+    unserializeBlockPreferences();
+    await applyBlockEditorForSetup();
+    document
+      .querySelectorAll("#icon, #wrap_root_block, #can_remove_block")
+      .forEach((elm) => {
+        elm.dispatchEvent(new Event("change"));
+        if (
+          elm instanceof HTMLInputElement &&
+          elm.type === "checkbox" &&
+          elm.dataset.toggle === "collapse" &&
+          elm.dataset.target
+        ) {
+          const target = document.querySelector(
+            elm.dataset.target
+          ) as HTMLElement;
+          target.classList.toggle("show", elm.checked);
+        }
+      });
+  }
+
   document.getElementById("export-block")?.addEventListener("click", (ev) => {
     ev.preventDefault();
     window.MTBlockEditor?.serialize().then(function () {
@@ -241,55 +291,8 @@ async function applyBlockEditorForSetup(): Promise<void> {
     .getElementById("import-block-form")
     ?.addEventListener("submit", async function (ev) {
       ev.preventDefault();
-
-      const identifierValue = (document.getElementById(
-        "identifier"
-      ) as HTMLInputElement).value;
-      if (identifierValue !== "") {
-        window.confirm(window.trans("Are you sure you want to overwrite it?"));
-      }
-
       const fileInputElm = (ev.target as HTMLFormElement).file;
-      const json = await readAsText(fileInputElm.files[0]);
-      const data = json
-        ? (() => {
-            try {
-              return JSON.parse(json);
-            } catch (e) {
-              return null;
-            }
-          })()
-        : null;
-
-      if (!json || !data) {
-        showAlert({ msg: window.trans("Failed to read the file.") });
-        return;
-      }
-
-      await unload({
-        id: "html",
-      });
-
-      unserializeBlock(document.getElementById("block-form"), data);
-
-      unserializeBlockPreferences();
-      await applyBlockEditorForSetup();
-      document
-        .querySelectorAll("#icon, #wrap_root_block, #can_remove_block")
-        .forEach((elm) => {
-          elm.dispatchEvent(new Event("change"));
-          if (
-            elm instanceof HTMLInputElement &&
-            elm.type === "checkbox" &&
-            elm.dataset.toggle === "collapse" &&
-            elm.dataset.target
-          ) {
-            const target = document.querySelector(
-              elm.dataset.target
-            ) as HTMLElement;
-            target.classList.toggle("show", elm.checked);
-          }
-        });
+      await importBlock(fileInputElm);
 
       $("#import-block-modal").modal("hide");
       fileInputElm.value = "";
