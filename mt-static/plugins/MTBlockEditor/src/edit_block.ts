@@ -153,8 +153,8 @@ async function applyBlockEditorForSetup(): Promise<void> {
     });
   }
 
-  function serializeBlock(form): Record<string, unknown> {
-    const data: Record<string, unknown> = {};
+  function serializeBlock(form): MTBlockEditor.Serialize.Block {
+    const data: Partial<MTBlockEditor.Serialize.Block> = {};
 
     [
       "class_name",
@@ -170,7 +170,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
       data[k] = e.type === "checkbox" ? e.checked : e.value;
     });
 
-    const blockDisplayOptions: MTBlockEditor.Export.BlockDisplayOptions = {};
+    const blockDisplayOptions: MTBlockEditor.Serialize.BlockDisplayOptions = {};
     const blockDisplayOptionsData = JSON.parse(
       form.block_display_options.value
     );
@@ -183,10 +183,10 @@ async function applyBlockEditorForSetup(): Promise<void> {
     });
     data["block_display_options"] = blockDisplayOptions;
 
-    return data;
+    return data as MTBlockEditor.Serialize.Block;
   }
 
-  function unserializeBlock(form, data): void {
+  function unserializeBlock(form, data: MTBlockEditor.Serialize.Block): void {
     [
       "class_name",
       "html",
