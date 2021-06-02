@@ -76,14 +76,15 @@ export function unserializeBlockPreferences(): void {
   });
 }
 
+type WaitForResult =
+  | boolean
+  | null
+  | undefined
+  | Element
+  | Promise<boolean | null | undefined | Element>;
 export async function waitFor(
-  func: () =>
-    | boolean
-    | null
-    | undefined
-    | Element
-    | Promise<boolean | null | undefined | Element>
-): Promise<boolean | null | Element> {
+  func: () => WaitForResult
+): Promise<WaitForResult> {
   return new Promise((resolve) => {
     function check(): void {
       const res = func();
