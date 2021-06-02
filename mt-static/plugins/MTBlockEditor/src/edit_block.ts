@@ -1,4 +1,6 @@
 import $ from "jquery";
+import Ajv from "ajv";
+
 import {
   showAlert,
   serializeBlockPreferences,
@@ -6,6 +8,8 @@ import {
 } from "./util";
 import JSON from "./util/JSON";
 import { apply, unload } from "./block-editor";
+
+import blockSchema from "./schemas/block.json";
 
 let editor;
 async function applyBlockEditorForSetup(): Promise<void> {
@@ -242,6 +246,12 @@ async function applyBlockEditorForSetup(): Promise<void> {
 
     if (!json || !data) {
       showAlert({ msg: window.trans("Failed to read the file.") });
+      return;
+    }
+
+    const validateSchema = new Ajv().compile(blockSchema);
+    if (!validateSchema(data)) {
+      showAlert({ msg: window.trans("Invalid file format.") });
       return;
     }
 

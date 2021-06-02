@@ -12,5 +12,6 @@ pm_to_blib
 node_modules/
 
 mt-static/plugins/MTBlockEditor/dist/*.min.js
+mt-static/plugins/MTBlockEditor/dist/*.min.js.LICENSE.txt
 mt-static/plugins/MTBlockEditor/dist/*.svg
 mt-static/plugins/MTBlockEditor/locales/*.js

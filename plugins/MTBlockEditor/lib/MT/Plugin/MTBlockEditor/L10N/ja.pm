@@ -90,6 +90,7 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     'Text to display'                                                                 => 'リンク元テキスト',
     'You can upload image files of size [_1] or less.'                                => '[_1]以下のサイズの画像ファイルをアップロードできます。',
     'Failed to read the file.'                                                        => 'ファイルの読み込みに失敗しました。',
+    'Invalid file format.'                                                            => 'ファイルのフォーマットが不正です。',
     'Are you sure you want to overwrite it?'                                          => '上書きしてもよろしいですか？',
     'This format does not support this web browser. Please switch to another format.' => '現在ご利用のウェブブラウザではこのフォーマットを利用することができません。編集する場合には別のフォーマットを選択してください。',
 

@@ -4,7 +4,8 @@
   "description": "This is a plugin for the Movable Type. This plugin enables you to use Movable Type Block Editor.",
   "main": "",
   "scripts": {
-    "build": "webpack --mode=production",
+    "build-schema": "typescript-json-schema --noExtraProps mt-static/plugins/MTBlockEditor/src/@types/block.d.ts MTBlockEditor.Serialize.Block > mt-static/plugins/MTBlockEditor/src/schemas/block.json",
+    "build": "npm run build-schema && webpack --mode=production",
     "start": "webpack --mode=development --watch",
     "check-types": "tsc",
     "lint": "eslint --fix --ext .ts --ext .tsx ./mt-static/plugins/MTBlockEditor/src",
