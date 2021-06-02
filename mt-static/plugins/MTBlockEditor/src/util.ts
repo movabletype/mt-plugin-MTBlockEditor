@@ -56,9 +56,12 @@ export function unserializeBlockPreferences(): void {
 
     let insertMarker: ChildNode | null = null;
     data.forEach((block) => {
-      const curItem = list.querySelector(
+      const curItem: HTMLElement | null = list.querySelector(
         `div[data-type-id="${block.typeId}"]`
-      ) as HTMLElement;
+      );
+      if (!curItem) {
+        return;
+      }
 
       list.insertBefore(curItem, insertMarker);
       insertMarker = curItem.nextSibling;
