@@ -201,6 +201,10 @@ async function applyBlockEditorForSetup(): Promise<void> {
       "can_remove_block",
       "wrap_root_block",
     ].forEach((k) => {
+      if (!(k in data)) {
+        return;
+      }
+
       const e = form[k];
       if (e.type === "checkbox") {
         e.checked = !!data[k];
