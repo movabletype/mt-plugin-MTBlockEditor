@@ -50,6 +50,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
     iconImage.classList.remove("d-none");
     resetIconImage.classList.remove("d-none");
     iconFile.classList.add("d-none");
+    iconFile.value = "";
   });
   icon.dispatchEvent(new Event("change"));
 
@@ -248,9 +249,8 @@ async function applyBlockEditorForSetup(): Promise<void> {
         window.confirm(window.trans("Are you sure you want to overwrite it?"));
       }
 
-      const json = await readAsText(
-        (ev.target as HTMLFormElement).file.files[0]
-      );
+      const fileInputElm = (ev.target as HTMLFormElement).file;
+      const json = await readAsText(fileInputElm.files[0]);
       const data = json
         ? (() => {
             try {
@@ -281,6 +281,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
         });
 
       $("#import-block-modal").modal("hide");
+      fileInputElm.value = "";
     });
 })();
 
