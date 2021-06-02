@@ -278,6 +278,17 @@ async function applyBlockEditorForSetup(): Promise<void> {
         .querySelectorAll("#icon, #wrap_root_block, #can_remove_block")
         .forEach((elm) => {
           elm.dispatchEvent(new Event("change"));
+          if (
+            elm instanceof HTMLInputElement &&
+            elm.type === "checkbox" &&
+            elm.dataset.toggle === "collapse" &&
+            elm.dataset.target
+          ) {
+            const target = document.querySelector(
+              elm.dataset.target
+            ) as HTMLElement;
+            target.classList.toggle("show", elm.checked);
+          }
         });
 
       $("#import-block-modal").modal("hide");
