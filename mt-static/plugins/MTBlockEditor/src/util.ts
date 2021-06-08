@@ -56,9 +56,12 @@ export function unserializeBlockPreferences(): void {
 
     let insertMarker: ChildNode | null = null;
     data.forEach((block) => {
-      const curItem = list.querySelector(
+      const curItem: HTMLElement | null = list.querySelector(
         `div[data-type-id="${block.typeId}"]`
-      ) as HTMLElement;
+      );
+      if (!curItem) {
+        return;
+      }
 
       list.insertBefore(curItem, insertMarker);
       insertMarker = curItem.nextSibling;
@@ -73,14 +76,15 @@ export function unserializeBlockPreferences(): void {
   });
 }
 
+type WaitForResult =
+  | boolean
+  | null
+  | undefined
+  | Element
+  | Promise<boolean | null | undefined | Element>;
 export async function waitFor(
-  func: () =>
-    | boolean
-    | null
-    | undefined
-    | Element
-    | Promise<boolean | null | undefined | Element>
-): Promise<boolean | null | Element> {
+  func: () => WaitForResult
+): Promise<WaitForResult> {
   return new Promise((resolve) => {
     function check(): void {
       const res = func();

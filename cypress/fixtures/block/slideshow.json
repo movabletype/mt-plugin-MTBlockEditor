@@ -1,0 +1,77 @@
+{
+  "class_name": "",
+  "html": "",
+  "icon": "",
+  "identifier": "slideshow",
+  "label": "スライドショー",
+  "preview_header": "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.1/css/swiper.min.css\" integrity=\"sha256-urV1luZ8JPIzBb+88vMT8qwbF8jBbHIrwQ8wTghtCOw=\" crossorigin=\"anonymous\" />\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/Swiper/5.4.1/js/swiper.min.js\" integrity=\"sha256-xKd8O6CvawXs3b8ZCrfuwN9A0ISCM8bUhJC86L6A8OY=\" crossorigin=\"anonymous\" defer></script>\n\n<style type=\"text/css\">\n  .swiper-container {\n    display: flex;\n  }\n  .swiper-wrapper, .swiper-slide {\n    height: auto;\n  }\n  img {\n    max-width: 100%;\n    height: auto;\n  }\n</style>\n\n<script>\n  document.addEventListener(\"DOMContentLoaded\", () => {\n    if (document.body.dataset.hasCompiledHtml) {\n      new Swiper(\".swiper-container\", {\n        loop: true,\n        pagination: {\n          el: \".swiper-pagination\",\n        },\n        navigation: {\n          nextEl: \".swiper-button-next\",\n          prevEl: \".swiper-button-prev\",\n        },\n      });\n\n      return;\n    }\n\n    const imgs = document.querySelectorAll(\"img\");\n    const slides = [];\n    const sizes = [];\n    for (let i = 0; i < imgs.length; i++) {\n      const img = imgs[i];\n      img.style = {};\n      const elm = img.closest(\"figure\") || img;\n      elm.style = {};\n      slides.push(`<div class=\"swiper-slide\">${elm.outerHTML}</div>`);\n      sizes.push(img.width);\n    }\n\n    MTBlockEditorSetCompiledHtml(`\n<div class=\"swiper-container\" style=\"max-width: ${Math.min.apply(null, sizes)}px\">\n <div class=\"swiper-wrapper\">\n   ${slides.join(\"\")}\n </div>\n <div class=\"swiper-pagination\"></div>\n\n <div class=\"swiper-button-prev\"></div>\n <div class=\"swiper-button-next\"></div>\n</div>\n`);\n  });\n</script>",
+  "can_remove_block": true,
+  "wrap_root_block": false,
+  "block_display_options": {
+    "core-text": {
+      "order": 0,
+      "panel": false,
+      "shortcut": false
+    },
+    "mt-image": {
+      "order": 1,
+      "panel": true,
+      "shortcut": false
+    },
+    "mt-file": {
+      "order": 2,
+      "panel": false,
+      "shortcut": false
+    },
+    "core-html": {
+      "order": 3,
+      "panel": false,
+      "shortcut": false
+    },
+    "sixapart-oembed": {
+      "order": 4,
+      "panel": false,
+      "shortcut": false
+    },
+    "core-horizontalrule": {
+      "order": 5,
+      "panel": false,
+      "shortcut": false
+    },
+    "core-table": {
+      "order": 6,
+      "panel": false,
+      "shortcut": false
+    },
+    "core-columns": {
+      "order": 7,
+      "panel": false,
+      "shortcut": false
+    },
+    "custom-migazou": {
+      "order": 8,
+      "panel": false,
+      "shortcut": false
+    },
+    "custom-migiimage": {
+      "order": 9,
+      "panel": false,
+      "shortcut": false
+    },
+    "custom-gazou": {
+      "order": 10,
+      "panel": false,
+      "shortcut": false
+    },
+    "custom-code": {
+      "order": 11,
+      "panel": false,
+      "shortcut": false
+    },
+    "custom-excel": {
+      "order": 12,
+      "panel": false,
+      "shortcut": false
+    }
+  }
+}

@@ -4,11 +4,14 @@
   "description": "This is a plugin for the Movable Type. This plugin enables you to use Movable Type Block Editor.",
   "main": "",
   "scripts": {
-    "build": "webpack --mode=production",
+    "build-schema": "typescript-json-schema --noExtraProps mt-static/plugins/MTBlockEditor/src/@types/block.d.ts MTBlockEditor.Serialize.Block > mt-static/plugins/MTBlockEditor/src/schemas/block.json",
+    "build": "npm run build-schema && webpack --mode=production",
     "start": "webpack --mode=development --watch",
     "check-types": "tsc",
     "lint": "eslint --fix --ext .ts --ext .tsx ./mt-static/plugins/MTBlockEditor/src",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "npm run build && cypress open",
+    "cypress:run": "npm run build && cypress run"
   },
   "author": "tamano@sixapart.com",
   "license": "",
@@ -30,6 +33,7 @@
     "@typescript-eslint/parser": "^4.10.0",
     "babel-loader": "^8.1.0",
     "core-js": "^3.6.5",
+    "cypress": "^7.4.0",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-prettier": "^3.3.0",
@@ -37,7 +41,11 @@
     "mt-block-editor-block": "^1.1.7",
     "prettier": "^2.2.1",
     "typescript": "^4.0.5",
+    "typescript-json-schema": "^0.50.1",
     "webpack": "^5.4.0",
     "webpack-cli": "^4.1.0"
+  },
+  "dependencies": {
+    "ajv": "^6.12.6"
   }
 }
