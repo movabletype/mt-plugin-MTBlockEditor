@@ -31,7 +31,7 @@ const config = {
           loader: "babel-loader",
         },
       },
-      { test: /\.svg$/, use: "svg-url-loader" },
+      { test: /\.svg$/, type: "asset/inline" },
     ],
   },
   watchOptions: {
