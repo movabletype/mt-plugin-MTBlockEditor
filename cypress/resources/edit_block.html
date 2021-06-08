@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+      integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+      integrity="undefined"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="undefined"
+      crossorigin="anonymous"
+    />
+
+    <script src="./mock/mt.js"></script>
+
+    <script
+      src="../../mt-static/plugins/MTBlockEditor/dist/mt-block-editor/1.1.9/mt-block-editor.js"
+      type="module"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="../../mt-static/plugins/MTBlockEditor/dist/mt-block-editor/1.1.9/mt-block-editor.css"
+    />
+
+    <script
+      src="../../mt-static/plugins/MTBlockEditor/dist/mt-block-editor-block-oembed/1.0.1/mt-block-editor-block-oembed.js"
+      type="module"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="../../mt-static/plugins/MTBlockEditor/dist/mt-block-editor-block-oembed/1.0.1/mt-block-editor-block-oembed.css"
+    />
+
+    <script
+      src="../../mt-static/plugins/MTBlockEditor/dist/mt-block-editor-block-form-element/1.0.2/mt-block-editor-block-form-element.js"
+      type="module"
+    ></script>
+
+    <script
+      src="../../mt-static/plugins/MTBlockEditor/dist/block.min.js?v=0.0.19-beta"
+      type="module"
+      id="mt-block-editor-script"
+      data-mt-block-types='[{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"core-text","is_default_block":1,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"テキストブロック","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"core-text"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"mt-image","is_default_block":1,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"画像","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"mt-image"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"mt-file","is_default_block":1,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"ファイル","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"mt-file"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"core-html","is_default_block":1,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"HTML","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"core-html"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"sixapart-oembed","is_default_block":1,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"oEmbed","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"sixapart-oembed"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"core-horizontalrule","is_default_block":1,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"罫線","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"core-horizontalrule"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"core-table","is_default_block":1,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"テーブル","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"core-table"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"core-columns","is_default_block":1,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"マルチカラム","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"core-columns"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"sixapart-input","is_default_block":1,"is_default_hidden":1,"is_default_visible":"","is_form_element":1,"label":"テキスト","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"sixapart-input"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"sixapart-textarea","is_default_block":1,"is_default_hidden":1,"is_default_visible":"","is_form_element":1,"label":"テキスト(複数行)","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"sixapart-textarea"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"sixapart-select","is_default_block":1,"is_default_hidden":1,"is_default_visible":"","is_form_element":1,"label":"ドロップダウン","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"sixapart-select"},{"addable_block_types":null,"blog_id":null,"can_remove_block":null,"class_name":null,"created_by":null,"created_on":null,"html":null,"icon":null,"id":null,"identifier":"usualoma-ogpembed","is_default_block":1,"is_default_hidden":"0","is_default_visible":"1","is_form_element":"0","label":"OGPEmbed","modified_by":null,"modified_on":null,"preview_header":null,"root_block":null,"type_id":"usualoma-ogpembed"},{"addable_block_types":"{\"common\":[{\"typeId\":\"mt-image\",\"index\":0,\"panel\":true,\"shortcut\":false},{\"typeId\":\"core-columns\",\"index\":1,\"panel\":false,\"shortcut\":false},{\"typeId\":\"sixapart-oembed\",\"index\":2,\"panel\":false,\"shortcut\":false},{\"typeId\":\"core-text\",\"index\":3,\"panel\":false,\"shortcut\":false},{\"typeId\":\"mt-file\",\"index\":4,\"panel\":false,\"shortcut\":false},{\"typeId\":\"core-html\",\"index\":5,\"panel\":false,\"shortcut\":true},{\"typeId\":\"core-horizontalrule\",\"index\":6,\"panel\":false,\"shortcut\":false},{\"typeId\":\"core-table\",\"index\":7,\"panel\":false,\"shortcut\":true},{\"typeId\":\"custom-o\",\"index\":8,\"panel\":false,\"shortcut\":false}]}","blog_id":"1","can_remove_block":"1","class_name":"xxx1","created_by":"1","created_on":"20201109150201","html":"&lt;!-- mt-beb --&gt;&lt;p&gt;aaaaaaa&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;bbbbbbb&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;ccccccccc&lt;/p&gt;&lt;!-- /mt-beb --&gt;","icon":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJz48c3R5bGU+LnN0MHtmaWxsOiM2NjZ9PC9zdHlsZT48cGF0aCBjbGFzcz0nc3QwJyBkPSdNNDY0IDQ0OEg0OGMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhWMTEyYzAtMjYuNSAyMS41LTQ4IDQ4LTQ4aDQxNmMyNi41IDAgNDggMjEuNSA0OCA0OHYyODhjMCAyNi41LTIxLjUgNDgtNDggNDh6TTExMiAxMjBjLTMwLjkgMC01NiAyNS4xLTU2IDU2czI1LjEgNTYgNTYgNTYgNTYtMjUuMSA1Ni01Ni0yNS4xLTU2LTU2LTU2ek02NCAzODRoMzg0VjI3MmwtODcuNS04Ny41Yy00LjctNC43LTEyLjMtNC43LTE3IDBMMjA4IDMyMGwtNTUuNS01NS41Yy00LjctNC43LTEyLjMtNC43LTE3IDBMNjQgMzM2djQ4eicvPjwvc3ZnPgo=","id":"1","identifier":"eeeeeeeeee","is_default_block":null,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"ううううううううううう","modified_by":"1","modified_on":"20201215050517","preview_header":"","root_block":"div","type_id":"custom-eeeeeeeeee"},{"addable_block_types":"{\"common\":[{\"typeId\":\"usualoma-ogpembed\",\"index\":0,\"panel\":true,\"shortcut\":false},{\"typeId\":\"core-text\",\"index\":1,\"panel\":false,\"shortcut\":false},{\"typeId\":\"mt-file\",\"index\":2,\"panel\":false,\"shortcut\":false},{\"typeId\":\"core-html\",\"index\":3,\"panel\":true,\"shortcut\":false},{\"typeId\":\"sixapart-oembed\",\"index\":4,\"panel\":true,\"shortcut\":true},{\"typeId\":\"mt-image\",\"index\":5,\"panel\":false,\"shortcut\":true},{\"typeId\":\"core-horizontalrule\",\"index\":6,\"panel\":false,\"shortcut\":false},{\"typeId\":\"core-table\",\"index\":7,\"panel\":false,\"shortcut\":false},{\"typeId\":\"core-columns\",\"index\":8,\"panel\":false,\"shortcut\":true},{\"typeId\":\"custom-eeeeeeeeee\",\"index\":9,\"panel\":true,\"shortcut\":true}]}","blog_id":"1","can_remove_block":"1","class_name":"","created_by":"1","created_on":"20201214150803","html":"","icon":"","id":"2","identifier":"o","is_default_block":null,"is_default_hidden":null,"is_default_visible":"1","is_form_element":null,"label":"eeeeeeee","modified_by":"1","modified_on":"20210528104610","preview_header":"","root_block":"div","type_id":"custom-o"}]'
+      data-mt-block-type-ids='["core-text","mt-image","mt-file","core-html","sixapart-oembed","core-horizontalrule","core-table","core-columns","sixapart-input","sixapart-textarea","sixapart-select","usualoma-ogpembed","custom-eeeeeeeeee","custom-o"]'
+    ></script>
+
+    <script
+      src="../../mt-static/plugins/MTBlockEditor/dist/edit_block.min.js"
+      type="module"
+    ></script>
+  </head>
+  <body>
+    <!-- document.querySelector(".mt-mainContent").outerHTML -->
+    <div class="mt-mainContent last-child" style="min-width: 0">
+      <div class="mt-breadcrumb first-child">
+        <a href="/cgi-bin/mt/mt.cgi?__mode=dashboard" class="first-child">
+          ダッシュボード
+        </a>
+        <span class="mt-gts">&gt;</span>
+
+        <a href="/cgi-bin/mt/mt.cgi?__mode=dashboard&amp;blog_id=1">
+          MTBlockEditor
+        </a>
+
+        <span class="mt-gts">&gt;</span>
+
+        <a
+          href="/cgi-bin/mt/mt.cgi?__mode=list&amp;blog_id=1&amp;_type=be_block"
+        >
+          カスタムブロック
+        </a>
+
+        <span class="mt-gts last-child">&gt;</span>
+
+        カスタムブロックの作成
+      </div>
+
+      <h3 id="page-title" class="d-none d-md-block mb-5">
+        カスタムブロックの作成
+      </h3>
+
+      <div id="mobilePrimaryMenu" class="mt-mobilePrimaryMenu">
+        <button
+          id="mobilePrimaryMenu__dropdownMenuButton"
+          class="mt-mobilePrimaryMenu__dropdownMenuButton first-child"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <svg role="img" class="mt-icon first-child last-child">
+            <title class="first-child">Open primary menu</title>
+            <use
+              xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_menuhamburger"
+              class="last-child"
+            ></use>
+          </svg>
+        </button>
+
+        <span class="mt-mobilePrimaryMenu__name"> カスタムブロックの作成 </span>
+        <div
+          id="mobilePrimaryMenu__dropdownMenu"
+          class="mt-mobilePrimaryMenu__dropdownMenu dropdown-menu last-child"
+          aria-labelledby="mobilePrimaryMenu__dropdownMenuButton"
+          data-children=".mt-mobilePrimaryMenu__menuItem"
+          style="width: 878.4px"
+        >
+          <ul class="first-child last-child">
+            <li class="mt-mobilePrimaryMenu__menuItem first-child">
+              <a
+                data-toggle="collapse"
+                data-parent="#mobilePrimaryMenu"
+                href="#mobilePrimaryMenu__subMenus1"
+                aria-expanded="true"
+                aria-controls="mobilePrimaryMenu__subMenus1"
+                class="first-child last-child"
+              >
+                <svg role="img" class="mt-icon first-child last-child">
+                  <use
+                    xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_sites"
+                    class="first-child last-child"
+                  ></use>
+                </svg>
+
+                サイト
+              </a>
+            </li>
+            <li
+              id="mobilePrimaryMenu__subMenus1"
+              class="collapse show"
+              data-role="tabpanel"
+            >
+              <ul class="first-child last-child">
+                <li
+                  class="mt-mobilePrimaryMenu__menuItem first-child last-child"
+                >
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;_type=blog&amp;blog_id=1"
+                    class="first-child last-child"
+                  >
+                    一覧
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="mt-mobilePrimaryMenu__menuItem">
+              <a
+                data-toggle="collapse"
+                data-parent="#mobilePrimaryMenu"
+                href="#mobilePrimaryMenu__subMenus2"
+                aria-expanded="true"
+                aria-controls="mobilePrimaryMenu__subMenus2"
+                class="first-child last-child"
+              >
+                <svg role="img" class="mt-icon first-child last-child">
+                  <use
+                    xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_contentdata"
+                    class="first-child last-child"
+                  ></use>
+                </svg>
+
+                コンテンツデータ
+              </a>
+            </li>
+            <li
+              id="mobilePrimaryMenu__subMenus2"
+              class="collapse show"
+              data-role="tabpanel"
+            >
+              <ul class="first-child last-child">
+                <li class="mt-mobilePrimaryMenu__menuItem first-child">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;blog_id=1&amp;type=content_data_2&amp;_type=content_data"
+                    class="first-child last-child"
+                  >
+                    be
+                  </a>
+                </li>
+
+                <li class="mt-mobilePrimaryMenu__menuItem last-child">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;_type=content_data&amp;type=content_data_1&amp;blog_id=1"
+                    class="first-child last-child"
+                  >
+                    Site Page
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="mt-mobilePrimaryMenu__menuItem">
+              <a
+                data-toggle="collapse"
+                data-parent="#mobilePrimaryMenu"
+                href="#mobilePrimaryMenu__subMenus3"
+                aria-expanded="true"
+                aria-controls="mobilePrimaryMenu__subMenus3"
+                class="first-child last-child"
+              >
+                <svg role="img" class="mt-icon first-child last-child">
+                  <use
+                    xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_contentdata"
+                    class="first-child last-child"
+                  ></use>
+                </svg>
+
+                記事
+              </a>
+            </li>
+            <li
+              id="mobilePrimaryMenu__subMenus3"
+              class="collapse show"
+              data-role="tabpanel"
+            >
+              <ul class="first-child last-child">
+                <li class="mt-mobilePrimaryMenu__menuItem first-child">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;blog_id=1&amp;_type=entry"
+                    class="first-child last-child"
+                  >
+                    一覧
+                  </a>
+                </li>
+
+                <li class="mt-mobilePrimaryMenu__menuItem">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=view&amp;blog_id=1&amp;_type=entry"
+                    class="first-child last-child"
+                  >
+                    新規
+                  </a>
+                </li>
+
+                <li class="mt-mobilePrimaryMenu__menuItem last-child">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;blog_id=1&amp;_type=category"
+                    class="first-child last-child"
+                  >
+                    カテゴリ
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="mt-mobilePrimaryMenu__menuItem">
+              <a
+                data-toggle="collapse"
+                data-parent="#mobilePrimaryMenu"
+                href="#mobilePrimaryMenu__subMenus4"
+                aria-expanded="true"
+                aria-controls="mobilePrimaryMenu__subMenus4"
+                class="first-child last-child"
+              >
+                <svg role="img" class="mt-icon first-child last-child">
+                  <use
+                    xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_contentdata"
+                    class="first-child last-child"
+                  ></use>
+                </svg>
+
+                ウェブページ
+              </a>
+            </li>
+            <li
+              id="mobilePrimaryMenu__subMenus4"
+              class="collapse show"
+              data-role="tabpanel"
+            >
+              <ul class="first-child last-child">
+                <li class="mt-mobilePrimaryMenu__menuItem first-child">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;_type=page&amp;blog_id=1"
+                    class="first-child last-child"
+                  >
+                    一覧
+                  </a>
+                </li>
+
+                <li class="mt-mobilePrimaryMenu__menuItem">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=view&amp;blog_id=1&amp;_type=page"
+                    class="first-child last-child"
+                  >
+                    新規
+                  </a>
+                </li>
+
+                <li class="mt-mobilePrimaryMenu__menuItem last-child">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;blog_id=1&amp;_type=folder"
+                    class="first-child last-child"
+                  >
+                    フォルダ
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="mt-mobilePrimaryMenu__menuItem">
+              <a
+                data-toggle="collapse"
+                data-parent="#mobilePrimaryMenu"
+                href="#mobilePrimaryMenu__subMenus5"
+                aria-expanded="true"
+                aria-controls="mobilePrimaryMenu__subMenus5"
+                class="first-child last-child"
+              >
+                <svg role="img" class="mt-icon first-child last-child">
+                  <use
+                    xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_category"
+                    class="first-child last-child"
+                  ></use>
+                </svg>
+
+                カテゴリセット
+              </a>
+            </li>
+            <li
+              id="mobilePrimaryMenu__subMenus5"
+              class="collapse show"
+              data-role="tabpanel"
+            >
+              <ul class="first-child last-child">
+                <li
+                  class="mt-mobilePrimaryMenu__menuItem first-child last-child"
+                >
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;_type=category_set&amp;blog_id=1"
+                    class="first-child last-child"
+                  >
+                    一覧
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="mt-mobilePrimaryMenu__menuItem">
+              <a
+                data-toggle="collapse"
+                data-parent="#mobilePrimaryMenu"
+                href="#mobilePrimaryMenu__subMenus7"
+                aria-expanded="true"
+                aria-controls="mobilePrimaryMenu__subMenus7"
+                class="first-child last-child"
+              >
+                <svg role="img" class="mt-icon first-child last-child">
+                  <use
+                    xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_asset"
+                    class="first-child last-child"
+                  ></use>
+                </svg>
+
+                アセット
+              </a>
+            </li>
+            <li
+              id="mobilePrimaryMenu__subMenus7"
+              class="collapse show"
+              data-role="tabpanel"
+            >
+              <ul class="first-child last-child">
+                <li class="mt-mobilePrimaryMenu__menuItem first-child">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;blog_id=1&amp;_type=asset"
+                    class="first-child last-child"
+                  >
+                    一覧
+                  </a>
+                </li>
+
+                <li class="mt-mobilePrimaryMenu__menuItem last-child">
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=start_upload&amp;blog_id=1"
+                    class="first-child last-child"
+                  >
+                    アップロード
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="mt-mobilePrimaryMenu__menuItem">
+              <a
+                data-toggle="collapse"
+                data-parent="#mobilePrimaryMenu"
+                href="#mobilePrimaryMenu__subMenus10"
+                aria-expanded="true"
+                aria-controls="mobilePrimaryMenu__subMenus10"
+                class="first-child last-child"
+              >
+                <svg role="img" class="mt-icon first-child last-child">
+                  <use
+                    xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_feedback"
+                    class="first-child last-child"
+                  ></use>
+                </svg>
+
+                コミュニケーション
+              </a>
+            </li>
+            <li
+              id="mobilePrimaryMenu__subMenus10"
+              class="collapse show last-child"
+              data-role="tabpanel"
+            >
+              <ul class="first-child last-child">
+                <li
+                  class="mt-mobilePrimaryMenu__menuItem first-child last-child"
+                >
+                  <a
+                    href="/cgi-bin/mt/mt.cgi?__mode=list&amp;_type=comment&amp;blog_id=1"
+                    class="first-child last-child"
+                  >
+                    コメント
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="msg-block">
+        <div
+          id="blank-blocks"
+          class="alert alert-danger first-child last-child"
+          style="display: none"
+          role="alert"
+        >
+          You must enter information into the required blocks highlighted below
+          before the custom block can be created.
+        </div>
+      </div>
+
+      <div class="row flex-row-reverse mb-5">
+        <div class="col-auto first-child last-child">
+          <button
+            type="button"
+            class="btn btn-default first-child"
+            id="import-block"
+            data-toggle="modal"
+            data-target="#import-block-modal"
+          >
+            読み込む
+          </button>
+          <button
+            type="button"
+            class="btn btn-default last-child"
+            id="export-block"
+          >
+            書き出す
+          </button>
+        </div>
+      </div>
+
+      <div id="import-block-modal" class="modal fade" tabindex="-1">
+        <form
+          id="import-block-form"
+          role="form"
+          class="form-horizontal first-child last-child"
+        >
+          <div class="modal-dialog first-child last-child">
+            <div class="modal-content first-child last-child">
+              <div class="modal-body first-child">
+                <div class="help-block first-child">
+                  <div class="first-child last-child"></div>
+                </div>
+
+                <div
+                  id="import-file-field"
+                  class="
+                    field field-content
+                    form-group
+                    field-top-label
+                    last-child
+                  "
+                >
+                  <label for="import-file" class="first-child">ファイル</label>
+
+                  <input
+                    name="file"
+                    type="file"
+                    accept="application/json"
+                    required=""
+                    id="import-file"
+                    class="form-control border-0 p-0"
+                    aria-describedby="importFile"
+                  />
+
+                  <small id="importFile" class="form-text text-muted last-child"
+                    >※
+                    JSON形式のファイルからカスタムブロックを読み込むことができます。</small
+                  >
+                </div>
+              </div>
+              <div class="modal-footer last-child">
+                <button
+                  type="submit"
+                  class="btn btn-primary first-child last-child"
+                >
+                  読み込む
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <form
+        method="post"
+        action="/cgi-bin/mt/mt.cgi"
+        id="block-form"
+        class="last-child"
+      >
+        <input
+          type="hidden"
+          name="__mode"
+          value="save"
+          id="__mode"
+          class="first-child"
+        />
+        <input type="hidden" name="_type" value="be_block" />
+        <input type="hidden" name="blog_id" value="1" />
+
+        <input
+          type="hidden"
+          name="magic_token"
+          value="f249b9332609d9f4798655bdf068240128e16a9c"
+          id="magic_token"
+        />
+        <input
+          type="hidden"
+          name="return_args"
+          value="__mode=view&amp;blog_id=1&amp;_type=be_block"
+          id="return_args"
+        />
+
+        <div
+          id="label-field"
+          class="field field-content form-group required field-left-label"
+        >
+          <label for="label" class="first-child"
+            >名前
+            <span class="badge badge-danger first-child last-child"
+              >必須</span
+            ></label
+          >
+
+          <input
+            type="text"
+            name="label"
+            value=""
+            id="label"
+            class="form-control text last-child"
+            required=""
+          />
+        </div>
+
+        <div
+          id="icon-field"
+          class="field field-content form-group field-left-label"
+        >
+          <label for="icon" class="first-child">アイコン</label>
+
+          <div>
+            <img
+              id="icon-image"
+              width="30"
+              height="30"
+              class="d-none first-child"
+            />
+            <a href="#" id="reset-icon-image" class="d-none">リセット</a>
+            <input type="hidden" name="icon" id="icon" value="" />
+            <input
+              id="icon-file"
+              type="file"
+              data-mt-max-icon-size="10240"
+              class="last-child"
+            />
+          </div>
+
+          <small class="form-text text-muted last-child"
+            >10KB以下のサイズの画像ファイルをアップロードできます。</small
+          >
+        </div>
+
+        <div
+          id="identifier-field"
+          class="field field-content form-group required field-left-label"
+        >
+          <label for="identifier" class="first-child"
+            >識別子
+            <span class="badge badge-danger first-child last-child"
+              >必須</span
+            ></label
+          >
+
+          <input
+            type="text"
+            name="identifier"
+            value=""
+            id="identifier"
+            class="form-control text"
+          />
+
+          <small class="form-text text-muted last-child"
+            >識別子を変更すると保存済みのデータに含まれるブロックを同じブロックとして編集することができなくなります。</small
+          >
+        </div>
+
+        <div
+          id="html-field"
+          class="field field-content form-group field-left-label"
+        >
+          <label for="html" class="first-child">ブロック</label>
+
+          <div class="form-control pt-5 pb-5 last-child">
+            <div data-mt-be-id="html" class="mt-block-editor">
+              <div>
+                <div class="mt-be-btn-add-bottom">
+                  <input class="mt-be-input--hidden" tabindex="-1" />
+                  <div class="mt-be-btn-wrap">
+                    <ul class="mt-be-shortcut-block-list"></ul>
+                    <button type="button" class="mt-be-btn-add">
+                      ＋ ブロックを追加
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <textarea
+              id="html"
+              name="html"
+              class="form-control first-child last-child"
+              data-mt-block-type-ids='["core-text","mt-image","mt-file","core-html","sixapart-oembed","core-horizontalrule","core-table","core-columns","sixapart-input","sixapart-textarea","sixapart-select","usualoma-ogpembed","custom-eeeeeeeeee","custom-o"]'
+              style="display: none"
+            ></textarea>
+          </div>
+        </div>
+
+        <div
+          id="preview_header-field"
+          class="field field-content form-group field-left-label"
+        >
+          <label for="preview_header" class="first-child"
+            >カスタムスクリプト</label
+          >
+
+          <textarea
+            id="preview_header"
+            name="preview_header"
+            class="form-control text high"
+          ></textarea>
+
+          <small id="previewHeader" class="form-text text-muted last-child"
+            >JavaScriptやCSSを使って表示をカスタマイズすることができます。</small
+          >
+        </div>
+
+        <div
+          id="wrap_root_block-field"
+          class="field field-content form-group field-left-label"
+        >
+          <label class="first-child">コンテナ要素で包む</label>
+
+          <div class="form-group last-child">
+            <div class="custom-control custom-checkbox first-child last-child">
+              <input
+                type="checkbox"
+                value="1"
+                name="wrap_root_block"
+                class="custom-control-input first-child"
+                id="wrap_root_block"
+                data-toggle="collapse"
+                data-target="#wrap-root-block-option"
+                aria-expanded="false"
+                aria-controls="wrap-root-block-option"
+              />
+              <label
+                class="custom-control-label last-child"
+                for="wrap_root_block"
+                >編集した内容をDIV要素で囲む</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <div id="wrap-root-block-option" class="setting-option collapse">
+          <div
+            id="class_name-field"
+            class="
+              field field-content
+              form-group
+              field-left-label
+              first-child
+              last-child
+            "
+          >
+            <label for="class_name" class="first-child">クラス名</label>
+
+            <input
+              type="text"
+              name="class_name"
+              value=""
+              id="class_name"
+              class="form-control text"
+            />
+
+            <small id="className" class="form-text text-muted last-child"
+              >コンテナ要素にクラス名を指定することができます。</small
+            >
+          </div>
+        </div>
+
+        <div
+          id="can_remove_block-field"
+          class="field field-content form-group field-left-label"
+        >
+          <label class="first-child">ブロックの追加と削除</label>
+
+          <div class="form-group last-child">
+            <div class="custom-control custom-checkbox first-child last-child">
+              <input
+                type="checkbox"
+                value="1"
+                name="can_remove_block"
+                class="custom-control-input first-child"
+                id="can_remove_block"
+                data-toggle="collapse"
+                data-target="#can-remove-block-option"
+                aria-expanded="false"
+                aria-controls="can-remove-block-option"
+              />
+              <label
+                class="custom-control-label last-child"
+                for="can_remove_block"
+                >ブロックの追加と削除を許可する</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <div id="can-remove-block-option" class="setting-option collapse">
+          <div
+            id="addable_block_types-field"
+            class="
+              field field-content
+              form-group
+              field-left-label
+              first-child
+              last-child
+            "
+          >
+            <label for="addable_block_types" class="first-child"
+              >追加可能なブロック</label
+            >
+
+            <div class="row mt-draggable border-0 flex-row-reverse">
+              <div class="col-auto w-25 first-child last-child">
+                <div class="row first-child last-child">
+                  <span class="col-auto w-50 text-right first-child">
+                    パネル
+                  </span>
+                  <span class="col-auto w-50 text-right last-child">
+                    ショートカット
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              id="block_display_options-list"
+              data-type="common"
+              class="ui-sortable"
+            >
+              <div
+                class="
+                  mt-draggable
+                  sort-enabled
+                  row
+                  first-child
+                  ui-sortable-handle
+                "
+                data-type-id="core-text"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-core-text">
+                  テキストブロック
+                </div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="mt-image"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-mt-image">画像</div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="mt-file"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-mt-file">ファイル</div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="core-html"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-core-html">HTML</div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="sixapart-oembed"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-sixapart-oembed">oEmbed</div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="core-horizontalrule"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-core-horizontalrule">罫線</div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="core-table"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-core-table">テーブル</div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="core-columns"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-core-columns">
+                  マルチカラム
+                </div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="usualoma-ogpembed"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-usualoma-ogpembed">
+                  OGPEmbed
+                </div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="mt-draggable sort-enabled row ui-sortable-handle"
+                data-type-id="custom-eeeeeeeeee"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-custom-eeeeeeeeee">
+                  ううううううううううう
+                </div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="
+                  mt-draggable
+                  sort-enabled
+                  row
+                  last-child
+                  ui-sortable-handle
+                "
+                data-type-id="custom-o"
+                draggable="true"
+                aria-grabbed="false"
+              >
+                <div class="col-auto mt-ic_move first-child">
+                  <svg role="img" class="mt-icon first-child last-child">
+                    <title class="first-child">Draggable</title>
+                    <use
+                      xlink:href="http://127.0.0.1:8079/mt-static/images/sprite.svg#ic_move"
+                      class="last-child"
+                    ></use>
+                  </svg>
+                </div>
+                <div class="col" for="block-show-custom-o">eeeeeeee</div>
+                <div class="col-auto w-25 last-child">
+                  <div class="row first-child last-child">
+                    <span class="col-auto w-50 text-right first-child">
+                      <input
+                        type="checkbox"
+                        name="panel"
+                        class="align-middle first-child last-child"
+                        checked="checked"
+                      />
+                    </span>
+                    <span class="col-auto w-50 text-right last-child">
+                      <input
+                        type="checkbox"
+                        name="shortcut"
+                        class="align-middle first-child last-child"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input
+              type="hidden"
+              id="block_display_options"
+              name="addable_block_types"
+              value='{"common":[{"typeId":"core-text","index":0,"panel":true,"shortcut":true},{"typeId":"mt-image","index":1,"panel":true,"shortcut":true},{"typeId":"mt-file","index":2,"panel":true,"shortcut":true},{"typeId":"core-html","index":3,"panel":true,"shortcut":false},{"typeId":"sixapart-oembed","index":4,"panel":true,"shortcut":false},{"typeId":"core-horizontalrule","index":5,"panel":true,"shortcut":false},{"typeId":"core-table","index":6,"panel":true,"shortcut":false},{"typeId":"core-columns","index":7,"panel":true,"shortcut":false},{"typeId":"usualoma-ogpembed","index":8,"panel":true,"shortcut":false},{"typeId":"custom-eeeeeeeeee","index":9,"panel":true,"shortcut":false},{"typeId":"custom-o","index":10,"panel":true,"shortcut":false}]}'
+              class="last-child"
+            />
+          </div>
+        </div>
+
+        <div class="actions-bar actions-bar-bottom line last-child">
+          <button
+            type="submit"
+            accesskey="s"
+            title="Save this block (s)"
+            class="
+              save
+              action
+              primary
+              button
+              btn btn-primary
+              first-child
+              last-child
+            "
+          >
+            保存
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,7 +1,10 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@4.5.0
+
 jobs:
-  test:
+  test-perl:
     docker:
       - image: movabletype/test:trusty
     steps:
@@ -13,6 +16,14 @@ jobs:
             cp -r mt/* .
             cp mt/.proverc .
             prove -j4 -PMySQLPool=MT::Test::Env -It/lib plugins/MTBlockEditor/t
+
+  test-js:
+    docker:
+      - image: cypress/included:7.4.0
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm run cypress:run
 
   build:
     docker:
@@ -40,5 +51,6 @@ workflows:
   version: 2
   test_and_build:
     jobs:
-      - test
+      - test-perl
+      - test-js
       - build
