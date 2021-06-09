@@ -47,58 +47,166 @@ MT::Association->link($designer => $designer_role => $blog);
 my ($app, $out);
 
 subtest 'create' => sub {
-    subtest 'has permission' => sub {
-        for my $u ($admin, $designer) {
-            my $label = 'New Config By ' . $u->id;
+    subtest 'system scope' => sub {
+        subtest 'has permission' => sub {
+            for my $u ($admin) {
+                my $label = 'New System Config By ' . $u->id;
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user           => $u,
+                        __request_method      => 'POST',
+                        __mode                => 'save',
+                        _type                 => 'be_config',
+                        blog_id               => 0,
+                        label                 => $label,
+                        block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
+                    });
+                $out = delete $app->{__test_output};
+
+                like $out, qr/Status: 302/;
+
+                my ($created_id) = $out =~ m{\bid=([0-9]+)};
+                my $created = MT->model('be_config')->load($created_id);
+                ok $created;
+                is $created->label,   $label;
+                is $created->blog_id, 0;
+            }
+        };
+
+        subtest 'has not permission' => sub {
+            for my $u ($designer, $author) {
+                my $count = MT->model('be_config')->count;
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user           => $u,
+                        __request_method      => 'POST',
+                        __mode                => 'save',
+                        _type                 => 'be_config',
+                        blog_id               => 0,
+                        label                 => 'By author',
+                        block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
+                    });
+                $out = delete $app->{__test_output};
+                unlike $out, qr{\bid=([0-9]+)};
+                is $count,   MT->model('be_config')->count;
+            }
+        };
+    };
+
+    subtest 'blog scope' => sub {
+        subtest 'has permission' => sub {
+            for my $u ($admin, $designer) {
+                my $label = 'New Config By ' . $u->id;
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user           => $u,
+                        __request_method      => 'POST',
+                        __mode                => 'save',
+                        _type                 => 'be_config',
+                        blog_id               => $blog->id,
+                        label                 => $label,
+                        block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
+                    });
+                $out = delete $app->{__test_output};
+
+                like $out, qr/Status: 302/;
+
+                my ($created_id) = $out =~ m{\bid=([0-9]+)};
+                my $created = MT->model('be_config')->load($created_id);
+                ok $created;
+                is $created->label, $label;
+            }
+        };
+
+        subtest 'has not permission' => sub {
+            my $count = MT->model('be_config')->count;
             $app = _run_app(
                 'MT::App::CMS',
                 {
-                    __test_user           => $u,
+                    __test_user           => $author,
                     __request_method      => 'POST',
                     __mode                => 'save',
                     _type                 => 'be_config',
                     blog_id               => $blog->id,
-                    label                 => $label,
+                    label                 => 'By author',
                     block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
                 });
             $out = delete $app->{__test_output};
-
-            like $out, qr/Status: 302/;
-
-            my ($created_id) = $out =~ m{\bid=([0-9]+)};
-            my $created = MT->model('be_config')->load($created_id);
-            ok $created;
-            is $created->label, $label;
-        }
-    };
-
-    subtest 'has not permission' => sub {
-        my $count = MT->model('be_config')->count;
-        $app = _run_app(
-            'MT::App::CMS',
-            {
-                __test_user           => $author,
-                __request_method      => 'POST',
-                __mode                => 'save',
-                _type                 => 'be_config',
-                blog_id               => $blog->id,
-                label                 => 'By author',
-                block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
-            });
-        $out = delete $app->{__test_output};
-        unlike $out, qr{\bid=([0-9]+)};
-        is $count,   MT->model('be_config')->count;
+            unlike $out, qr{\bid=([0-9]+)};
+            is $count,   MT->model('be_config')->count;
+        };
     };
 };
 
 subtest 'read' => sub {
-    my $config = MT::Test::MTBlockEditor::make_be_config();
-    subtest 'has permission' => sub {
-        for my $u ($admin, $designer) {
+    subtest 'system scope' => sub {
+        my $config = MT::Test::MTBlockEditor::make_be_config(
+            blog_id => 0,
+        );
+        subtest 'has permission' => sub {
+            for my $u ($admin) {
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user      => $u,
+                        __request_method => 'GET',
+                        __mode           => 'view',
+                        _type            => 'be_config',
+                        blog_id          => 0,
+                        id               => $config->id,
+                    });
+                $out = delete $app->{__test_output};
+                like $out, qr/Status: 200/;
+                like $out, qr/value="@{[$config->label]}"/;
+            }
+        };
+
+        subtest 'has not permission' => sub {
+            for my $u ($designer, $author) {
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user      => $u,
+                        __request_method => 'GET',
+                        __mode           => 'view',
+                        _type            => 'be_config',
+                        blog_id          => 0,
+                        id               => $config->id,
+                    });
+                $out = delete $app->{__test_output};
+                unlike $out, qr/Status: 200/;
+            }
+        };
+    };
+
+    subtest 'blog scope' => sub {
+        my $config = MT::Test::MTBlockEditor::make_be_config();
+        subtest 'has permission' => sub {
+            for my $u ($admin, $designer) {
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user      => $u,
+                        __request_method => 'GET',
+                        __mode           => 'view',
+                        _type            => 'be_config',
+                        blog_id          => $blog->id,
+                        id               => $config->id,
+                    });
+                $out = delete $app->{__test_output};
+                like $out, qr/Status: 200/;
+                like $out, qr/value="@{[$config->label]}"/;
+            }
+        };
+
+        subtest 'has not permission' => sub {
             $app = _run_app(
                 'MT::App::CMS',
                 {
-                    __test_user      => $u,
+                    __test_user      => $author,
                     __request_method => 'GET',
                     __mode           => 'view',
                     _type            => 'be_config',
@@ -106,37 +214,107 @@ subtest 'read' => sub {
                     id               => $config->id,
                 });
             $out = delete $app->{__test_output};
-            like $out, qr/Status: 200/;
-            like $out, qr/value="@{[$config->label]}"/;
-        }
-    };
-
-    subtest 'has not permission' => sub {
-        $app = _run_app(
-            'MT::App::CMS',
-            {
-                __test_user      => $author,
-                __request_method => 'GET',
-                __mode           => 'view',
-                _type            => 'be_config',
-                blog_id          => $blog->id,
-                id               => $config->id,
-            });
-        $out = delete $app->{__test_output};
-        unlike $out, qr/Status: 200/;
+            unlike $out, qr/Status: 200/;
+        };
     };
 };
 
 subtest 'update' => sub {
-    subtest 'has permission' => sub {
-        for my $u ($admin, $designer) {
+    subtest 'system scope' => sub {
+        subtest 'has permission' => sub {
+            for my $u ($admin) {
+                my $config = MT::Test::MTBlockEditor::make_be_config(
+                    label   => 'Test',
+                    blog_id => 0,
+                );
+
+                my $new_label = 'Update Config By ' . $u->id;
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user           => $u,
+                        __request_method      => 'POST',
+                        __mode                => 'save',
+                        _type                 => 'be_config',
+                        blog_id               => 0,
+                        id                    => $config->id,
+                        label                 => $new_label,
+                        block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
+                    });
+                $out = delete $app->{__test_output};
+
+                like $out, qr/Status: 302/;
+
+                $config->refresh;
+                is $config->label, $new_label;
+            }
+        };
+
+        subtest 'has not permission' => sub {
+            for my $u ($designer, $author) {
+                my $config = MT::Test::MTBlockEditor::make_be_config(
+                    label   => 'Test',
+                    blog_id => 0,
+                );
+
+                my $new_label = 'Updated By Author';
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user           => $author,
+                        __request_method      => 'POST',
+                        __mode                => 'save',
+                        _type                 => 'be_config',
+                        blog_id               => 0,
+                        id                    => $config->id,
+                        label                 => $new_label,
+                        block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
+                    });
+
+                $out = delete $app->{__test_output};
+                unlike $out, qr{\bid=([0-9]+)};
+
+                $config->refresh;
+                isnt $config->label, $new_label;
+            }
+        };
+    };
+
+    subtest 'blog scope' => sub {
+        subtest 'has permission' => sub {
+            for my $u ($admin, $designer) {
+                my $config = MT::Test::MTBlockEditor::make_be_config(label => 'Test');
+
+                my $new_label = 'Update Config By ' . $u->id;
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user           => $u,
+                        __request_method      => 'POST',
+                        __mode                => 'save',
+                        _type                 => 'be_config',
+                        blog_id               => $blog->id,
+                        id                    => $config->id,
+                        label                 => $new_label,
+                        block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
+                    });
+                $out = delete $app->{__test_output};
+
+                like $out, qr/Status: 302/;
+
+                $config->refresh;
+                is $config->label, $new_label;
+            }
+        };
+
+        subtest 'has not permission' => sub {
             my $config = MT::Test::MTBlockEditor::make_be_config(label => 'Test');
 
-            my $new_label = 'Update Config By ' . $u->id;
+            my $new_label = 'Updated By Author';
             $app = _run_app(
                 'MT::App::CMS',
                 {
-                    __test_user           => $u,
+                    __test_user           => $author,
                     __request_method      => 'POST',
                     __mode                => 'save',
                     _type                 => 'be_config',
@@ -145,50 +323,85 @@ subtest 'update' => sub {
                     label                 => $new_label,
                     block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
                 });
-            $out = delete $app->{__test_output};
 
-            like $out, qr/Status: 302/;
+            $out = delete $app->{__test_output};
+            unlike $out, qr{\bid=([0-9]+)};
 
             $config->refresh;
-            is $config->label, $new_label;
-        }
-    };
+            isnt $config->label, $new_label;
 
-    subtest 'has not permission' => sub {
-        my $config = MT::Test::MTBlockEditor::make_be_config(label => 'Test');
-
-        my $new_label = 'Updated By Author';
-        $app = _run_app(
-            'MT::App::CMS',
-            {
-                __test_user           => $author,
-                __request_method      => 'POST',
-                __mode                => 'save',
-                _type                 => 'be_config',
-                blog_id               => $blog->id,
-                id                    => $config->id,
-                label                 => $new_label,
-                block_display_options => MT::Util::to_json($MT::Test::MTBlockEditor::block_display_options),
-            });
-
-        $out = delete $app->{__test_output};
-        unlike $out, qr{\bid=([0-9]+)};
-
-        $config->refresh;
-        isnt $config->label, $new_label;
-
-    };
+        };
+    }
 };
 
 subtest 'delete' => sub {
-    subtest 'has permission' => sub {
-        for my $u ($admin, $designer) {
+    subtest 'system scope' => sub {
+        subtest 'has permission' => sub {
+            for my $u ($admin) {
+                my $config = MT::Test::MTBlockEditor::make_be_config(blog_id => 0);
+
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user      => $u,
+                        __request_method => 'POST',
+                        __mode           => 'delete',
+                        _type            => 'be_config',
+                        blog_id          => $blog->id,
+                        id               => $config->id,
+                    });
+
+                ok !MT->model('be_config')->exist({ id => $config->id });
+            }
+        };
+
+        subtest 'has not permission' => sub {
+            for my $u ($designer, $author) {
+                my $config = MT::Test::MTBlockEditor::make_be_config(blog_id => 0);
+
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user      => $author,
+                        __request_method => 'POST',
+                        __mode           => 'delete',
+                        _type            => 'be_config',
+                        blog_id          => $blog->id,
+                        id               => $config->id,
+                    });
+
+                ok !!MT->model('be_config')->exist({ id => $config->id });
+            }
+        };
+    };
+
+    subtest 'blog scope' => sub {
+        subtest 'has permission' => sub {
+            for my $u ($admin, $designer) {
+                my $config = MT::Test::MTBlockEditor::make_be_config();
+
+                $app = _run_app(
+                    'MT::App::CMS',
+                    {
+                        __test_user      => $u,
+                        __request_method => 'POST',
+                        __mode           => 'delete',
+                        _type            => 'be_config',
+                        blog_id          => $blog->id,
+                        id               => $config->id,
+                    });
+
+                ok !MT->model('be_config')->exist({ id => $config->id });
+            }
+        };
+
+        subtest 'has not permission' => sub {
             my $config = MT::Test::MTBlockEditor::make_be_config();
 
             $app = _run_app(
                 'MT::App::CMS',
                 {
-                    __test_user      => $u,
+                    __test_user      => $author,
                     __request_method => 'POST',
                     __mode           => 'delete',
                     _type            => 'be_config',
@@ -196,25 +409,8 @@ subtest 'delete' => sub {
                     id               => $config->id,
                 });
 
-            ok !MT->model('be_config')->exist({ id => $config->id });
-        }
-    };
-
-    subtest 'has not permission' => sub {
-        my $config = MT::Test::MTBlockEditor::make_be_config();
-
-        $app = _run_app(
-            'MT::App::CMS',
-            {
-                __test_user      => $author,
-                __request_method => 'POST',
-                __mode           => 'delete',
-                _type            => 'be_config',
-                blog_id          => $blog->id,
-                id               => $config->id,
-            });
-
-        ok !!MT->model('be_config')->exist({ id => $config->id });
+            ok !!MT->model('be_config')->exist({ id => $config->id });
+        };
     };
 };
 

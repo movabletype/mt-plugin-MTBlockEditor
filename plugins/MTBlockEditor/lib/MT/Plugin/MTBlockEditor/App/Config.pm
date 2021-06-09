@@ -30,7 +30,7 @@ sub edit_be_config {
 
     $param->{saved}                  = !!$app->param('saved');
     $param->{shortcut_count_default} = MT::Plugin::MTBlockEditor->SHORTCUT_COUNT_DEFAULT;
-    $param->{block_types}            = blocks({ blog_id => $blog->id });
+    $param->{block_types}            = blocks({ blog_id => $blog_id });
 
     $app->add_breadcrumb(
         plugin()->translate("Custom Block Presets"),
