@@ -21,7 +21,7 @@ sub init_app {
         my ($prop, $content_data, $app, $opts) = @_;
 
         my $cb = $content_data->data->{ $prop->content_field_id . '_convert_breaks' };
-        return $orig->(@_) if $cb ne 'block_editor';
+        return $orig->(@_) if !$cb || $cb ne 'block_editor';
 
         my $text = $content_data->data->{ $prop->content_field_id };
         return '' unless defined $text;
