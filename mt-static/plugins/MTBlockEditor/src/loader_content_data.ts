@@ -51,6 +51,7 @@ async function initSelect(select): Promise<void> {
 
       const opts: ApplyOptions = {
         id: inputElm.id,
+        mode: "composition",
         rootAttributes: {
           "data-content-type-name": fieldData["content_type"]["name"],
           "data-content-type-unique-id": fieldData["content_type"]["unique_id"],

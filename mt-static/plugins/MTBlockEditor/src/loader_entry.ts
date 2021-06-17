@@ -61,6 +61,7 @@ async function initSelect(select): Promise<void> {
           ) as HTMLElement).textContent || "";
         const opts: ApplyOptions = {
           id: inputElm.id,
+          mode: "composition",
           rootAttributes: {
             "data-field-name": fieldName,
           },
