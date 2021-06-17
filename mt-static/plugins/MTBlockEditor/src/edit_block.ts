@@ -3,6 +3,7 @@ import Ajv from "ajv";
 
 import {
   showAlert,
+  dismissAlert,
   serializeBlockPreferences,
   unserializeBlockPreferences,
 } from "./util";
@@ -99,6 +100,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
       const result = e.target?.result;
       icon.value = typeof result === "string" ? result : "";
       icon.dispatchEvent(new Event("change"));
+      dismissAlert();
     };
 
     reader.readAsDataURL(file);
@@ -283,6 +285,8 @@ async function applyBlockEditorForSetup(): Promise<void> {
           target.classList.toggle("show", elm.checked);
         }
       });
+
+    dismissAlert();
   }
 
   document.getElementById("export-block")?.addEventListener("click", (ev) => {
