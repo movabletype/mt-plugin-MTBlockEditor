@@ -118,3 +118,8 @@ export function showAlert({
 
   elm.appendChild(error);
 }
+
+export function dismissAlert(): void {
+  const elm = document.querySelector("#msg-block") as HTMLElement;
+  elm.textContent = "";
+}
