@@ -25,13 +25,13 @@ npm-build:
 build-js: npm-install npm-build
 
 build-locales:
-	mkdir -p mt-static/plugins/MTBlockEditor/locales
-	for f in plugins/MTBlockEditor/lib/MT/Plugin/MTBlockEditor/L10N/*.pm; do \
+	mkdir -p mt-static/plugins/$(NAME)/locales
+	for f in plugins/$(NAME)/lib/MT/Plugin/$(NAME)/L10N/*.pm; do \
         l=$$(basename $$f .pm); \
-        d=mt-static/plugins/MTBlockEditor/locales/$${l}.js; \
+        d=mt-static/plugins/$(NAME)/locales/$${l}.js; \
         \
         echo '(function() { var lexicon =' > $$d; \
-        perl -Iplugins/MTBlockEditor/lib -MJSON -e "BEGIN { package MT::Plugin::L10N { sub new {} } }; use MT::Plugin::MTBlockEditor::L10N::$$l; print(encode_json(\%MT::Plugin::MTBlockEditor::L10N::$$l::Lexicon))" >> $$d || exit 1; \
+        perl -Iplugins/$(NAME)/lib -MJSON -e "BEGIN { package MT::Plugin::L10N { sub new {} } }; use MT::Plugin::$(NAME)::L10N::$$l; print(encode_json(\%MT::Plugin::$(NAME)::L10N::$$l::Lexicon))" >> $$d || exit 1; \
         echo '; for (k in lexicon) { window.Lexicon[k] = lexicon[k] } })()' >> $$d; \
     done
 
@@ -41,7 +41,7 @@ create_distdir :
 	$(RM_RF) $(DISTVNAME)
 	$(PERLRUN) "-MExtUtils::Manifest=manicopy,maniread" \
 		-e "manicopy(maniread(),'$(DISTVNAME)', '$(DIST_CP)');"
-	perl -MYAML -e 'my $$f = "$(DISTVNAME)/plugins/MTBlockEditor/config.yaml"; my $$c = YAML::LoadFile($$f); if ($$c->{version} ne "$(VERSION)") { $$c->{version} = "$(VERSION)"; YAML::DumpFile($$f, $$c) }'
+	perl -MYAML -e 'my $$f = "$(DISTVNAME)/plugins/$(NAME)/config.yaml"; my $$c = YAML::LoadFile($$f); if ($$c->{version} ne "$(VERSION)") { $$c->{version} = "$(VERSION)"; YAML::DumpFile($$f, $$c) }'
 
 distdir : create_distdir build
 	$(NOECHO) $(NOOP)
