@@ -41,6 +41,7 @@ create_distdir :
 	$(RM_RF) $(DISTVNAME)
 	$(PERLRUN) "-MExtUtils::Manifest=manicopy,maniread" \
 		-e "manicopy(maniread(),'$(DISTVNAME)', '$(DIST_CP)');"
+	perl -MYAML -e 'my $$f = "$(DISTVNAME)/plugins/MTBlockEditor/config.yaml"; my $$c = YAML::LoadFile($$f); if ($$c->{version} ne "$(VERSION)") { $$c->{version} = "$(VERSION)"; YAML::DumpFile($$f, $$c) }'
 
 distdir : create_distdir build
 	$(NOECHO) $(NOOP)
