@@ -38,7 +38,7 @@ jobs:
       - run:
           name: Build
           command: |
-            perl Makefile.PL --version $(git rev-parse --short HEAD)
+            perl Makefile.PL --version $(git describe --tags | sed -e 's/^v//')
             make manifest
             make zipdist
             make dist
