@@ -94,7 +94,7 @@ sub resolve {
     return error($app, "Can not get oEmbed data from URL: ${oembed_url}", 500)
         unless $res->is_success;
 
-    response($app, $res->decoded_content);
+    response($app, Encode::decode('UTF-8', $res->content));
 }
 
 1;
