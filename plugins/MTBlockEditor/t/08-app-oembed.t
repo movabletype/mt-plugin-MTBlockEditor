@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use utf8;
 use FindBin;
 use lib "$FindBin::Bin/../../../t/lib", "$FindBin::Bin/lib";
 use Test::More;
@@ -85,7 +86,7 @@ subtest 'mt_be_oembed' => sub {
                     url              => $s->{url},
                 });
             my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
-            my $res = eval { MT::Util::from_json($body) };
+            my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
             ok $res && $res->{html};
         }
     }
@@ -102,7 +103,7 @@ subtest 'mt_be_oembed' => sub {
                 });
 
             my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
-            my $res = eval { MT::Util::from_json($body) };
+            my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
             ok $res;
             is $res->{width},  200;
             is $res->{height}, 113;
@@ -120,7 +121,7 @@ subtest 'mt_be_oembed' => sub {
                 });
 
             my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
-            my $res = eval { MT::Util::from_json($body) };
+            my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
             ok $res;
             is $res->{width},  356;
             is $res->{height}, 200;
@@ -138,7 +139,7 @@ subtest 'mt_be_oembed' => sub {
                 });
 
             my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
-            my $res = eval { MT::Util::from_json($body) };
+            my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
             ok $res;
             is $res->{width},  200;
             is $res->{height}, 113;
@@ -157,7 +158,7 @@ subtest 'mt_be_oembed' => sub {
                 });
 
             my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
-            my $res = eval { MT::Util::from_json($body) };
+            my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
             ok $res;
             is $res->{width},  800;
             is $res->{height}, 450;
@@ -165,6 +166,22 @@ subtest 'mt_be_oembed' => sub {
     };
 
     subtest 'Twitter' => sub {
+        subtest 'valid URL' => sub {
+            $app = _run_app(
+                'MT::App::CMS',
+                {
+                    __test_user      => $admin,
+                    __request_method => 'GET',
+                    __mode           => 'mt_be_oembed',
+                    url              => 'https://twitter.com/sixapartkk/status/1225330880022896640',
+                });
+
+            my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
+            my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
+            ok $res;
+            like $res->{html}, qr{5周年を記念};
+        };
+
         subtest 'invalid URL' => sub {
             $app = _run_app(
                 'MT::App::CMS',
@@ -178,7 +195,7 @@ subtest 'mt_be_oembed' => sub {
             my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
             like $headers, qr/Status: 500/;
 
-            my $res = eval { MT::Util::from_json($body) };
+            my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
             ok $res;
             ok $res->{error}{message};
         };
@@ -196,7 +213,7 @@ subtest 'mt_be_oembed' => sub {
         my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
         like $headers, qr/Status: 400/;
 
-        my $res = eval { MT::Util::from_json($body) };
+        my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
         ok $res;
         ok $res->{error}{message};
     };
@@ -214,7 +231,7 @@ subtest 'mt_be_oembed' => sub {
         my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
         like $headers, qr/Status: 400/;
 
-        my $res = eval { MT::Util::from_json($body) };
+        my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
         ok $res;
         ok $res->{error}{message};
     };
