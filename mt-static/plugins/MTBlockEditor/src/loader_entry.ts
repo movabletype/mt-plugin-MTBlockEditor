@@ -135,7 +135,7 @@ async function initSelect(select): Promise<void> {
   const form = select.form as HTMLFormElement;
 
   initSelect(select);
-  form.querySelectorAll("button").forEach((elm) => {
+  form.querySelectorAll('button[type="submit"]').forEach((elm) => {
     initButton(elm, serializeMethods);
   });
 })();
