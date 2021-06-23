@@ -67,19 +67,25 @@ export function initButton(
   serializeMethods: SerializeMethod[]
 ): void {
   let doClick = false;
-  elm.addEventListener("click", (ev) => {
-    if (doClick) {
-      doClick = false;
-      return;
+  elm.addEventListener(
+    "click",
+    (ev) => {
+      if (doClick) {
+        doClick = false;
+        return;
+      }
+
+      ev.stopImmediatePropagation();
+      ev.stopPropagation();
+      ev.preventDefault();
+
+      Promise.all(serializeMethods.map((f) => f())).then(() => {
+        doClick = true;
+        elm.click();
+      });
+    },
+    {
+      capture: true,
     }
-
-    ev.stopImmediatePropagation();
-    ev.stopPropagation();
-    ev.preventDefault();
-
-    Promise.all(serializeMethods.map((f) => f())).then(() => {
-      doClick = true;
-      elm.click();
-    });
-  });
+  );
 }
