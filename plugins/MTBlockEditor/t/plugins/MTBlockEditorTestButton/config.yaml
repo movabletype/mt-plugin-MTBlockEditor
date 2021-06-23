@@ -1,0 +1,36 @@
+id: MTBlockEditorTestButton
+name: MTBlockEditorTestButton
+version: 1.0.0
+
+applications:
+  cms:
+    callbacks:
+      template_source.edit_entry: |
+        sub {
+            my ($cb, $app, $tmpl) = @_;
+
+            $$tmpl =~ s{(<div\s*id="sortable")}{
+        <div>
+          <button type="button" id="MTBlockEditorTestButton-button">MTBlockEditorTestButton-1</button><div>0</div>
+          <script>
+          document.querySelector("#MTBlockEditorTestButton-button").addEventListener("click", function(ev) {
+
+            var elm = ev.currentTarget.nextSibling;
+            elm.textContent = parseInt(elm.textContent) + 1;
+          }, {capture : true});
+          </script>
+        </div>
+        <div>
+          <button type="submit" id="MTBlockEditorTestButton-submit">MTBlockEditorTestButton-2</button><div>0</div>
+          <script>
+          document.querySelector("#MTBlockEditorTestButton-submit").addEventListener("click", function(ev) {
+
+            var elm = ev.currentTarget.nextSibling;
+            elm.textContent = parseInt(elm.textContent) + 1;
+
+            ev.preventDefault();
+          });
+          </script>
+        </div>
+        $1}i;
+        }
