@@ -42,8 +42,14 @@ jobs:
             make manifest
             make zipdist
             make dist
-            mkdir packages
+            mkdir -p packages
             mv MTBlockEditor-* packages
+      - run:
+          name: Plugins for test
+          command: |
+            cd plugins/MTBlockEditor/t
+            mkdir -p packages
+            tar zcf ../../../packages/MTBlockEditorTest.tar.gz plugins
       - store_artifacts:
           path: packages
 
