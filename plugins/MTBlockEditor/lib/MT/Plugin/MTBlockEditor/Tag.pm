@@ -39,7 +39,7 @@ sub _hdlr_blocks {
             }
 
             $value
-                ? MT::BlockEditor::Parser->new(json => JSON->new)->parse(Encode::encode('UTF-8', $value))
+                ? MT::BlockEditor::Parser->new(json => JSON->new)->parse($value)
                 : [];
         } elsif (my $block = $ctx->{__stash}{block_editor_block}) {
             $block->{blocks};
