@@ -129,4 +129,8 @@ sub output {
     join '', @{ $_[0]->{array} };
 }
 
+sub TO_JSON {
+    shift->output;
+}
+
 1;
