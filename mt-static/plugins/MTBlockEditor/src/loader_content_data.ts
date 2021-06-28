@@ -126,6 +126,6 @@ async function initSelect(select): Promise<void> {
 
   selects.forEach(initSelect);
   form.querySelectorAll('button[type="submit"]').forEach((elm) => {
-    initButton(elm, serializeMethods);
+    initButton(elm as HTMLElement, serializeMethods);
   });
 })();
