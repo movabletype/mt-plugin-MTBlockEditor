@@ -27,7 +27,7 @@ async function initSelect(select): Promise<void> {
     let editor: Editor | null = null;
     let lastValue = "";
 
-    const inputElm = document.createElement("INPUT") as HTMLInputElement;
+    const inputElm = document.createElement("TEXTAREA") as HTMLTextAreaElement;
     inputElm.id = target.id + "-mt-be";
     const wrap = document.createElement("DIV");
     wrap.classList.add("mt-block-editor-wrap-entry");

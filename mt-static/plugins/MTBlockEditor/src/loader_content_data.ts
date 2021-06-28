@@ -21,7 +21,7 @@ async function initSelect(select): Promise<void> {
   const target = document.getElementById(
     select.dataset.target
   ) as HTMLInputElement;
-  const inputElm = document.createElement("INPUT") as HTMLInputElement;
+  const inputElm = document.createElement("TEXTAREA") as HTMLTextAreaElement;
   inputElm.id = select.dataset.target + "-mt-be";
   const wrap = document.createElement("DIV");
   wrap.classList.add("mt-block-editor-wrap");
