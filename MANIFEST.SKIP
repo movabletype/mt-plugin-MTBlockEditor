@@ -47,3 +47,6 @@ mt-static/plugins/MTBlockEditor/src/
 # test
 plugins/MTBlockEditor/t/
 plugins/MTBlockEditor/xt/
+
+# distribution files and directories
+^MTBlockEditor
