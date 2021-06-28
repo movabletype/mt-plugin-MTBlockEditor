@@ -50,7 +50,7 @@ sub parse {
     );
     my $parser = XML::SAX::ParserFactory->parser( Handler => $handler );
 
-    $parser->parse_string(<<XML);
+    $parser->parse_string(<<XML, { Source => { Encoding => 'UTF-8' } });
 <xml>
 $content
 </xml>
