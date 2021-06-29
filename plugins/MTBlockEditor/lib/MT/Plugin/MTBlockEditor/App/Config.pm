@@ -8,7 +8,7 @@ use strict;
 use warnings;
 use utf8;
 
-use MT::Plugin::MTBlockEditor qw(plugin blocks load_tmpl);
+use MT::Plugin::MTBlockEditor qw(plugin blocks to_addable_blocks to_custom_block_types_json load_tmpl);
 
 sub edit_be_config {
     my ($app, $param) = @_;
@@ -30,7 +30,9 @@ sub edit_be_config {
 
     $param->{saved}                  = !!$app->param('saved');
     $param->{shortcut_count_default} = MT::Plugin::MTBlockEditor->SHORTCUT_COUNT_DEFAULT;
-    $param->{block_types}            = blocks({ blog_id => $blog_id });
+    my $block_types = blocks({ blog_id => $blog_id });
+    $param->{block_types}             = to_addable_blocks($block_types);
+    $param->{custom_block_types_json} = to_custom_block_types_json($block_types);
 
     $app->add_breadcrumb(
         plugin()->translate("Custom Block Presets"),
