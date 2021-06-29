@@ -9,9 +9,14 @@ package MT::Plugin::MTBlockEditor;
 use strict;
 use warnings;
 
+use MT::Util;
+
 use constant { SHORTCUT_COUNT_DEFAULT => 3 };
 
-our @EXPORT_OK = qw( plugin translate blocks load_tmpl tmpl_param);
+our @EXPORT_OK = qw(
+    plugin translate blocks to_addable_blocks to_custom_block_types_json
+    load_tmpl tmpl_param
+);
 use base qw(Exporter);
 
 sub component {
@@ -40,14 +45,23 @@ sub blocks {
     my ($param) = @_;
     my $blog_id = $param->{blog_id};
 
-    my $model        = MT->model('be_block');
-    my @column_names = @{ $model->column_names() };
-    my @blocks       = $model->load(
+    my @blocks = MT->model('be_block')->load(
         { blog_id => [0, $blog_id], },
         {
             sort      => 'id',
             direction => 'ascend',
         });
+
+    [
+        @{ MT->model('be_block')->DEFAULT_BLOCKS },
+        @blocks
+    ];
+}
+
+sub to_addable_blocks {
+    my ($block_types) = @_;
+
+    my @column_names = @{ MT->model('be_block')->column_names() };
     [
         map {
             my $obj = $_;
@@ -59,11 +73,17 @@ sub blocks {
                 } @column_names,
                 qw(
                     type_id is_default_visible
-                    is_default_block is_default_hidden is_form_element
+                    is_default_block is_default_hidden
                     ) }
-        } @{ MT->model('be_block')->DEFAULT_BLOCKS },
-        @blocks
+        } grep { !$_->is_form_element } @$block_types
     ];
+}
+
+sub to_custom_block_types_json {
+    my ($block_types) = @_;
+    MT::Util::to_json(
+        [grep { !$_->is_default_block } @$block_types],
+        { convert_blessed => 1 });
 }
 
 1;
