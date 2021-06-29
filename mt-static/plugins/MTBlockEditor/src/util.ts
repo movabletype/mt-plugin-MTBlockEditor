@@ -63,7 +63,7 @@ export function unserializeBlockPreferences(): void {
         return;
       }
 
-      list.insertBefore(curItem, insertMarker);
+      list.insertBefore(curItem, insertMarker || list.firstChild);
       insertMarker = curItem.nextSibling;
 
       (curItem.querySelector(

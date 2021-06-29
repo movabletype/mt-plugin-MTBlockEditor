@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use utf8;
 
+use JSON;
+use MT::Util;
 use MT::Plugin::MTBlockEditor qw(translate);
 use base qw(MT::Object Class::Accessor::Fast);
 
@@ -188,6 +190,22 @@ sub _validate_icon {
         if length $self->icon > MAX_ICON_SIZE_HARD;
 
     return 1;
+}
+
+sub TO_JSON {
+    my $self = shift;
+    +{
+        typeId            => $self->type_id,
+        className         => $self->class_name,
+        label             => $self->label,
+        icon              => $self->icon,
+        html              => $self->html,
+        canRemoveBlock    => $self->can_remove_block ? JSON::true : JSON::false,
+        rootBlock         => $self->root_block,
+        previewHeader     => $self->preview_header,
+        shouldBeCompiled  => $self->should_be_compiled ? JSON::true : JSON::false,
+        addableBlockTypes => MT::Util::from_json($self->addable_block_types || '{}'),
+    };
 }
 
 1;

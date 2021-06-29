@@ -8,7 +8,7 @@ use strict;
 use warnings;
 use utf8;
 
-use MT::Plugin::MTBlockEditor qw(plugin blocks load_tmpl);
+use MT::Plugin::MTBlockEditor qw(plugin blocks to_addable_blocks to_custom_block_types_json load_tmpl);
 use MT::Plugin::MTBlockEditor::App::CMS;
 
 sub edit_be_block {
@@ -35,11 +35,12 @@ sub edit_be_block {
     $param->{saved} = !!$app->param('saved');
 
     $param->{shortcut_count_default} = MT::Plugin::MTBlockEditor->SHORTCUT_COUNT_DEFAULT;
-    my @block_types = grep { $_->{identifier} ne $param->{identifier} } @{ blocks({ blog_id => $blog_id }) };
-    $param->{block_types}      = \@block_types;
-    $param->{block_type_ids}   = [map { $_->{type_id} } @block_types];
-    $param->{max_icon_size}    = MT->model('be_block')->MAX_ICON_SIZE;
-    $param->{max_icon_size_hr} = (MT->model('be_block')->MAX_ICON_SIZE / 1024) . 'KB';
+    my @block_types = grep { $_->identifier ne $param->{identifier} } @{ blocks({ blog_id => $blog_id }) };
+    $param->{block_types}             = to_addable_blocks(\@block_types);
+    $param->{custom_block_types_json} = to_custom_block_types_json(\@block_types);
+    $param->{block_type_ids}          = [map { $_->type_id } @block_types];
+    $param->{max_icon_size}           = MT->model('be_block')->MAX_ICON_SIZE;
+    $param->{max_icon_size_hr}        = (MT->model('be_block')->MAX_ICON_SIZE / 1024) . 'KB';
 
     $app->add_breadcrumb(
         plugin()->translate("Custom Blocks"),

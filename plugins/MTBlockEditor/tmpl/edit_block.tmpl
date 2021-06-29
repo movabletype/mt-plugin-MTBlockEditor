@@ -191,7 +191,6 @@
     </div>
     <div id="block_display_options-list" data-type="common">
     <mt:Loop name="block_types">
-    <mt:Unless name="is_form_element">
       <div class="mt-draggable sort-enabled row" data-type-id="<mt:Var name="type_id" />" draggable="true" aria-grabbed="false">
 
         <div class="col-auto mt-ic_move"><mtapp:svgicon id="ic_move" title="Draggable"></div>
@@ -207,7 +206,6 @@
           </div>
         </div>
       </div>
-    </mt:Unless>
     </mt:Loop>
     </div>
     <input type="hidden" id="block_display_options" name="addable_block_types" value="<mt:If name="addable_block_types"><mt:Var name="addable_block_types" encode_html="1" /><mt:ElseIf name="default_block_display_options"><mt:Var name="default_block_display_options" encode_html="1"/><mt:Else>{&quot;common&quot;:[]}</mt:If>" />
