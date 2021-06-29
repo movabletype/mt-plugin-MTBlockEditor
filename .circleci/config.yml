@@ -55,8 +55,14 @@ jobs:
 
 workflows:
   version: 2
-  test_and_build:
+  test-and-build:
     jobs:
       - test-perl
       - test-js
       - build
+  tagged-build:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
