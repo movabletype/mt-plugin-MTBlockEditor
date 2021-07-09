@@ -425,7 +425,7 @@ class MTImage extends Block {
           imageHeight: img?.height || "",
           alternativeText: img?.alt || "",
           caption: figCaption?.innerHTML.replace(/<br[^>]*>/g, "\n") || "",
-          assetUrl: a?.href || "",
+          assetUrl: a?.getAttribute("href") || "",
           linkToOriginal: !!a,
         },
         meta
