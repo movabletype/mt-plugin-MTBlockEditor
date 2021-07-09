@@ -57,7 +57,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
           ) as HTMLAnchorElement | null;
           if (a) {
             Object.assign(newData, {
-              assetUrl: a.href,
+              assetUrl: a.getAttribute("href"),
               text: block.text || a.textContent,
             });
           } else {
@@ -238,7 +238,7 @@ class MTFile extends Block {
     return new MTFile(
       Object.assign(
         {
-          assetUrl: a?.href || "",
+          assetUrl: a?.getAttribute("href") || "",
           text: a?.textContent || "",
         },
         meta
