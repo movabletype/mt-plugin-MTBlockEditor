@@ -70,6 +70,10 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     'Are you sure you want to delete the selected Custom Block?'        => '選択したブロックを削除してもよろしいですか？',
     'Are you sure you want to delete the selected Custom Block Preset?' => '選択したプリセットを削除してもよろしいですか？',
 
+    'Preview settings'                                                                     => 'プレビューの表示',
+    'Show preview'                                                                         => 'プレビューを表示する',
+    'You can keep the editing status even when not in focus by unchecking this check box.' => 'チェックを外すと、ブロックからフォーカスが外れてもプレビュー表示に切り替わらずに編集可能な表示のままになります。',
+
     'The identifier is required.'                               => '識別子は必須です',
     'An identifier "[_1]" is already used in the site scope.'   => '"[_1]"という識別子はサイトですでに使われています。',
     'An identifier "[_1]" is already used in the global scope.' => '"[_1]"という識別子はグローバルなブロックですでに使われています。',

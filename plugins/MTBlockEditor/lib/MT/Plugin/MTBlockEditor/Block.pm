@@ -50,6 +50,11 @@ __PACKAGE__->install_properties({
             default  => ROOT_BLOCK_DEFAULT,
         },
         addable_block_types => 'text not null',
+        show_preview        => {
+            type     => 'boolean',
+            not_null => 1,
+            default  => 1,
+        },
     },
 
     indexes => {
@@ -60,6 +65,7 @@ __PACKAGE__->install_properties({
     defaults => {
         root_block       => ROOT_BLOCK_DEFAULT,
         can_remove_block => 1,
+        show_preview     => 1,
     },
 
     child_of => ['MT::Blog', 'MT::Website'],
@@ -218,6 +224,7 @@ sub TO_JSON {
         previewHeader     => $self->preview_header,
         shouldBeCompiled  => $self->should_be_compiled ? JSON::true : JSON::false,
         addableBlockTypes => MT::Util::from_json($self->addable_block_types || '{}'),
+        showPreview       => $self->show_preview ? JSON::true : JSON::false,
     };
 }
 

@@ -76,6 +76,7 @@ sub cms_save_filter_be_block {
         : ''
     );
     $app->param(can_remove_block => $app->param('can_remove_block') ? 1 : 0);
+    $app->param(show_preview     => $app->param('show_preview')     ? 1 : 0);
 
     1;
 }
