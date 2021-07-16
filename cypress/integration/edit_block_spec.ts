@@ -21,6 +21,7 @@ context("Edit Block", () => {
       cy.get(`#label`).should("have.value", slideshowBlock.label);
       cy.get(`#identifier`).should("have.value", slideshowBlock.identifier);
       cy.get("#can_remove_block").should("be.checked");
+      cy.get("#show_preview").should("be.checked");
       cy.get(`label[for="addable_block_types"]`).should('be.visible');
     });
 
@@ -35,6 +36,7 @@ context("Edit Block", () => {
       cy.get(`#label`).should("have.value", "");
       cy.get(`#identifier`).should("have.value", slideshowPartialBlock.identifier);
       cy.get("#can_remove_block").should("not.be.checked");
+      cy.get("#show_preview").should("not.be.checked");
       cy.get(`label[for="addable_block_types"]`).should('not.be.visible');
     });
 
