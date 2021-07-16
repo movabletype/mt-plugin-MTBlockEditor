@@ -47,7 +47,7 @@ __PACKAGE__->install_properties({
             type     => 'string',
             size     => 16,
             not_null => 1,
-            default  => "div",
+            default  => ROOT_BLOCK_DEFAULT,
         },
         addable_block_types => 'text not null',
     },
@@ -55,6 +55,11 @@ __PACKAGE__->install_properties({
     indexes => {
         'identifier' => 1,
         'blog_id'    => 1,
+    },
+
+    defaults => {
+        root_block       => ROOT_BLOCK_DEFAULT,
+        can_remove_block => 1,
     },
 
     child_of => ['MT::Blog', 'MT::Website'],

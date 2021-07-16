@@ -21,16 +21,20 @@ sub edit_be_block {
     my $id = $app->param('id');
     return $app->permission_denied() if $id && $id !~ m/\A[0-9]+\z/;
 
+    my $obj;
     if ($id) {
-        my $obj = MT->model('be_block')->load({ blog_id => $blog_id, id => $id });
-        return $app->return_to_dashboard(redirect => 1) unless $obj;
-        while (my ($key, $val) = each %{ $obj->column_values() }) {
-            $param->{$key} ||= $val;
-        }
-        $param->{wrap_root_block} = 1 if $obj->root_block eq $obj->ROOT_BLOCK_DEFAULT;
-    } else {
-        $param->{identifier} = '';
+        $obj = MT->model('be_block')->load({ blog_id => $blog_id, id => $id })
+            or $app->return_to_dashboard(redirect => 1);
     }
+    else {
+        $obj = MT->model('be_block')->new;
+        $obj->set_defaults;
+    }
+
+    while (my ($key, $val) = each %{ $obj->column_values() }) {
+        $param->{$key} ||= $val;
+    }
+    $param->{wrap_root_block} = 1 if $obj->root_block eq $obj->ROOT_BLOCK_DEFAULT;
 
     $param->{saved} = !!$app->param('saved');
 
