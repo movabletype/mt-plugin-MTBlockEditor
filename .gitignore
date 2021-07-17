@@ -18,3 +18,4 @@ mt-static/plugins/MTBlockEditor/locales/*.js
 
 cypress/videos/*
 cypress/screenshots/*
+cypress/resources/dist/
