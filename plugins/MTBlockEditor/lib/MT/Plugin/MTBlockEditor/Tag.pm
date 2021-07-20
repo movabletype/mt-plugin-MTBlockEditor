@@ -9,6 +9,12 @@ use JSON;
 use MT::BlockEditor::Parser;
 use MT::Plugin::MTBlockEditor qw(translate);
 
+sub _br_to_newline {
+    my ($str) = @_;
+    $str =~ s{<br/?>}{\n}g;
+    $str;
+}
+
 sub _hdlr_blocks {
     my ($ctx, $args, $cond) = @_;
 
@@ -80,13 +86,13 @@ sub _hdlr_blocks {
                 ? $2
                 : "";
             $b->{meta}{caption} =
-                  $vars->{__value__} =~ m{<figcaption>(.*?)</figcaption>}i
-                ? $1 =~ s{<br/?>}{\n}r
+                $vars->{__value__} =~ m{<figcaption>(.*?)</figcaption>}i
+                ? _br_to_newline($1)
                 : "";
         } elsif ($b->{type} eq 'mt-file' && !exists $b->{meta}{text}) {
             $b->{meta}{text} =
-                  $vars->{__value__} =~ m{>([^<]*?)</a>}i
-                ? $1 =~ s{<br/?>}{\n}r
+                $vars->{__value__} =~ m{>([^<]*?)</a>}i
+                ? _br_to_newline($1)
                 : "";
         }
         local $vars->{meta} = $b->{meta};
