@@ -84,7 +84,7 @@ sub plugin_block_types {
                     __PACKAGE__->new(
                     is_default_block => 1,
                     identifier       => $identifier,
-                    map { $_ => $d->{$_} // '' } qw(label is_default_hidden is_form_element identifier)
+                    map { $_ => defined($d->{$_}) ? $d->{$_} : '' } qw(label is_default_hidden is_form_element identifier)
                     );
             }
         }
