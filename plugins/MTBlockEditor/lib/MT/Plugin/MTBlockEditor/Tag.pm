@@ -91,7 +91,7 @@ sub _hdlr_blocks {
                 : "";
         } elsif ($b->{type} eq 'mt-file' && !exists $b->{meta}{text}) {
             $b->{meta}{text} =
-                $vars->{__value__} =~ m{>([^<]*?)</a>}i
+                $vars->{__value__} =~ m{<a[^>]*>(.*?)</a>}i
                 ? _br_to_newline($1)
                 : "";
         }
