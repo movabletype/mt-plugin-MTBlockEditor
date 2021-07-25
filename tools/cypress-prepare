@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+"use strict;";
+
+const readdir = require("fs/promises").readdir;
+const semver = require("semver");
+const cpx = require("cpx");
+
+const TARGETS = [
+  "mt-block-editor",
+  "mt-block-editor-block-form-element",
+  "mt-block-editor-block-oembed",
+];
+
+async function main(args) {
+  TARGETS.forEach(async (t) => {
+    const srcParent = `./mt-static/plugins/MTBlockEditor/dist/${t}`;
+
+    const latestVersion = (await readdir(srcParent)).sort((a, b) =>
+      semver.compare(b, a)
+    )[0];
+
+    cpx.copy(`${srcParent}/${latestVersion}/**/*`, `./cypress/resources/dist/${t}`, {
+      clean: true,
+    });
+  });
+}
+
+if (require.main === module) {
+  main(process.argv);
+}
+
+module.exports = main;
