@@ -84,7 +84,7 @@ sub plugin_block_types {
                     __PACKAGE__->new(
                     is_default_block => 1,
                     identifier       => $identifier,
-                    map { $_ => $d->{$_} // '' } qw(label is_default_hidden is_form_element identifier)
+                    map { $_ => defined($d->{$_}) ? $d->{$_} : '' } qw(label is_default_hidden is_form_element identifier)
                     );
             }
         }
@@ -93,22 +93,30 @@ sub plugin_block_types {
     return @plugin_block_types;
 }
 
+sub _identifier_to_label {
+    my ($str) = @_;
+    $str = uc($str);
+    $str =~ s/-/_/g;
+    translate('BLOCK_LABEL_' . $str);
+}
+
 sub DEFAULT_BLOCKS {
     [
         map({
                 __PACKAGE__->new(
                     is_default_block => 1,
                     identifier       => $_,
-                    label            => translate('BLOCK_LABEL_' . (uc($_) =~ s/-/_/gr)),
+                    label            => _identifier_to_label($_),
                 )
         } qw(core-text mt-image mt-file core-html sixapart-oembed core-horizontalrule core-table core-columns)),
         map({
+                (my $label_id = uc($_)) =~ s/-/_/g;
                 __PACKAGE__->new(
                     is_default_block  => 1,
                     is_default_hidden => 1,
                     is_form_element   => 1,
                     identifier        => $_,
-                    label             => translate('BLOCK_LABEL_' . (uc($_) =~ s/-/_/gr)),
+                    label             => _identifier_to_label($_),
                 )
         } qw(sixapart-input sixapart-textarea sixapart-select)),
         plugin_block_types(),

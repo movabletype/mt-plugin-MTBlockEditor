@@ -219,10 +219,11 @@ width: <mt:Var name="meta{width}" />
 --- expected
 <p>test</p>
 alt: alt-text
-caption: caption text
+caption: caption
+text
 width: 640
 --- content eval
-qq{<!-- mt-beb t="core-text"--><p>test</p><!-- /mt-beb --><!-- mt-beb t="mt-image" m="{&quot;assetId&quot;:@{[$main::image->id]},&quot;alignment&quot;:&quot;none&quot;,&quot;width&quot;:&quot;640&quot;}"--><figure><img src="https://blog-taaas-jp.movabletype.io/.assets/thumbnail/form-with-multipart-640wri.png" alt="alt-text" width="640" height="467" style="max-width:100%;height:auto;display:block"/><figcaption>caption text</figcaption></figure><!-- /mt-beb -->}
+qq{<!-- mt-beb t="core-text"--><p>test</p><!-- /mt-beb --><!-- mt-beb t="mt-image" m="{&quot;assetId&quot;:@{[$main::image->id]},&quot;alignment&quot;:&quot;none&quot;,&quot;width&quot;:&quot;640&quot;}"--><figure><img src="https://blog-taaas-jp.movabletype.io/.assets/thumbnail/form-with-multipart-640wri.png" alt="alt-text" width="640" height="467" style="max-width:100%;height:auto;display:block"/><figcaption>caption<br/>text</figcaption></figure><!-- /mt-beb -->}
 
 === meta for mt-file
 --- template
@@ -235,9 +236,10 @@ text: <mt:Var name="meta{text}" />
 </mt:BlockEditorBlocks>
 --- expected
 <p>test</p>
-text: file.pdfをダウンロード
+text: file.pdfを
+ダウンロード
 --- content eval
-qq{<!-- mt-beb t="core-text"--><p>test</p><!-- /mt-beb --><!-- mt-beb t="mt-file" m='{"assetId":"@{[$main::pdf->id]}"}' --><div><a href="https://blog-taaas-jp.movabletype.io/.assets/form-with-multipart.png">file.pdfをダウンロード</a></div><!-- /mt-beb -->}
+qq{<!-- mt-beb t="core-text"--><p>test</p><!-- /mt-beb --><!-- mt-beb t="mt-file" m='{"assetId":"@{[$main::pdf->id]}"}' --><div><a href="https://blog-taaas-jp.movabletype.io/.assets/form-with-multipart.png">file.pdfを<br/>ダウンロード</a></div><!-- /mt-beb -->}
 
 === compiled custom block
 --- template
