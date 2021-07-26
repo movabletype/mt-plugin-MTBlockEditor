@@ -3,11 +3,25 @@ version: 2.1
 orbs:
   node: circleci/node@4.5.0
 
+commands:
+  update-git:
+    steps:
+      - run: |
+          if [ "`cat /etc/redhat-release | sed -e 's/.*\s\([0-9]\)\..*/\1/'`" = 6 ]; then
+            yum install http://opensource.wandisco.com/centos/6/git/x86_64/wandisco-git-release-6-1.noarch.rpm -y
+            yum install git -y
+          fi
+
 jobs:
   test-perl:
+    parameters:
+      docker-image:
+        type: string
+        default: movabletype/test:buster
     docker:
-      - image: movabletype/test:trusty
+      - image: << parameters.docker-image >>
     steps:
+      - update-git
       - checkout
       - run:
           name: Test
@@ -57,7 +71,24 @@ workflows:
   version: 2
   test-and-build:
     jobs:
-      - test-perl
+      - test-perl:
+          name: test-perl with centos6
+          docker-image: movabletype/test:centos6
+      - test-perl:
+          name: test-perl with jessie
+          docker-image: movabletype/test:jessie
+      - test-perl:
+          name: test-perl with buster
+          docker-image: movabletype/test:buster
+      - test-perl:
+          name: test-perl with fedora
+          docker-image: movabletype/test:fedora
+      - test-perl:
+          name: test-perl with bullseye
+          docker-image: movabletype/test:bullseye
+      - test-perl:
+          name: test-perl with cloud7
+          docker-image: movabletype/test:cloud7
       - test-js
       - build
   tagged-build:
