@@ -1,12 +1,12 @@
 id: MTBlockEditor
 name: MTBlockEditor
-version: 1.0.8
+version: 1.1.0
 author_link: http://www.movabletype.org/
 author_name: Six Apart Ltd.
 description: <MT_TRANS phrase="Movable Type Block Editor.">
 l10n_class: MT::Plugin::MTBlockEditor::L10N
 
-schema_version: 0.05
+schema_version: 0.06
 object_types:
   be_block: MT::Plugin::MTBlockEditor::Block
   be_config: MT::Plugin::MTBlockEditor::Config

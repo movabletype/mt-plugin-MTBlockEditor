@@ -213,6 +213,17 @@
 
   </div>
 
+  <mtapp:setting
+     id="show_preview"
+     label="<__trans phrase="Preview settings">"
+     hint='<__trans phrase="You can keep the editing status even when not in focus by unchecking this check box.">'
+     show_hint="1">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" value="1" name="show_preview" class="custom-control-input" id="show_preview"<mt:if name="show_preview"> checked="checked"</mt:if>/>
+      <label class="custom-control-label" for="show_preview"><__trans phrase="Show preview"></label>
+    </div>
+  </mtapp:setting>
+
 <mt:setvarblock name="action_buttons">
   <button
      type="submit"
@@ -223,8 +234,8 @@
   </button>
 <mt:if name="id">
   <button
-     onclick="doRemoveItems(this.form, '<__trans phrase="block">', '<__trans phrase="blocks">', 'id', {'return_args' : '__mode=list&amp;_type=block&amp;blog_id=<mt:var name="blog_id">'})"
-     type="submit"
+     onclick="doRemoveItems(this.form, '<__trans phrase="block">', '<__trans phrase="blocks">', 'id', {'return_args' : '__mode=list&amp;_type=be_block&amp;blog_id=<mt:var name="blog_id">'})"
+     type="button"
      accesskey="x"
      title="<__trans phrase="Delete this block (x)">"
      class="delete action button btn btn-default">
