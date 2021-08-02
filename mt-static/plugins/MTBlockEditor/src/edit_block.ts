@@ -171,6 +171,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
       "preview_header",
       "can_remove_block",
       "wrap_root_block",
+      "show_preview",
     ].forEach((k) => {
       const e = form[k];
       data[k] = e.type === "checkbox" ? e.checked : e.value;
@@ -202,6 +203,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
       "preview_header",
       "can_remove_block",
       "wrap_root_block",
+      "show_preview",
     ].forEach((k) => {
       if (!(k in data)) {
         return;

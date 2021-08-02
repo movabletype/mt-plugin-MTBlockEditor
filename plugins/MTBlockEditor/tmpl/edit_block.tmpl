@@ -213,6 +213,17 @@
 
   </div>
 
+  <mtapp:setting
+     id="show_preview"
+     label="<__trans phrase="Preview settings">"
+     hint='<__trans phrase="You can keep the editing status even when not in focus by unchecking this check box.">'
+     show_hint="1">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" value="1" name="show_preview" class="custom-control-input" id="show_preview"<mt:if name="show_preview"> checked="checked"</mt:if>/>
+      <label class="custom-control-label" for="show_preview"><__trans phrase="Show preview"></label>
+    </div>
+  </mtapp:setting>
+
 <mt:setvarblock name="action_buttons">
   <button
      type="submit"

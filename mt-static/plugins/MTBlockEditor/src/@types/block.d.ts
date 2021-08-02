@@ -9,6 +9,7 @@ declare namespace MTBlockEditor {
       preview_header: string;
       can_remove_block: boolean;
       wrap_root_block: boolean;
+      show_preview: boolean;
       block_display_options: BlockDisplayOptions;
     }
 
