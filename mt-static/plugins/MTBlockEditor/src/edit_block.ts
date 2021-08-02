@@ -115,7 +115,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
   const form = htmlElm.form as HTMLFormElement;
 
   let doClick = false;
-  form.querySelectorAll("button").forEach((elm) => {
+  form.querySelectorAll(`button[type="submit"]`).forEach((elm) => {
     elm.addEventListener("click", (ev) => {
       if (doClick) {
         doClick = false;
@@ -234,9 +234,9 @@ async function applyBlockEditorForSetup(): Promise<void> {
   }
 
   async function importBlock(fileInputElm): Promise<void> {
-    const identifierValue = (document.getElementById(
-      "identifier"
-    ) as HTMLInputElement).value;
+    const identifierValue = (
+      document.getElementById("identifier") as HTMLInputElement
+    ).value;
     if (identifierValue !== "") {
       window.confirm(window.trans("Are you sure you want to overwrite it?"));
     }
