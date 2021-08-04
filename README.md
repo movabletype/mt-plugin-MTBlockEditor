@@ -32,6 +32,7 @@ Should look like this when installed:
 * Google Chrome
 * Firefox
 * Safari
+* Microsoft Edge
 
 ## Development
 
