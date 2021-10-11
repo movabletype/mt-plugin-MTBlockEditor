@@ -29,9 +29,15 @@ Should look like this when installed:
 
 ## Supported browsers
 
-* Google Chrome
-* Firefox
-* Safari
+* Desktop
+    * Google Chrome
+    * Firefox
+    * Safari
+    * Microsoft Edge
+
+* Mobile
+    * Google Chrome (iOS/iPadOS, Android)
+    * Safari (iOS/iPadOS)
 
 ## Development
 
