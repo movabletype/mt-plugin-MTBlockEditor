@@ -9,47 +9,53 @@ use warnings;
 use utf8;
 
 use MT::Util qw(encode_html);
-use Class::Method::Modifiers qw(around);
+use Class::Method::Modifiers qw(install_modifier);
 use MT::Plugin::MTBlockEditor qw(plugin blocks to_custom_block_types_json tmpl_param);
 
 sub init_app {
     my ($cb, $app) = @_;
 
     require MT::ContentFieldType::Common;
-    around 'MT::ContentFieldType::Common::html_text', sub {
-        my $orig = shift;
-        my ($prop, $content_data, $app, $opts) = @_;
+    install_modifier(
+        'MT::ContentFieldType::Common',
+        'around',
+        'html_text' => sub {
+            my $orig = shift;
+            my ($prop, $content_data, $app, $opts) = @_;
 
-        my $cb = $content_data->data->{ $prop->content_field_id . '_convert_breaks' };
-        return $orig->(@_) if !$cb || $cb ne 'block_editor';
+            my $cb = $content_data->data->{ $prop->content_field_id . '_convert_breaks' };
+            return $orig->(@_) if !$cb || $cb ne 'block_editor';
 
-        my $text = $content_data->data->{ $prop->content_field_id };
-        return '' unless defined $text;
-        $text = MT->apply_text_filters($text, [$cb]);
+            my $text = $content_data->data->{ $prop->content_field_id };
+            return '' unless defined $text;
+            $text = MT->apply_text_filters($text, [$cb]);
 
-        if (length $text > 40) {
-            return MT::Util::encode_html(substr($text, 0, 40)) . '...';
-        } else {
-            return MT::Util::encode_html($text);
-        }
-    };
+            if (length $text > 40) {
+                return MT::Util::encode_html(substr($text, 0, 40)) . '...';
+            } else {
+                return MT::Util::encode_html($text);
+            }
+        });
 
     require MT::Asset::Image;
-    around 'MT::Asset::Image::as_html', sub {
-        my $orig   = shift;
-        my ($self) = @_;
-        my $html   = $orig->(@_);
-        my $app    = MT->instance;
+    install_modifier(
+        'MT::Asset::Image',
+        'around',
+        'as_html' => sub {
+            my $orig   = shift;
+            my ($self) = @_;
+            my $html   = $orig->(@_);
+            my $app    = MT->instance;
 
-        if (   $app
-            && $app->can('param')
-            && ($app->param('edit_field') || '') =~ m/^mt-block-editor-/)
-        {
-            $html =~ s{img \K}{data-id="@{[$self->id]}" data-url="@{[$self->url]}" };
-        }
+            if (   $app
+                && $app->can('param')
+                && ($app->param('edit_field') || '') =~ m/^mt-block-editor-/)
+            {
+                $html =~ s{img \K}{data-id="@{[$self->id]}" data-url="@{[$self->url]}" };
+            }
 
-        $html;
-    };
+            $html;
+        });
 }
 
 sub insert_after {
