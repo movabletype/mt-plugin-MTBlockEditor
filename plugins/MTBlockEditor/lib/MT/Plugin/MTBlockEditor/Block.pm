@@ -156,6 +156,26 @@ sub is_default_visible {
     !shift->is_default_hidden;
 }
 
+sub _fillin_default_values {
+    my $self = shift;
+
+    my $defs = $self->column_defs;
+    while (my ($col, $def) = each %$defs) {
+        next if !$def->{not_null};
+        next if defined $self->$col;
+        next if $def->{type} ne 'text' && !exists $def->{default};
+        $self->$col($def->{type} eq 'text' ? '' : $def->{default});
+    }
+}
+
+sub insert {
+    my $self = shift;
+
+    $self->_fillin_default_values;
+
+    $self->SUPER::insert(@_);
+}
+
 sub save {
     my $self = shift;
 
