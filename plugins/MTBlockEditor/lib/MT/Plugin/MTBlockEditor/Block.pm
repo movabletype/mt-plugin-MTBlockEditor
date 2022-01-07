@@ -228,4 +228,13 @@ sub TO_JSON {
     };
 }
 
+# define for MT::BackupRestore
+sub parents {
+    my $obj = shift;
+    {
+        blog_id  => [MT->model('blog'), MT->model('website')],
+        optional => 1,
+    };
+}
+
 1;
