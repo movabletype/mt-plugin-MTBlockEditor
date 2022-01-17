@@ -173,17 +173,27 @@ sub insert {
 
     $self->_fillin_default_values;
 
+    return unless $self->validate;
+
     $self->SUPER::insert(@_);
 }
 
 sub save {
     my $self = shift;
 
+    return unless $self->validate;
+
+    $self->SUPER::save(@_);
+}
+
+sub validate {
+    my $self = shift;
+
     return unless $self->_validate_label;
     return unless $self->_validate_identifier;
     return unless $self->_validate_icon;
 
-    $self->SUPER::save(@_);
+    1;
 }
 
 sub _validate_label {
