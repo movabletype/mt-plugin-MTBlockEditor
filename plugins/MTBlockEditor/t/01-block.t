@@ -61,7 +61,21 @@ my %valid_params = (
     addable_block_types => '{}',
 );
 
-subtest 'create()' => sub {
+subtest 'insert()' => sub {
+    subtest 'with full params' => sub {
+        ok $model->new(%valid_params, (identifier => create_md5_id(),))->insert;
+    };
+
+    subtest 'without not_null string params' => sub {
+        ok $model->new(
+            blog_id    => $website->id,
+            label      => create_md5_id(),
+            identifier => create_md5_id(),
+        )->insert;
+    };
+};
+
+subtest 'save()' => sub {
     subtest 'identifier' => sub {
         ok $model->new(%valid_params, (identifier => create_md5_id(),))->save;
 
