@@ -22,6 +22,8 @@ use Class::Method::Modifiers qw(after);
 
 MT::Test->init_app;
 
+my $backup_schema_version = '7.0051';
+
 $test_env->prepare_fixture('db');
 
 my $admin = MT::Author->load(1);
@@ -34,7 +36,7 @@ subtest 'blog' => sub {
     my (@errors, %error_assets);
     my ($deferred, $blogs, $assets) = MT::BackupRestore->restore_directory(
         "$FindBin::Bin/backup/blog", \@errors, \%error_assets,
-        MT->config->SchemaVersion,
+        $backup_schema_version,
         0, sub { print $_[0], "\n"; });
     my $blog_id = $blogs->[0];
 
@@ -59,7 +61,7 @@ subtest 'system' => sub {
         my (@errors, %error_assets);
         my ($deferred, $blogs, $assets) = MT::BackupRestore->restore_directory(
             "$FindBin::Bin/backup/system", \@errors, \%error_assets,
-            MT->config->SchemaVersion,
+            $backup_schema_version,
             0, sub { print $_[0], "\n"; });
 
         ok !@errors;
@@ -79,7 +81,7 @@ subtest 'system' => sub {
         my (@errors, %error_assets);
         my ($deferred, $blogs, $assets) = MT::BackupRestore->restore_directory(
             "$FindBin::Bin/backup/system", \@errors, \%error_assets,
-            MT->config->SchemaVersion,
+            $backup_schema_version,
             0, sub { print $_[0], "\n"; });
 
         is_deeply \@errors, [
