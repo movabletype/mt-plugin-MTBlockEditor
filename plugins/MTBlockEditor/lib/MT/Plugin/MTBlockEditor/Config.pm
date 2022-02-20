@@ -65,4 +65,13 @@ sub _validate_block_display_options {
     return 1;
 }
 
+# define for MT::BackupRestore
+sub parents {
+    my $obj = shift;
+    {
+        blog_id  => [MT->model('blog'), MT->model('website')],
+        optional => 1,
+    };
+}
+
 1;
