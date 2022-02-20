@@ -1,0 +1,216 @@
+<?xml version='1.0'?>
+<movabletype xmlns='http://www.sixapart.com/ns/movabletype'
+schema_version='7.0051' backup_on='2022-01-17T22:28:28' backup_what='' backup_by='Melody(ID: 1)'>
+<website id='1' allow_comment_html='1' allow_commenter_regist='1' allow_comments_default='1' allow_pings='1' allow_pings_default='1' allow_reg_comments='1' allow_unreg_comments='0' autolink_urls='1' basename_limit='100' children_modified_on='20220117222732' class='website' convert_paras='richtext' convert_paras_comments='1' created_by='1' created_on='20220118072731' custom_dynamic_templates='none' date_language='ja' days_on_index='0' email_new_comments='1' email_new_pings='1' entries_on_index='10' file_extension='html' internal_autodiscovery='0' junk_folder_expiry='14' junk_score_threshold='0' language='ja' moderate_pings='1' moderate_unreg_comments='2' modified_on='20220118072731' name='site' ping_blogs='0' ping_google='0' ping_technorati='0' ping_weblogs='0' require_comment_emails='0' sanitize_spec='0' server_offset='9' site_path='/var/www/html' site_url='http://10.37.129.4:8079/' sort_order_comments='ascend' sort_order_posts='descend' status_default='2' theme_id='mont-blanc' use_comment_confirmation='1' use_revision='1' words_in_excerpt='40' follow_auth_links='1' page_layout='layout-wtt' nofollow_urls='1' template_set='HASH(0x556e7f43c110)' commenter_authenticators='MovableType'></website>
+<content_type id='1' blog_id='1' created_by='1' created_on='20220118072731' modified_on='20220118072731' name='Site Page' unique_id='6902852bb844926e9e358fafcd64325632b6ad87' user_disp_option='1'><fields>U0VSRwAAAAAAAAACQQAAAAZIAAAABQAAAAVvcmRlci0AAAABMQAAAAR0eXBlLQAAABBzaW5nbGVfbGluZV90ZXh0AAAAAmlkLQAAAAExAAAACXVuaXF1ZV9pZC0AAAAoZjViNDYzMjljYWRkZDY5MDk5ZGE1Y2U5M2Y1ODcwNjQwYzhiZGE3ZQAAAAdvcHRpb25zSAAAAAgAAAANaW5pdGlhbF92YWx1ZS0AAAAAAAAACm1pbl9sZW5ndGgtAAAAATAAAAAKbWF4X2xlbmd0aC0AAAADMjU1AAAABWxhYmVsLQAAAAVUaXRsZQAAAAhyZXF1aXJlZC0AAAABMQAAAAtkZXNjcmlwdGlvbi0AAAAAAAAAB2Rpc3BsYXktAAAABWZvcmNlAAAABW9yZGVyLQAAAAExSAAAAAUAAAAHb3B0aW9uc0gAAAAHAAAAB2Rpc3BsYXktAAAAB2RlZmF1bHQAAAALZGVzY3JpcHRpb24tAAAAAAAAAAhyZXF1aXJlZC0AAAABMAAAAAVsYWJlbC0AAAAEQm9keQAAAAVvcmRlci0AAAABMgAAAA1pbml0aWFsX3ZhbHVlLQAAAAAAAAAMaW5wdXRfZm9ybWF0LQAAAAtibG9ja2VkaXRvcgAAAAl1bmlxdWVfaWQtAAAAKDY1OWQ1YmMxODMxNmRiYjUyZDFmYThmMzYzZGZiYWU1ZDAxZmUzYzEAAAAFb3JkZXItAAAAATIAAAACaWQtAAAAATIAAAAEdHlwZS0AAAAPbXVsdGlfbGluZV90ZXh0SAAAAAUAAAAJdW5pcXVlX2lkLQAAAChhZDUwYmVmNzMxMmYyYTEwMmRlYjg1NzE2OWQ3ODBhZGQyMmFmM2NlAAAAB29wdGlvbnNIAAAABwAAAAhyZXF1aXJlZC0AAAABMAAAAAVsYWJlbC0AAAAHU3VtbWFyeQAAAAtkZXNjcmlwdGlvbi0AAAAAAAAAB2Rpc3BsYXktAAAAB2RlZmF1bHQAAAAFb3JkZXItAAAAATMAAAANaW5pdGlhbF92YWx1ZS0AAAAAAAAADGlucHV0X2Zvcm1hdC0AAAALX19kZWZhdWx0X18AAAAFb3JkZXItAAAAATMAAAACaWQtAAAAATMAAAAEdHlwZS0AAAAPbXVsdGlfbGluZV90ZXh0SAAAAAUAAAAJdW5pcXVlX2lkLQAAACg0YWMzYTI3OTMzM2E5YWM1YmYwYTQ1YTA3Y2QzNmNjZGU3M2RjNWQyAAAAB29wdGlvbnNIAAAACQAAAAVvcmRlci0AAAABNQAAAAVsYWJlbC0AAAAIb2c6aW1hZ2UAAAAIcmVxdWlyZWQtAAAAATAAAAAHZGlzcGxheS0AAAAHZGVmYXVsdAAAAAtkZXNjcmlwdGlvbi0AAAAAAAAAA21pbi0AAAAAAAAAA21heC0AAAAAAAAACG11bHRpcGxlLQAAAAEwAAAADGFsbG93X3VwbG9hZC0AAAABMQAAAAJpZC0AAAABNAAAAAVvcmRlci0AAAABNAAAAAR0eXBlLQAAAAthc3NldF9pbWFnZUgAAAAFAAAACXVuaXF1ZV9pZC0AAAAoNzcyNWU2ZDFmMDQ1MWZhYmM4Y2E3YTgzMDY2ZjZiYWYyZWE1MTZkZQAAAAdvcHRpb25zSAAAAAoAAAADbWF4LQAAAAAAAAADbWluLQAAAAAAAAAIbXVsdGlwbGUtAAAAATEAAAANaW5pdGlhbF92YWx1ZS0AAAAAAAAABW9yZGVyLQAAAAE2AAAAB2Nhbl9hZGQtAAAAATEAAAALZGVzY3JpcHRpb24tAAAAAAAAAAdkaXNwbGF5LQAAAAdkZWZhdWx0AAAABWxhYmVsLQAAAARUYWdzAAAACHJlcXVpcmVkLQAAAAEwAAAAAmlkLQAAAAE1AAAABW9yZGVyLQAAAAE1AAAABHR5cGUtAAAABHRhZ3NIAAAABQAAAAR0eXBlLQAAAApjYXRlZ29yaWVzAAAABW9yZGVyLQAAAAE2AAAAAmlkLQAAAAE2AAAACXVuaXF1ZV9pZC0AAAAoMGE1OWQ1ZmFjMGJkZDUwOWI2YjRkNDU4MzIyNWM3NDE3M2UyYTkyNAAAAAdvcHRpb25zSAAAAAoAAAADbWF4LQAAAAAAAAADbWluLQAAAAAAAAAIbXVsdGlwbGUtAAAAATAAAAAFb3JkZXItAAAAATYAAAAHY2FuX2FkZC0AAAABMQAAAAdkaXNwbGF5LQAAAAdkZWZhdWx0AAAAC2Rlc2NyaXB0aW9uLQAAAAAAAAAMY2F0ZWdvcnlfc2V0LQAAAAExAAAACHJlcXVpcmVkLQAAAAEwAAAABWxhYmVsLQAAAAdGb2xkZXJz</fields></content_type>
+<category_set id='1' blog_id='1' cat_count='0' created_by='1' created_on='20220118072731' ct_count='1' modified_by='1' modified_on='20220118072731' name='Folders'></category_set>
+<cf id='1' blog_id='1' content_type_id='1' created_by='1' created_on='20220118072731' modified_on='20220118072731' name='Title' type='single_line_text' unique_id='f5b46329caddd69099da5ce93f5870640c8bda7e'></cf>
+<cf id='2' blog_id='1' content_type_id='1' created_by='1' created_on='20220118072731' modified_on='20220118072731' name='Body' type='multi_line_text' unique_id='659d5bc18316dbb52d1fa8f363dfbae5d01fe3c1'></cf>
+<cf id='3' blog_id='1' content_type_id='1' created_by='1' created_on='20220118072731' modified_on='20220118072731' name='Summary' type='multi_line_text' unique_id='ad50bef7312f2a102deb857169d780add22af3ce'></cf>
+<cf id='4' blog_id='1' content_type_id='1' created_by='1' created_on='20220118072731' modified_on='20220118072731' name='og:image' type='asset_image' unique_id='4ac3a279333a9ac5bf0a45a07cd36ccde73dc5d2'></cf>
+<cf id='5' blog_id='1' content_type_id='1' created_by='1' created_on='20220118072731' modified_on='20220118072731' name='Tags' type='tags' unique_id='7725e6d1f0451fabc8ca7a83066f6baf2ea516de'></cf>
+<cf id='6' blog_id='1' content_type_id='1' created_by='1' created_on='20220118072731' modified_on='20220118072731' name='Folders' related_cat_set_id='1' type='categories' unique_id='0a59d5fac0bdd509b6b4d4583225c74173e2a924'></cf>
+<author id='1' api_password='wlpna2uj' auth_type='MT' basename='melody' created_by='1' created_on='20220118060144' date_format='relative' email='taku@taaas.jp' locked_out_time='0' modified_on='20220118060144' name='Melody' nickname='Melody' password='$6$H7VwZZd2Tu9h4fw6$/UVJI3W0M+kyl4eoXPQryinLv1GY/fqsz7Kp7k23qGDlk1nlTl09HfPT/ej6gL+6JHhm4N6mdbZfdParl1x3sg' preferred_language='ja' status='1' type='1'><widgets>U0VSRwAAAAAAAAACSAAAAAIAAAAQZGFzaGJvYXJkOnVzZXI6MUgAAAAGAAAAFm5vdGlmaWNhdGlvbl9kYXNoYm9hcmRIAAAAAgAAAAVvcmRlci0AAAABMAAAAANzZXQtAAAABG1haW4AAAAJc2l0ZV9saXN0SAAAAAIAAAAFb3JkZXItAAAAAzEwMAAAAANzZXQtAAAABG1haW4AAAAMYWN0aXZpdHlfbG9nSAAAAAIAAAAFb3JkZXItAAAAAzIwMAAAAANzZXQtAAAAB3NpZGViYXIAAAAHbXRfbmV3c0gAAAACAAAABW9yZGVyLQAAAAMxMDAAAAADc2V0LQAAAAdzaWRlYmFyAAAAB3VwZGF0ZXNIAAAAAgAAAAVvcmRlci0AAAABMAAAAANzZXQtAAAAB3NpZGViYXIAAAAUc2l0ZV9saXN0X2Zvcl9tb2JpbGVIAAAAAgAAAANzZXQtAAAABG1haW4AAAAFb3JkZXItAAAAAjUwAAAAEGRhc2hib2FyZDpzeXN0ZW1IAAAABQAAABJzeXN0ZW1faW5mb3JtYXRpb25IAAAAAgAAAANzZXQtAAAABG1haW4AAAAFb3JkZXItAAAAAzEwMAAAAAdtdF9uZXdzSAAAAAIAAAADc2V0LQAAAAdzaWRlYmFyAAAABW9yZGVyLQAAAAMxMDAAAAAMYWN0aXZpdHlfbG9nSAAAAAIAAAADc2V0LQAAAAdzaWRlYmFyAAAABW9yZGVyLQAAAAMyMDAAAAAHdXBkYXRlc0gAAAACAAAABW9yZGVyLQAAAAEwAAAAA3NldC0AAAAHc2lkZWJhcgAAABZub3RpZmljYXRpb25fZGFzaGJvYXJkSAAAAAIAAAAFb3JkZXItAAAAATAAAAADc2V0LQAAAARtYWlu</widgets><favorite_sites>U0VSRwAAAAAAAAACQQAAAAEtAAAAATE=</favorite_sites><favorite_websites>U0VSRwAAAAAAAAACQQAAAAEtAAAAATE=</favorite_websites><list_prefs>U0VSRwAAAAAAAAACSAAAAAIAAAAIYmVfYmxvY2tIAAAAAQAAAAEwSAAAAAQAAAAEcm93cy0AAAACNTAAAAAHY29sdW1uc0EAAAADLQAAAAVsYWJlbC0AAAAKaWRlbnRpZmllci0AAAAJYmxvZ19uYW1lAAAACmxhc3RfaXRlbXNBAAAAAAAAAAtsYXN0X2ZpbHRlci0AAAAIX2FsbHBhc3MAAAAJYmVfY29uZmlnSAAAAAEAAAABMEgAAAAEAAAAB2NvbHVtbnNBAAAAAi0AAAAFbGFiZWwtAAAACWJsb2dfbmFtZQAAAARyb3dzLQAAAAI1MAAAAAtsYXN0X2ZpbHRlci0AAAAIX2FsbHBhc3MAAAAKbGFzdF9pdGVtc0EAAAAA</list_prefs></author>
+<permission id='1' author_id='1' blog_id='0' created_on='20220118060144' modified_on='20220118060144' role_mask='0'><permissions>&apos;administer&apos;,&apos;edit_templates&apos;,&apos;manage_plugins&apos;,&apos;view_log&apos;,&apos;create_site&apos;,&apos;sign_in_cms&apos;,&apos;sign_in_data_api&apos;,&apos;manage_users_groups&apos;,&apos;manage_content_types&apos;,&apos;manage_content_data&apos;</permissions></permission>
+<permission id='2' author_id='1' blog_id='1' created_by='1' created_on='20220118072731' modified_on='20220118072731' role_mask='0'><permissions>&apos;administer_blog&apos;,&apos;administer_site&apos;,&apos;administer_website&apos;,&apos;comment&apos;,&apos;create_post&apos;,&apos;create_site&apos;,&apos;edit_all_posts&apos;,&apos;edit_assets&apos;,&apos;edit_categories&apos;,&apos;edit_config&apos;,&apos;edit_notifications&apos;,&apos;edit_tags&apos;,&apos;edit_templates&apos;,&apos;manage_category_set&apos;,&apos;manage_content_data&apos;,&apos;manage_content_sync&apos;,&apos;manage_content_types&apos;,&apos;manage_feedback&apos;,&apos;manage_member_blogs&apos;,&apos;manage_pages&apos;,&apos;manage_themes&apos;,&apos;manage_users&apos;,&apos;publish_post&apos;,&apos;rebuild&apos;,&apos;send_notifications&apos;,&apos;set_publish_paths&apos;,&apos;upload&apos;,&apos;view_blog_log&apos;</permissions></permission>
+<template id='11' blog_id='1' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118072732' identifier='cd_search_results' modified_on='20220118072732' name='コンテンツの検索結果' rebuild_me='1' type='cd_search_results' current_revision='0'></template>
+<template id='12' blog_id='1' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118072732' identifier='comment_preview' modified_on='20220118072732' name='コメントプレビュー' rebuild_me='1' type='comment_preview' current_revision='0'></template>
+<template id='13' blog_id='1' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118072732' identifier='comment_response' modified_on='20220118072732' name='コメント完了' rebuild_me='1' type='comment_response' current_revision='0'></template>
+<template id='4' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='footer-email' modified_on='20220118060144' name='メールフッター' rebuild_me='1' type='custom' current_revision='0'><text>
+-- 
+Powered by Movable Type &lt;$mt:Version$&gt;
+&lt;$mt:Var name=&quot;portal_url&quot;$&gt;
+</text></template>
+<template id='14' blog_id='1' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118072732' identifier='dynamic_error' modified_on='20220118072732' name='ダイナミックパブリッシングエラー' rebuild_me='1' type='dynamic_error' current_revision='0'></template>
+<template id='1' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='comment_throttle' modified_on='20220118060144' name='コメントスロットル' rebuild_me='1' type='email' current_revision='0'><text>&lt;mt:SetVarBlock name=&quot;message&quot;&gt;これが間違いである場合は、Movable Typeにサインインして、ブログの設定画面に進み、禁止IPリストからIPアドレスを削除してください。&lt;/mt:SetVarBlock&gt;
+&lt;$mt:BlogName$&gt;を禁止しました。&lt;$mt:Var name=&quot;throttle_seconds&quot;$&gt;秒の間に許可された以上のコメントを送信してきました。
+
+これは悪意のスクリプトがブログをコメントで飽和させるのを阻止するための措置です。以下のIPアドレスを禁止しました。
+
+&lt;$mt:Var name=&quot;throttled_ip&quot;$&gt;
+
+&lt;$mt:Var name=&quot;message&quot;$&gt;
+</text></template>
+<template id='2' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='commenter_confirm' modified_on='20220118060144' name='コメントの確認' rebuild_me='1' type='email' current_revision='0'><text>&lt;$mt:BlogName$&gt;にコメントするために登録していただきありがとうございます。 
+
+セキュリティ上の理由から、登録を完了する前にアカウントとメールアドレスの確認を行っています。確認を完了次第、&lt;$mt:BlogName$&gt;にコメントできるようになります。
+
+アカウントの確認のため、次のURLをクリックするか、コピーしてブラウザのアドレス欄に貼り付けてください。
+
+&lt;$mt:Var name=&quot;confirm_url&quot;$&gt;
+
+このメールに覚えがない場合や、&lt;$mt:BlogName$&gt;に登録するのをやめたい場合は、何もする必要はありません。
+
+ 
+&lt;mt:If tag=&quot;AuthorDisplayName&quot;&gt;&lt;$mt:AuthorDisplayName encode_html=&quot;1&quot;$&gt;&lt;mt:Else&gt;Movable Type&lt;/mt:If&gt;
+
+&lt;$mt:Include module=&quot;メールフッター&quot;$&gt;
+</text></template>
+<template id='3' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='commenter_notify' modified_on='20220118060144' name='コメントの通知' rebuild_me='1' type='email' current_revision='0'><text>これは新しいユーザーがブログ「&lt;$mt:BlogName$&gt;」に登録を完了したことを通知するメールです。新しいユーザーの情報は以下に記載されています。
+
+新規登録ユーザー:
+ユーザー名: &lt;$mt:CommenterUsername$&gt; 
+名前: &lt;$mt:CommenterName$&gt;
+メール: &lt;$mt:CommenterEmail$&gt;
+
+このユーザーの情報を見たり編集する場合には、下記のURLをクリックするか、URLをコピーしてブラウザのアドレス欄に貼り付けてください。
+&lt;$mt:Var name=&quot;profile_url&quot;$&gt;
+
+&lt;$mt:Include module=&quot;メールフッター&quot;$&gt;
+</text></template>
+<template id='5' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='lockout-ip' modified_on='20220118060144' name='IPアドレスのロック通知' rebuild_me='1' type='email' current_revision='0'><text>これは以下のIPアドレスからのアクセスがロックされたことを通知するメールです。
+
+IPアドレス: &lt;mt:var name=&quot;ip_address&quot;&gt; 
+解除時刻: &lt;mt:Date ts=&quot;$recovery_time&quot;&gt;
+
+&lt;mt:include module=&quot;メールフッター&quot;&gt;
+</text></template>
+<template id='6' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='lockout-user' modified_on='20220118060144' name='ユーザーアカウントのロック通知' rebuild_me='1' type='email' current_revision='0'><text>これは以下のユーザーアカウントがロックされたことを通知するメールです。
+
+ユーザー名: &lt;mt:AuthorName&gt; 
+表示名: &lt;mt:AuthorDisplayName&gt;
+メール: &lt;mt:AuthorEmail&gt;
+
+ユーザーのロックを解除する場合は、リンクをクリックしてください。
+
+&lt;mt:var name=&quot;recover_lockout_link&quot;&gt;
+
+&lt;mt:include module=&quot;メールフッター&quot;&gt;
+</text></template>
+<template id='7' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='new-comment' modified_on='20220118060144' name='新しいコメント' rebuild_me='1' type='email' current_revision='0'><text>&lt;mt:If name=&quot;unapproved&quot; trim=&quot;1&quot;&gt;
+    &lt;mt:If tag=&quot;EntryClass&quot; eq=&quot;entry&quot;&gt;
+        未公開のコメントがサイト &apos;&lt;$mt:BlogName$&gt;&apos; の記事 &apos;&lt;$mt:EntryTitle$&gt;&apos; (ID:&lt;$mt:EntryID$&gt;) に投稿されました。公開するまでこのコメントはサイトに表示されません。
+    &lt;mt:Else&gt;
+        未公開のコメントがサイト &apos;&lt;$mt:BlogName$&gt;&apos; のウェブページ &apos;&lt;$mt:PageTitle$&gt;&apos; (ID:&lt;$mt:PageID$&gt;) に投稿されました。公開するまでこのコメントはサイトに表示されません。
+    &lt;/mt:If&gt;
+&lt;mt:Else&gt;
+    &lt;mt:If tag=&quot;EntryClass&quot; eq=&quot;entry&quot;&gt;
+        サイト &apos;&lt;$mt:BlogName$&gt;&apos; の記事 &apos;&lt;$mt:EntryTitle$&gt;&apos; (ID:&lt;$mt:EntryID$&gt;) に新しいコメントが投稿されました。
+    &lt;mt:Else&gt;
+        サイト &apos;&lt;$mt:BlogName$&gt;&apos; のウェブページ &apos;&lt;$mt:PageTitle$&gt;&apos; (ID:&lt;$mt:PageID$&gt;) に新しいコメントが投稿されました。
+    &lt;/mt:If&gt;
+&lt;/mt:If&gt;
+
+&lt;$mt:CommentBody remove_html=&quot;1&quot; wrap_text=&quot;72&quot;$&gt;
+
+コメント投稿者: &lt;$mt:CommentAuthor$&gt; 
+メールアドレス: &lt;$mt:CommentEmail$&gt;
+URL: &lt;$mt:CommentURL$&gt;
+IPアドレス: &lt;$mt:CommentIP$&gt;
+
+&lt;mt:If name=&quot;unapproved&quot;&gt;&lt;mt:If name=&quot;state_editable&quot;&gt;コメントを承認する:
+    &lt;&lt;$mt:Var name=&quot;approve_url&quot;$&gt;&gt;&lt;/mt:If&gt;&lt;/mt:If&gt;
+&lt;mt:If name=&quot;view_url&quot;&gt;コメントを見る:
+    &lt;&lt;$mt:Var name=&quot;view_url&quot; escape=&quot;html&quot;$&gt;&gt;&lt;/mt:If&gt;
+コメントを編集する:
+    &lt;&lt;$mt:Var name=&quot;edit_url&quot;$&gt;&gt;
+&lt;mt:If name=&quot;state_editable&quot;&gt;コメントをスパムとして報告する:
+    &lt;&lt;$mt:Var name=&quot;spam_url&quot;$&gt;&gt;&lt;/mt:If&gt;
+
+&lt;$mt:Include module=&quot;メールフッター&quot;$&gt;
+</text></template>
+<template id='8' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='new-ping' modified_on='20220118060144' name='新しいトラックバック' rebuild_me='1' type='email' current_revision='0'><text>&lt;mt:If name=&quot;unapproved&quot; trim=&quot;1&quot;&gt;
+  &lt;mt:If name=&quot;entry_id&quot;&gt;
+    &lt;mt:If tag=&quot;EntryClass&quot; eq=&quot;entry&quot;&gt;
+      サイト &apos;&lt;$mt:BlogName$&gt;&apos; の記事 &apos;&lt;$mt:EntryTitle$&gt;&apos; (ID:&lt;$mt:EntryID$&gt;) に未公開のトラックバックがあります。公開するまでこのトラックバックはサイトに表示されません。
+    &lt;mt:Else&gt;
+      サイト &apos;&lt;$mt:BlogName$&gt;&apos; のウェブページ &apos;&lt;$mt:PageTitle$&gt;&apos; (ID:&lt;$mt:PageID$&gt;) に未公開のトラックバックがあります。公開するまでこのトラックバックはサイトに表示されません。
+    &lt;/mt:If&gt;
+  &lt;mt:ElseIf name=&quot;category_id&quot;&gt;
+    サイト &apos;&lt;$mt:BlogName$&gt;&apos; のカテゴリ &apos;&lt;$mt:CategoryLabel$&gt;&apos; (ID:&lt;$mt:CategoryID$&gt;) に未公開のトラックバックがあります。公開するまでこのトラックバックはサイトに表示されません。
+  &lt;/mt:If&gt;
+&lt;mt:Else&gt;
+  &lt;mt:If name=&quot;entry_id&quot;&gt;
+    &lt;mt:If tag=&quot;EntryClass&quot; eq=&quot;entry&quot;&gt;
+      サイト &apos;&lt;$mt:BlogName$&gt;&apos; の記事 &apos;&lt;$mt:EntryTitle$&gt;&apos; (ID:&lt;$mt:EntryID$&gt;) に新しいトラックバックがあります。
+    &lt;mt:Else&gt;
+      サイト &apos;&lt;$mt:BlogName$&gt;&apos; のウェブページ &apos;&lt;$mt:PageTitle$&gt;&apos; (ID:&lt;$mt:PageID$&gt;) に新しいトラックバックがあります。
+    &lt;/mt:If&gt;
+  &lt;mt:ElseIf name=&quot;category_id&quot;&gt;
+    サイト &apos;&lt;$mt:BlogName$&gt;&apos; のカテゴリ &apos;&lt;$mt:CategoryLabel$&gt;&apos; (ID:&lt;$mt:CategoryID$&gt;) に新しいトラックバックがあります。
+  &lt;/mt:If&gt;
+&lt;/mt:If&gt;
+
+概要: 
+&lt;$mt:PingExcerpt wrap_text=&quot;72&quot;$&gt;
+
+URL: &lt;$mt:PingURL$&gt;
+タイトル: &lt;$mt:PingTitle$&gt;
+ブログ: &lt;$mt:PingBlogName$&gt;
+IPアドレス: &lt;$mt:PingIP$&gt;
+
+&lt;mt:If name=&quot;state_editable&quot;&gt;&lt;mt:If name=&quot;unapproved&quot;&gt;トラックバックを承認する: 
+  &lt;&lt;$mt:Var name=&quot;approve_url&quot;$&gt;&gt;
+&lt;/mt:If&gt;&lt;/mt:If&gt;
+&lt;mt:If name=&quot;entry_id&quot;&gt;&lt;mt:If tag=&quot;EntryPermalink&quot;&gt;トラックバックを見る: 
+  &lt;&lt;$mt:EntryPermalink$&gt;&gt;
+&lt;/mt:If&gt;&lt;/mt:If&gt;
+&lt;mt:If name=&quot;state_editable&quot;&gt;トラックバックをスパムとして報告する: 
+  &lt;&lt;$mt:Var name=&quot;spam_url&quot;$&gt;&gt;
+&lt;/mt:If&gt;
+トラックバックの編集: 
+  &lt;&lt;$mt:Var name=&quot;edit_url&quot;$&gt;&gt;
+
+&lt;$mt:Include module=&quot;メールフッター&quot;$&gt;
+</text></template>
+<template id='9' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='notify-entry' modified_on='20220118060144' name='記事の共有' rebuild_me='1' type='email' current_revision='0'><text>新しい&lt;$mt:EntryClassLabel$&gt;「&lt;$mt:EntryTitle$&gt;」を&lt;$mt:BlogName$&gt;で公開しました。
+
+&lt;mt:If name=&quot;object_type&quot; eq=&quot;entry&quot;&gt;表示する&lt;mt:Else&gt;表示する&lt;/mt:If&gt; &lt;&lt;mt:SetVarBlock name=&quot;entry_status&quot;&gt;&lt;$mt:EntryStatus$&gt;&lt;/mt:SetVarBlock&gt;&lt;mt:If name=&quot;entry_status&quot; eq=&quot;Publish&quot;&gt;&lt;$mt:EntryPermalink$&gt;&lt;mt:Else&gt;&lt;$mt:Var name=&quot;entry_editurl&quot;$&gt;&lt;/mt:If&gt;&gt;
+
+------------------------------------------------------------------------
+タイトル: &lt;$mt:EntryTitle$&gt;
+日付: &lt;$mt:EntryDate mail=&quot;1&quot;$&gt;
+&lt;mt:If name=&quot;send_excerpt&quot;&gt;
+
+&lt;$mt:EntryExcerpt wrap_text=&quot;72&quot;$&gt;
+&lt;/mt:If&gt;
+------------------------------------------------------------------------
+
+&lt;mt:If name=&quot;message&quot;&gt;メッセージ: 
+&lt;$mt:Var name=&quot;message&quot;$&gt;&lt;/mt:If&gt;
+&lt;mt:If name=&quot;send_body&quot;&gt;
+------------------------------------------------------------------------
+
+&lt;$mt:EntryBody remove_html=&quot;1&quot; wrap_text=&quot;72&quot;$&gt;
+
+------------------------------------------------------------------------&lt;/mt:If&gt;
+
+このメールは&lt;$mt:BlogName$&gt;で新規に作成されたコンテンツに関する通知を送るように設定されているか、またはコンテンツの著者が選択したユーザーに送信されています。このメールを受信したくない場合は、次のユーザーに連絡してください:
+
+&lt;mt:if name=&quot;entry_author&quot;&gt;&lt;$mt:AuthorDisplayName$&gt; &lt;&lt;$mt:AuthorEmail$&gt;&gt;&lt;mt:else&gt;&lt;$mt:var name=&quot;from_address&quot;$&gt;&lt;/mt:if&gt;
+</text></template>
+<template id='10' blog_id='0' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118060144' identifier='recover-password' modified_on='20220118060144' name='パスワードの再設定' rebuild_me='1' type='email' current_revision='0'><text>パスワードをリセットしようとしています。以下のリンクをクリックして、新しいパスワードを設定してください。
+
+&lt;mt:var name=&quot;link_to_login&quot;&gt;
+
+このメールに心当たりがないときは、何もせずに無視してください。
+
+&lt;mt:include module=&quot;メールフッター&quot;&gt;
+</text></template>
+<template id='15' blog_id='1' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118072732' identifier='popup_image' modified_on='20220118072732' name='ポップアップ画像' rebuild_me='1' type='popup_image' current_revision='0'></template>
+<template id='16' blog_id='1' build_dynamic='0' build_interval='0' build_type='1' created_by='1' created_on='20220118072732' identifier='search_results' modified_on='20220118072732' name='検索結果' rebuild_me='1' type='search_results' current_revision='0'></template>
+<log id='1' author_id='0' blog_id='0' category='upgrade' class='system' created_on='20220117210144' level='2' modified_on='20220117210144'><message>&apos;Melody&apos;がデータベースをバージョン7.0051にアップグレードしました。</message></log>
+<log id='8' author_id='0' blog_id='0' category='upgrade' class='system' created_on='20220117210144' level='2' modified_on='20220117210144'><message>Movable Typeをバージョンr.5005にアップグレードしました。</message></log>
+<log id='9' author_id='1' blog_id='0' category='restore' class='system' created_on='20220117210228' ip='192.168.0.6' level='1' modified_on='20220117210228'><message>&apos;Melody&apos;がMovable Typeのシステムをエクスポートしました。</message></log>
+<log id='10' author_id='1' blog_id='0' category='restore' class='system' created_on='20220117210231' ip='192.168.0.6' level='1' modified_on='20220117210231'><message>Melodyがエクスポートファイル(/tmp/tgz.cybHAsUW)をダウンロードしました。</message></log>
+<log id='11' author_id='1' blog_id='0' category='restore' class='system' created_on='20220117222238' ip='192.168.0.6' level='1' modified_on='20220117222238'><message>サイトのインポートを開始します: Movable_Type-2022-01-17-21-02-28-Export.tar.gz</message></log>
+<log id='12' author_id='1' blog_id='0' category='restore' class='system' created_on='20220117222239' ip='192.168.0.6' level='3' modified_on='20220117222239'><message>インポート中にエラーが発生しました。</message><metadata>サイトのデータが含まれていないため、このファイルをインポートすることができません。サイトを先に作成してください。 at lib/MT/BackupRestore/BackupFileScanner.pm line 79.
+</metadata></log>
+<log id='13' author_id='1' blog_id='0' category='restore' class='system' created_on='20220117222250' ip='192.168.0.6' level='1' modified_on='20220117222250'><message>サイトのインポートを開始します: Movable_Type-2022-01-17-21-02-28-Export.tar.gz</message></log>
+<log id='14' author_id='1' blog_id='0' category='restore' class='system' created_on='20220117222250' ip='192.168.0.6' level='3' modified_on='20220117222250'><message>インポート中にエラーが発生しました。</message><metadata>サイトのデータが含まれていないため、このファイルをインポートすることができません。サイトを先に作成してください。 at lib/MT/BackupRestore/BackupFileScanner.pm line 79.
+</metadata></log>
+<log id='17' author_id='1' blog_id='0' category='restore' class='system' created_on='20220117222750' ip='192.168.0.6' level='1' modified_on='20220117222750'><message>&apos;Melody&apos;がMovable Typeのシステムをエクスポートしました。</message></log>
+<log id='18' author_id='1' blog_id='0' category='restore' class='system' created_on='20220117222754' ip='192.168.0.6' level='1' modified_on='20220117222754'><message>Melodyがエクスポートファイル(/tmp/tgz.ahlMagpY)をダウンロードしました。</message></log>
+<be_block id='2' blog_id='0' can_remove_block='1' created_by='1' created_on='20220118072810' identifier='global_block' label='global block' modified_on='20220118072810' root_block='div' show_preview='1'><addable_block_types>{&quot;common&quot;:[{&quot;typeId&quot;:&quot;core-text&quot;,&quot;index&quot;:0,&quot;panel&quot;:true,&quot;shortcut&quot;:true},{&quot;typeId&quot;:&quot;mt-image&quot;,&quot;index&quot;:1,&quot;panel&quot;:true,&quot;shortcut&quot;:true},{&quot;typeId&quot;:&quot;mt-file&quot;,&quot;index&quot;:2,&quot;panel&quot;:true,&quot;shortcut&quot;:true},{&quot;typeId&quot;:&quot;core-html&quot;,&quot;index&quot;:3,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;sixapart-oembed&quot;,&quot;index&quot;:4,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;core-horizontalrule&quot;,&quot;index&quot;:5,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;core-table&quot;,&quot;index&quot;:6,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;core-columns&quot;,&quot;index&quot;:7,&quot;panel&quot;:true,&quot;shortcut&quot;:false}]}</addable_block_types></be_block>
+<be_config id='2' blog_id='0' created_by='1' created_on='20220118072818' label='global config' modified_on='20220118072818'><block_display_options>{&quot;common&quot;:[{&quot;typeId&quot;:&quot;core-text&quot;,&quot;index&quot;:0,&quot;panel&quot;:true,&quot;shortcut&quot;:true},{&quot;typeId&quot;:&quot;mt-image&quot;,&quot;index&quot;:1,&quot;panel&quot;:true,&quot;shortcut&quot;:true},{&quot;typeId&quot;:&quot;mt-file&quot;,&quot;index&quot;:2,&quot;panel&quot;:true,&quot;shortcut&quot;:true},{&quot;typeId&quot;:&quot;core-html&quot;,&quot;index&quot;:3,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;sixapart-oembed&quot;,&quot;index&quot;:4,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;core-horizontalrule&quot;,&quot;index&quot;:5,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;core-table&quot;,&quot;index&quot;:6,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;core-columns&quot;,&quot;index&quot;:7,&quot;panel&quot;:true,&quot;shortcut&quot;:false},{&quot;typeId&quot;:&quot;custom-global_block&quot;,&quot;index&quot;:8,&quot;panel&quot;:true,&quot;shortcut&quot;:false}]}</block_display_options></be_config>
+<role id='1' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='サイト管理者'><description>サイトを管理できます</description><permissions>&apos;administer_site&apos;</permissions></role>
+<role id='2' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='編集者'><description>ファイルをアップロードし、記事(カテゴリ)、ウェブページ(フォルダ)、タグを編集して公開できます。</description><permissions>&apos;comment&apos;,&apos;create_post&apos;,&apos;publish_post&apos;,&apos;edit_all_posts&apos;,&apos;edit_categories&apos;,&apos;edit_tags&apos;,&apos;manage_pages&apos;,&apos;rebuild&apos;,&apos;upload&apos;,&apos;send_notifications&apos;,&apos;manage_feedback&apos;,&apos;edit_assets&apos;,&apos;manage_content_data&apos;,&apos;manage_category_set&apos;</permissions></role>
+<role id='3' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='ユーザー'><description>記事を作成し、各自の記事の編集とファイルのアップロード、およびそれらを公開できます。</description><permissions>&apos;comment&apos;,&apos;create_post&apos;,&apos;publish_post&apos;,&apos;upload&apos;,&apos;send_notifications&apos;</permissions></role>
+<role id='4' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='デザイナ' role_mask='144'><description>テンプレートとテーマの編集と管理、及びそれらの公開ができます。</description><permissions>&apos;manage_themes&apos;,&apos;edit_templates&apos;,&apos;rebuild&apos;,&apos;upload&apos;,&apos;edit_assets&apos;</permissions></role>
+<role id='5' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='ウェブマスター'><description>ページの管理、ファイルのアップロード、サイトのテンプレートを公開できます。</description><permissions>&apos;manage_pages&apos;,&apos;rebuild&apos;,&apos;upload&apos;</permissions></role>
+<role id='6' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='ライター'><description>記事の作成、各自の記事とコメントを編集できます。</description><permissions>&apos;comment&apos;,&apos;create_post&apos;</permissions></role>
+<role id='7' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='コンテンツデザイナ'><description>コンテンツタイプ、コンテンツデータ、カテゴリセットの編集と管理ができます。</description><permissions>&apos;manage_content_types&apos;,&apos;manage_content_data&apos;,&apos;manage_category_set&apos;</permissions></role>
+<role id='8' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='モデレータ'><description>コメントを投稿し、コメントやトラックバックを管理できます。</description><permissions>&apos;comment&apos;,&apos;manage_feedback&apos;</permissions></role>
+<role id='9' created_by='1' created_on='20220118060144' is_system='0' modified_on='20220118060144' name='コメント投稿者' role_mask='1'><description>コメントを投稿できます。</description><permissions>&apos;comment&apos;</permissions></role>
+<association id='1' author_id='1' blog_id='1' created_by='1' created_on='20220118072731' group_id='0' modified_on='20220118072731' role_id='1' type='1'></association>
+</movabletype>

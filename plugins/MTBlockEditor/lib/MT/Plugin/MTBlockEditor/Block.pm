@@ -156,14 +156,44 @@ sub is_default_visible {
     !shift->is_default_hidden;
 }
 
+sub _fillin_default_values {
+    my $self = shift;
+
+    my $defs = $self->column_defs;
+    while (my ($col, $def) = each %$defs) {
+        next if !$def->{not_null};
+        next if defined $self->$col;
+        next if $def->{type} ne 'text' && !exists $def->{default};
+        $self->$col($def->{type} eq 'text' ? '' : $def->{default});
+    }
+}
+
+sub insert {
+    my $self = shift;
+
+    $self->_fillin_default_values;
+
+    return unless $self->validate;
+
+    $self->SUPER::insert(@_);
+}
+
 sub save {
+    my $self = shift;
+
+    return unless $self->validate;
+
+    $self->SUPER::save(@_);
+}
+
+sub validate {
     my $self = shift;
 
     return unless $self->_validate_label;
     return unless $self->_validate_identifier;
     return unless $self->_validate_icon;
 
-    $self->SUPER::save(@_);
+    1;
 }
 
 sub _validate_label {
@@ -225,6 +255,15 @@ sub TO_JSON {
         shouldBeCompiled  => $self->should_be_compiled ? JSON::true : JSON::false,
         addableBlockTypes => MT::Util::from_json($self->addable_block_types || '{}'),
         showPreview       => $self->show_preview ? JSON::true : JSON::false,
+    };
+}
+
+# define for MT::BackupRestore
+sub parents {
+    my $obj = shift;
+    {
+        blog_id  => [MT->model('blog'), MT->model('website')],
+        optional => 1,
     };
 }
 
