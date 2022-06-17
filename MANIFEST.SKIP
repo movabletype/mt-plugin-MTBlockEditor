@@ -24,6 +24,8 @@ tsconfig.json
 webpack.config.js
 i18next-parser.config.js
 ^tools/
+docker-compose.yml
+Dockerfile
 
 # npm working directory
 ^node_modules/

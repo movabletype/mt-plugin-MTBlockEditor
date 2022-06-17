@@ -1,21 +1,27 @@
 import $ from "jquery";
 import { nl2br } from "mt-block-editor-block/util";
 import { Editor as MTBlockEditor } from "mt-block-editor-block";
-import React, { useState } from "mt-block-editor-block/React";
+import React, { useState, useRef } from "mt-block-editor-block/React";
 import { blockProperty } from "mt-block-editor-block/decorator";
 import {
   BlockToolbar,
   BlockToolbarButton,
   BlockSetupCommon,
   BlockLabel,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "mt-block-editor-block/Component";
 import Block, {
   Metadata,
   NewFromHtmlOptions,
   EditorOptions,
 } from "mt-block-editor-block/Block";
+import { useCommands } from "mt-block-editor-block/Hook";
 import { useEditorContext } from "mt-block-editor-block/Context";
-import { edit as editIcon } from "mt-block-editor-block/icon";
+import { edit as editIcon, link as linkIcon } from "mt-block-editor-block/icon";
+import i18n from "mt-block-editor-block/i18n";
 
 import imageIcon from "../img/icon/image.svg";
 import { waitFor } from "../util";
@@ -35,7 +41,24 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
   const { editor } = useEditorContext();
   const [, setBlock] = useState(Object.assign({}, block));
   const [modalActive, setModalActive] = useState(false);
+  const [isLinkDialogOpen, setLinkDialogOpen] = useState(false);
+  const formRef = useRef(null);
   const blankMessage = window.trans("Please select an image");
+
+  useCommands(
+    {
+      block,
+      commands: [
+        {
+          command: "core-insertLink",
+          callback: () => {
+            setLinkDialogOpen(true);
+          },
+        },
+      ],
+    },
+    []
+  );
 
   if (!focus && !block.url && editor.opts.mode === "setup") {
     return <p>{blankMessage}</p>;
@@ -69,6 +92,10 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
             alignment: img.className?.replace(/^mt-image-/, ""),
             hasCaption: (newData.caption || "") !== "",
           });
+
+          if (!newData.linkUrl && newData.linkToOriginal) {
+            newData.linkUrl = newData.assetUrl;
+          }
 
           addEditUpdateBlock(editor, block, newData);
 
@@ -269,13 +296,98 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
         )}
       </BlockLabel>
       {focus && (
-        <BlockToolbar>
-          <BlockToolbarButton
-            icon={editIcon}
-            label={window.trans("Edit")}
-            onClick={showModal}
-          />
-        </BlockToolbar>
+        <>
+          <BlockToolbar>
+            <BlockToolbarButton
+              icon={editIcon}
+              label={window.trans("Edit")}
+              onClick={showModal}
+            />
+            <BlockToolbarButton
+              icon={linkIcon}
+              label={window.trans("Insert Link")}
+              onClick={() => setLinkDialogOpen(true)}
+            />
+          </BlockToolbar>
+          <Dialog
+            open={isLinkDialogOpen}
+            onClose={() => setLinkDialogOpen(false)}
+          >
+            <DialogHeader>
+              <h4 className="mt-be-dialog-title">{i18n.t("Insert Link")}</h4>
+            </DialogHeader>
+            <form ref={formRef}>
+              <DialogBody>
+                <label className="mt-be-label-name">
+                  <div className="mt-be-label-block">{i18n.t("Link URL")}</div>
+                  <input
+                    type="url"
+                    className="mt-be-input"
+                    name="linkUrl"
+                    defaultValue={block.linkUrl}
+                    data-mt-block-editor-focus-default
+                  />
+                </label>
+                <label className="mt-be-label-name">
+                  <div className="mt-be-label-block">{i18n.t("Title")}</div>
+                  <input
+                    className="mt-be-input"
+                    name="linkTitle"
+                    defaultValue={block.linkTitle}
+                  />
+                </label>
+                <label className="mt-be-label-name">
+                  <div className="mt-be-label-block">
+                    {i18n.t("Target Attribute")}
+                  </div>
+                  <select
+                    name="linkTarget"
+                    className="mt-be-input"
+                    defaultValue={block.linkTarget}
+                  >
+                    <option value="_self">{i18n.t("None")}</option>
+                    <option value="_blank">{i18n.t("New window")}</option>
+                  </select>
+                </label>
+              </DialogBody>
+
+              <DialogFooter>
+                <button
+                  type="button"
+                  className="mt-be-btn-default"
+                  onClick={() => {
+                    setLinkDialogOpen(false);
+                  }}
+                >
+                  {i18n.t("Close")}
+                </button>
+                <button
+                  type="button"
+                  className="mt-be-btn-primary"
+                  onClick={() => {
+                    const form = formRef.current;
+                    if (!form) {
+                      return;
+                    }
+
+                    const keys = [
+                      "linkUrl",
+                      "linkTitle",
+                      "linkTarget",
+                    ] as const;
+                    keys.forEach((name) => {
+                      block[name] = (form[name] as HTMLInputElement).value;
+                    });
+
+                    setLinkDialogOpen(false);
+                  }}
+                >
+                  {i18n.t("Save")}
+                </button>
+              </DialogFooter>
+            </form>
+          </Dialog>
+        </>
       )}
     </div>
   );
@@ -323,8 +435,16 @@ const Html: React.FC<HtmlProps> = ({ block }: HtmlProps) => {
       )}
     />
   );
-  if (block.linkToOriginal) {
-    img = <a href={block.assetUrl}>{img}</a>;
+  if (block.linkUrl) {
+    img = (
+      <a
+        href={block.linkUrl}
+        target={block.linkTarget}
+        title={block.linkTitle || undefined}
+      >
+        {img}
+      </a>
+    );
   }
 
   return block.caption ? (
@@ -357,12 +477,15 @@ class MTImage extends Block {
   public imageHeight: string;
   public alternativeText: string;
   public caption: string;
-  public linkToOriginal: boolean;
   public alignment: string;
   public showModal: boolean;
   public hasCaption: boolean;
   public useThumbnail: boolean;
   public files?: File[];
+  public linkToOriginal: boolean;
+  public linkUrl: string;
+  public linkTarget = "_self";
+  public linkTitle: string;
 
   public constructor(init?: Partial<MTImage>) {
     super();
@@ -378,6 +501,8 @@ class MTImage extends Block {
     this.alignment = "";
     this.useThumbnail = false;
     this.showModal = false;
+    this.linkUrl = "";
+    this.linkTitle = "";
 
     if (init) {
       Object.assign(this, init);
@@ -417,20 +542,25 @@ class MTImage extends Block {
     const figCaption = doc.querySelector("FIGCAPTION") as HTMLElement;
     const a = doc.querySelector("A") as HTMLAnchorElement;
 
-    return new MTImage(
-      Object.assign(
-        {
-          url: img?.getAttribute("src") || "",
-          imageWidth: img?.width || "",
-          imageHeight: img?.height || "",
-          alternativeText: img?.alt || "",
-          caption: figCaption?.innerHTML.replace(/<br[^>]*>/g, "\n") || "",
-          assetUrl: a?.getAttribute("href") || "",
-          linkToOriginal: !!a,
-        },
-        meta
-      ) as Partial<MTImage>
-    );
+    const props: Partial<MTImage> = {
+      url: img?.getAttribute("src") || "",
+      imageWidth: (img?.width || "").toString(),
+      imageHeight: (img?.height || "").toString(),
+      alternativeText: img?.alt || "",
+      caption: figCaption?.innerHTML.replace(/<br[^>]*>/g, "\n") || "",
+      assetUrl: a?.getAttribute("href") || "",
+      linkToOriginal: !!(a && !a.getAttribute("target")),
+    };
+    if (a) {
+      if (a.getAttribute("target")) {
+        props.linkUrl = a.getAttribute("href") || "";
+        props.linkTitle = a.getAttribute("title") || "";
+        props.linkTarget = a.target;
+      } else {
+        props.linkUrl = a.href;
+      }
+    }
+    return new MTImage(Object.assign(props, meta));
   }
 
   static canNewFromFile({ file }: { file: File }): boolean {
