@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  builder:
+    build:
+      context: .
+      args:
+        - NODE=16
+    volumes:
+      - .:/app
+    working_dir: /app
+    user: "${UID:-1000}:${GID:-1000}"

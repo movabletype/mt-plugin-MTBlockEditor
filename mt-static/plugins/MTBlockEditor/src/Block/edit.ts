@@ -17,20 +17,20 @@ const editHandlers = {
       ? a
       : null;
   },
-  undo(hist, { setFocusedId }) {
+  undo(hist, { setFocusedIds }) {
     const block = hist.block;
     const data = hist.data;
 
     data.cur = data.cur || buildEditData(block, data.last);
     Object.assign(block, data.last);
-    setFocusedId(block.id, { forceUpdate: true });
+    setFocusedIds([block.id], { forceUpdate: true });
   },
-  redo(hist, { setFocusedId }) {
+  redo(hist, { setFocusedIds }) {
     const block = hist.block;
     const data = hist.data;
 
     Object.assign(block, data.cur);
-    setFocusedId(block.id, { forceUpdate: true });
+    setFocusedIds([block.id], { forceUpdate: true });
   },
 };
 
