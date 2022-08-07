@@ -46,7 +46,7 @@ my @services = ({
     # },
     {
         name => "soundcloud",
-        url  => "https://soundcloud.com/scumgang6ix9ine/trollz-6ix9ine-with-nicki-minaj"
+        url  => "https://soundcloud.com/therevolution89/the-revolution-clubland-classics-vol1"
     },
     {
         name => "mixcloud",
