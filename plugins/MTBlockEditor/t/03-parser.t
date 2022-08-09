@@ -376,6 +376,326 @@ DATA
                 'type' => 'custom-test1',
                 'meta' => {} }];
     };
+
+    subtest 'custom block' => sub {
+        subtest 'without wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" --><!-- mt-beb --><p>paragraph1</p><!-- /mt-beb --><!-- mt-beb --><p>paragraph2</p><!-- /mt-beb --><!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks' => [{
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph1</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+                        {
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph2</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+
+                    ],
+                    'content' => ['<p>paragraph1</p>', '<p>paragraph2</p>'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" --><div><!-- mt-beb --><p>paragraph1</p><!-- /mt-beb --><!-- mt-beb --><p>paragraph2</p><!-- /mt-beb --></div><!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks' => [{
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph1</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+                        {
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph2</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+
+                    ],
+                    'content' => ['<div>', '<p>paragraph1</p>', '<p>paragraph2</p>', '</div>'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with custom-element wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" --><custom-element><!-- mt-beb --><p>paragraph1</p><!-- /mt-beb --><!-- mt-beb --><p>paragraph2</p><!-- /mt-beb --></custom-element><!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks' => [{
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph1</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+                        {
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph2</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+
+                    ],
+                    'content' => ['<custom-element>', '<p>paragraph1</p>', '<p>paragraph2</p>', '</custom-element>'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with class name' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" --><div class="class1 class2"><!-- mt-beb --><p>paragraph1</p><!-- /mt-beb --><!-- mt-beb --><p>paragraph2</p><!-- /mt-beb --></div><!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks' => [{
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph1</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+                        {
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph2</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+
+                    ],
+                    'content' => ['<div class="class1 class2">', '<p>paragraph1</p>', '<p>paragraph2</p>', '</div>'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        }
+    };
+
+    subtest 'blank' => sub {
+        subtest 'without wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" --><!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks'  => [],
+                    'content' => [],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" --><div></div><!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks'  => [],
+                    'content' => ['<div></div>'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with class name' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" --><div class="class1 class2"></div><!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks'  => [],
+                    'content' => ['<div class="class1 class2"></div>'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+    };
+
+    subtest 'compiled' => sub {
+        subtest 'without wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" h='&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;' -->test<!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks' => [{
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph1</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+                        {
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph2</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+
+                    ],
+                    'content' => ['test'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" h='&lt;div&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks' => [{
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph1</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+                        {
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph2</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+
+                    ],
+                    'content' => ['test'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with custom element wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" h='&lt;custom-element&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;/custom-element&gt;' -->test<!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks' => [{
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph1</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+                        {
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph2</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+
+                    ],
+                    'content' => ['test'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with class name' => sub {
+            subtest 'with wrapper' => sub {
+                my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" h='&lt;div&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
+DATA
+                is_deeply $blocks, [{
+                        'blocks' => [{
+                                'blocks'  => [],
+                                'content' => ['<p>paragraph1</p>'],
+                                'type'    => 'core-text',
+                                'meta'    => {}
+                            },
+                            {
+                                'blocks'  => [],
+                                'content' => ['<p>paragraph2</p>'],
+                                'type'    => 'core-text',
+                                'meta'    => {}
+                            },
+
+                        ],
+                        'content' => ['test'],
+                        'type'    => 'custom-test',
+                        'meta'    => {}
+                    },
+                ];
+            };
+
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" h='&lt;div class=&#x27;a&amp;gt;b&#x27;&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks' => [{
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph1</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+                        {
+                            'blocks'  => [],
+                            'content' => ['<p>paragraph2</p>'],
+                            'type'    => 'core-text',
+                            'meta'    => {}
+                        },
+
+                    ],
+                    'content' => ['test'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+    };
+
+    subtest 'compiled - blank' => sub {
+        subtest 'without wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" h='' -->test<!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks'  => [],
+                    'content' => ['test'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with wrapper' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" h='&lt;div&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks'  => [],
+                    'content' => ['test'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+
+        subtest 'with class name' => sub {
+            my $blocks = $parser->parse(<<DATA);
+<!-- mt-beb t="custom-test" h='&lt;div class=&#x27;a&amp;gt;b&#x27;&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
+DATA
+            is_deeply $blocks, [{
+                    'blocks'  => [],
+                    'content' => ['test'],
+                    'type'    => 'custom-test',
+                    'meta'    => {}
+                },
+            ];
+        };
+    };
 };
 
 done_testing;

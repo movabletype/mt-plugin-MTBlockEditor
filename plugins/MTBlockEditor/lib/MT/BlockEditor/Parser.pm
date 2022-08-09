@@ -7,6 +7,8 @@ use utf8;
 use XML::SAX::ParserFactory;
 use MT::BlockEditor::Parser::SAXHandler;
 
+our $NO_FALLBACK = "";
+
 sub new {
     my $class = shift;
     my $self  = bless {}, $class;
@@ -24,15 +26,17 @@ my %entity_map = qw(
 
 sub parse {
     my $self = shift;
-    my ($content) = @_;
+    my ($content, $fallback_type) = @_;
+    $fallback_type //= "core-html";
 
-    if ($content !~ m{\A\s*<!--\s+mt-beb}sm) {
-        return [ +{
-                type    => "core-html",
+    if ($fallback_type && $content !~ m{\A\s*<!--\s+mt-beb}sm) {
+        return [
+            +{
+                type    => $fallback_type,
                 meta    => {},
                 blocks  => [],
                 content => [$content],
-        } ];
+            }];
     }
 
     my %map_reverse = reverse %entity_map;
@@ -48,7 +52,7 @@ sub parse {
         json => $self->{__json},
         meta => $self->{__meta},
     );
-    my $parser = XML::SAX::ParserFactory->parser( Handler => $handler );
+    my $parser = XML::SAX::ParserFactory->parser(Handler => $handler);
 
     $parser->parse_string(<<XML, { Source => { Encoding => 'UTF-8' } });
 <xml>
@@ -68,7 +72,7 @@ sub _parse_recursive {
 
     for my $b (@$blocks) {
         if (my $html = delete $b->{html}) {
-            $b->{blocks} = $self->parse($html);
+            $b->{blocks} = $self->parse($html, $NO_FALLBACK);
         }
         $self->_parse_recursive($b->{blocks});
     }
