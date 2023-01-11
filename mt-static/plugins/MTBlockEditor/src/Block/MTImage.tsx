@@ -211,6 +211,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       const linkToOriginal = doc.querySelector(
         "input[id^=link_to_popup-]"
       ) as HTMLInputElement;
+      linkToOriginal.name = ""; // Do not send this value to the backend
       newData.linkToOriginal = linkToOriginal.checked = block.linkToOriginal;
       linkToOriginal.addEventListener("change", () => {
         newData.linkToOriginal = linkToOriginal.checked;
