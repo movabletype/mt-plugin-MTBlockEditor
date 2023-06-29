@@ -45,7 +45,7 @@ sub _hdlr_blocks {
             }
 
             $value
-                ? MT::BlockEditor::Parser->new(json => JSON->new)->parse($value)
+                ? MT::BlockEditor::Parser->new(json => JSON->new)->parse({ content => $value })
                 : [];
         } elsif (my $block = $ctx->{__stash}{block_editor_block}) {
             $block->{blocks};
