@@ -130,6 +130,7 @@ applications:
       cms_delete_permission_filter.be_block: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Block::can_delete_be_block
       cms_save_permission_filter.be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::can_save_be_config
       cms_delete_permission_filter.be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::can_delete_be_config
+      restore: $MTBlockEditor::MT::Plugin::MTBlockEditor::BackupRestore::restore
 
 permissions:
   blog.administer_site:

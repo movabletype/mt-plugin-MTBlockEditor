@@ -13,16 +13,21 @@ BEGIN {
     $ENV{MT_CONFIG} = $test_env->config_file;
 }
 
+use JSON::XS;
 use MT;
 use MT::BackupRestore;
+use MT::Serialize;
 use MT::Test;
 use MT::Test::Permission;
 use MT::Test::MTBlockEditor;
+use MT::BlockEditor::Parser;
 use Class::Method::Modifiers qw(after);
 
 MT::Test->init_app;
 
 my $backup_schema_version = '7.0051';
+
+my $parser = MT::BlockEditor::Parser->new(json => JSON::XS->new);
 
 $test_env->prepare_fixture('db');
 
@@ -96,6 +101,36 @@ subtest 'system' => sub {
         my ($config) = MT->model('be_config')->load(undef, { sort => 'id', direction => 'descend' });
         is $config->blog_id, 0;
     };
+};
+
+subtest 'restore asset id' => sub {
+    my $old_block_count  = MT->model('be_block')->count;
+    my $old_config_count = MT->model('be_config')->count;
+
+    my (@errors, %error_assets);
+    my ($deferred, $blogs, $assets) = MT::BackupRestore->restore_directory(
+        "$FindBin::Bin/backup/asset", \@errors, \%error_assets,
+        $backup_schema_version,
+        0, sub { print $_[0], "\n"; });
+    my $blog_id  = $blogs->[0];
+    my $asset_id = $assets->[0];
+
+    ok !@errors;
+    ok !%error_assets;
+    ok !%$deferred;
+
+    my ($entry) = MT->model('entry')->load({ blog_id => $blog_id });
+    my $entry_text_blocks = $parser->parse({ content => $entry->text });
+    is $entry_text_blocks->[0]{meta}{assetId}, $asset_id;
+
+    my ($cd)    = MT->model('content_data')->load({ blog_id => $blog_id });
+    my $cd_data = $cd->data;
+    my $cd_cb   = ${ MT::Serialize->unserialize($cd->convert_breaks) };
+    for my $k (keys %$cd_cb) {
+        next unless $cd_cb->{$k} eq 'block_editor';
+        my $blocks = $parser->parse({ content => $cd_data->{$k} });
+        is $blocks->[0]{meta}{assetId}, $asset_id;
+    }
 };
 
 done_testing();
