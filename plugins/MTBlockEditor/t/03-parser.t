@@ -14,7 +14,7 @@ my $parser = MT::BlockEditor::Parser->new(json => JSON::XS->new);
 
 subtest 'parse()' => sub {
     subtest 'columns' => sub {
-        my $blocks = $parser->parse(<<DATA);
+        my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb --><p>test</p><!-- /mt-beb --><!-- mt-beb t="core-columns" --><div class="mt-block-editor-columns" style="display: flex"><!-- mt-beb t="core-column" --><div class="mt-block-editor-column"><!-- mt-beb t="core-text"--><p>left</p><!-- /mt-beb --></div><!-- /mt-beb --><!-- mt-beb t="core-column" --><div class="mt-block-editor-column"><!-- mt-beb t="core-text"--><p>right</p><!-- /mt-beb --></div><!-- /mt-beb --></div><!-- /mt-beb -->
 DATA
         is_deeply $blocks, [{
@@ -69,7 +69,7 @@ DATA
     };
 
     subtest 'mt-image' => sub {
-        my $blocks = $parser->parse(<<DATA);
+        my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb --><p>test</p><!-- /mt-beb --><!-- mt-beb t="mt-image" m="{&quot;assetId&quot;:1,&quot;assetUrl&quot;:&quot;https://blog-taaas-jp.movabletype.io/.assets/form-with-multipart.png&quot;,&quot;alignment&quot;:&quot;none&quot;,&quot;width&quot;:&quot;640&quot;}"--><p><img src="https://blog-taaas-jp.movabletype.io/.assets/thumbnail/form-with-multipart-640wri.png" alt="" width="640" height="467" style="max-width:100%;height:auto;display:block"/></p><!-- /mt-beb -->
 DATA
         is_deeply $blocks, [{
@@ -91,7 +91,7 @@ DATA
     };
 
     subtest 'meta : simple' => sub {
-        my $blocks = $parser->parse(<<DATA);
+        my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="core-context" m='{"001":{"label":"Test Label"}}' --><!-- /mt-beb --><!-- mt-beb m="001" -->test1<!-- /mt-beb --><!-- mt-beb m="001" -->test2<!-- /mt-beb -->
 DATA
         is_deeply $blocks, [{
@@ -114,7 +114,7 @@ DATA
     };
 
     subtest 'meta : broken - 1' => sub {
-        my $blocks = $parser->parse(<<DATA);
+        my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="core-context" m='{"001":{"label":"Test Label"}}' --><!-- /mt-beb --><!-- mt-beb m="002" -->test<!-- /mt-beb -->
 DATA
         is_deeply $blocks, [{
@@ -127,7 +127,7 @@ DATA
     };
 
     subtest 'meta : broken - 2' => sub {
-        my $blocks = $parser->parse(<<DATA);
+        my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb m='002,{"label":"Test Label"}' -->test<!-- /mt-beb -->
 DATA
         is_deeply $blocks, [{
@@ -142,7 +142,7 @@ DATA
     };
 
     subtest 'meta : blank' => sub {
-        my $blocks = $parser->parse(<<DATA);
+        my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="core-context" m='{"001":{"label":"Test Label"}}' --><!-- /mt-beb --><!-- mt-beb m="" -->test<!-- /mt-beb -->`
 DATA
         is_deeply $blocks, [{
@@ -155,7 +155,7 @@ DATA
     };
 
     subtest 'meta : multiple' => sub {
-        my $blocks = $parser->parse(<<DATA);
+        my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="core-context" m='{"001":{"label":"Test Label"},"002":{"helpText":"Test Help"}}' --><!-- /mt-beb --><!-- mt-beb m="001,002" -->test<!-- /mt-beb -->
 DATA
         is_deeply $blocks, [{
@@ -171,7 +171,7 @@ DATA
     };
 
     subtest 'meta : multiple with object' => sub {
-        my $blocks = $parser->parse(<<DATA);
+        my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="core-context" m='{"001":{"label":"Test Label"},"002":{"helpText":"Test Help"}}' --><!-- /mt-beb --><!-- mt-beb m='001,002,{"className":"Test Class"}' -->test<!-- /mt-beb -->
 DATA
         is_deeply $blocks, [{
@@ -190,7 +190,7 @@ DATA
     subtest 'multibyte charactors' => sub {
         my $data = q{
         <!-- mt-beb t="core-context" m='{"1":{"assetId":"","alignment":"","useThumbnail":false},"2":{"label":"ラベル1"},"3":{"label":"ラベル2"},"4":{"label":"oEmbed 1"},"5":{"url":""},"6":{"url":"https://twitter.com/JAXA_Kiboriyo/status/1406846182022782980","width":500,"maxwidth":"500","maxheight":"500","providerName":"Twitter"}}' --><!-- /mt-beb --><!-- mt-beb t="core-columns" --><div class="mt-be-columns" style="display: flex"><!-- mt-beb t="core-column" --><div class='mt-be-column'><!-- mt-beb --><p>test1</p><!-- /mt-beb --></div><!-- /mt-beb --><!-- mt-beb t="core-column" --><div class='mt-be-column'><!-- mt-beb --><p>test2</p><!-- /mt-beb --><!-- mt-beb t="core-columns" --><div class="mt-be-columns" style="display: flex"><!-- mt-beb t="core-column" --><div class='mt-be-column'><!-- mt-beb --><p>test3</p><!-- /mt-beb --></div><!-- /mt-beb --><!-- mt-beb t="core-column" --><div class='mt-be-column'><!-- mt-beb --><p>test4</p><!-- /mt-beb --></div><!-- /mt-beb --></div><!-- /mt-beb --></div><!-- /mt-beb --></div><!-- /mt-beb --><!-- mt-beb t="custom-o" --><div><!-- mt-beb t="mt-image" m='1' --><p><img src="" alt="" width="" height="" class="asset asset-image" style="max-width:100%;height:auto;display:block"/></p><!-- /mt-beb --><!-- mt-beb t="custom-test1" --><!-- mt-beb m='2' --><p>テキスト1</p><!-- /mt-beb --><!-- mt-beb m='3' --><p>テキスト2</p><!-- /mt-beb --><!-- mt-beb t="sixapart-oembed" m='4,5' --><!-- /mt-beb --><!-- /mt-beb --></div><!-- /mt-beb --><!-- mt-beb t="custom-test1" --><!-- mt-beb m='2' --><p>テキスト3</p><!-- /mt-beb --><!-- mt-beb m='3' --><p>テキスト2</p><!-- /mt-beb --><!-- mt-beb t="sixapart-oembed" m='4,6' h='' --><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">💎✨星出飛行士により「きぼう」での高品質タンパク質結晶生成実験(MTPCG#6F)開始！<a href="https://twitter.com/hashtag/JaxaPCG?src=hash&amp;ref_src=twsrc%5Etfw">#JaxaPCG</a><br><br>本技術実証実験では試料を凍結して打上げ軌道上で溶かして結晶化を開始します。不安定な創薬標的タンパク質の結晶化が可能となれば、もっと創薬需要に応えられるかも (๑•̀ㅂ•)و✧<a href="https://t.co/ljLN0K4DKY">https://t.co/ljLN0K4DKY</a></p>&mdash; JAXAきぼう利用ネットワーク (@JAXA_Kiboriyo) <a href="https://twitter.com/JAXA_Kiboriyo/status/1406846182022782980?ref_src=twsrc%5Etfw">June 21, 2021</a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><!-- /mt-beb --><!-- /mt-beb -->};
-        my $blocks = $parser->parse($data);
+        my $blocks = $parser->parse({ content => $data });
 
         is_deeply $blocks, [{
                 'content' => [
@@ -379,7 +379,7 @@ DATA
 
     subtest 'custom block' => sub {
         subtest 'without wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" --><!-- mt-beb --><p>paragraph1</p><!-- /mt-beb --><!-- mt-beb --><p>paragraph2</p><!-- /mt-beb --><!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -405,7 +405,7 @@ DATA
         };
 
         subtest 'with wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" --><div><!-- mt-beb --><p>paragraph1</p><!-- /mt-beb --><!-- mt-beb --><p>paragraph2</p><!-- /mt-beb --></div><!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -431,7 +431,7 @@ DATA
         };
 
         subtest 'with custom-element wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" --><custom-element><!-- mt-beb --><p>paragraph1</p><!-- /mt-beb --><!-- mt-beb --><p>paragraph2</p><!-- /mt-beb --></custom-element><!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -457,7 +457,7 @@ DATA
         };
 
         subtest 'with class name' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" --><div class="class1 class2"><!-- mt-beb --><p>paragraph1</p><!-- /mt-beb --><!-- mt-beb --><p>paragraph2</p><!-- /mt-beb --></div><!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -485,7 +485,7 @@ DATA
 
     subtest 'blank' => sub {
         subtest 'without wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" --><!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -498,7 +498,7 @@ DATA
         };
 
         subtest 'with wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" --><div></div><!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -511,7 +511,7 @@ DATA
         };
 
         subtest 'with class name' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" --><div class="class1 class2"></div><!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -526,7 +526,7 @@ DATA
 
     subtest 'compiled' => sub {
         subtest 'without wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" h='&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;' -->test<!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -552,7 +552,7 @@ DATA
         };
 
         subtest 'with wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" h='&lt;div&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -578,7 +578,7 @@ DATA
         };
 
         subtest 'with custom element wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" h='&lt;custom-element&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;/custom-element&gt;' -->test<!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -605,7 +605,7 @@ DATA
 
         subtest 'with class name' => sub {
             subtest 'with wrapper' => sub {
-                my $blocks = $parser->parse(<<DATA);
+                my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" h='&lt;div&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
 DATA
                 is_deeply $blocks, [{
@@ -630,7 +630,7 @@ DATA
                 ];
             };
 
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" h='&lt;div class=&#x27;a&amp;gt;b&#x27;&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph1&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;!-- mt-beb --&gt;&lt;p&gt;paragraph2&lt;/p&gt;&lt;!-- /mt-beb --&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -658,7 +658,7 @@ DATA
 
     subtest 'compiled - blank' => sub {
         subtest 'without wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" h='' -->test<!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -671,7 +671,7 @@ DATA
         };
 
         subtest 'with wrapper' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" h='&lt;div&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
@@ -684,7 +684,7 @@ DATA
         };
 
         subtest 'with class name' => sub {
-            my $blocks = $parser->parse(<<DATA);
+            my $blocks = $parser->parse({ content => <<DATA });
 <!-- mt-beb t="custom-test" h='&lt;div class=&#x27;a&amp;gt;b&#x27;&gt;&lt;/div&gt;' -->test<!-- /mt-beb -->
 DATA
             is_deeply $blocks, [{
