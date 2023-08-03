@@ -1,0 +1,41 @@
+<mtapp:listing id="objs" loop="objs" hide_pager="1" show_actions="0">
+<mt:if name="__first__">
+  <thead>
+    <tr>
+    <th class="head cb">
+      <div class="custom-control custom-checkbox">
+        <input id="select_all" type="checkbox" name="id-head" value="all" class="custom-control-input select" />
+        <label class="custom-control-label" for="select_all"></label><span class="sr-only"><__trans phrase="Select All"></span></label>
+      </div>
+    </th>
+    <th class="head label primary"><span class="col-label"><__trans phrase="Label"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+</mt:if>
+    <tr class="<mt:if name="__odd__">odd</mt:if>">
+      <td class="cb">
+        <div class="custom-control custom-checkbox">
+          <input
+             type="checkbox"
+             name="<mt:var name="params_name">"
+             id="obj_<mt:var name="id">"
+             class="custom-control-input select"
+             value="<mt:var name="id">"
+             <mt:if name="checked">checked="checked"</mt:if>
+             />
+          <label class="custom-control-label" for="obj_<mt:var name="id">"><span class="sr-only"><__trans phrase="Select"></span></label>
+        </div>
+      </td>
+      <td class="label">
+        <div>
+          <mt:var name="label" escape="html">
+        </div>
+      </td>
+    </tr>
+<mt:if __last__>
+  </tbody>
+</mt:if>
+</mtapp:listing>
+
+<script src="<$mt:var name="static_uri"$>plugins/MTBlockEditor/dist/theme_export.min.js?v=<mt:Var name="mt_block_editor_version" />"></script>
