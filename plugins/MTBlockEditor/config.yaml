@@ -311,3 +311,41 @@ upgrade_functions:
           $c->save;
         }
       }
+
+theme_element_handlers:
+  be_block:
+    label: Custom Block (Block Editor)
+    order: 700
+    importer:
+      import: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::apply
+      info: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::info
+    exporter:
+      params: be_block_export_ids
+      template: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::export_template
+      export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::export
+      finalize: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::finalize
+      condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::condition
+  be_config:
+    label: Custom Block Preset (Block Editor)
+    order: 710
+    importer:
+      import: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::apply
+      info: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::info
+    exporter:
+      params: be_config_export_ids
+      template: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export_template
+      export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export
+      finalize: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::finalize
+      condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::condition
+  # be_pref:
+  #   label: Custom Block Pref (Block Editor)
+  #   order: 720
+  #   importer:
+  #     import: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::apply
+  #     info: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::info
+  #   exporter:
+  #     params: be_block_export_ids
+  #     template: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export_template
+  #     export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export
+  #     finalize: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::finalize
+  #     condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::condition
