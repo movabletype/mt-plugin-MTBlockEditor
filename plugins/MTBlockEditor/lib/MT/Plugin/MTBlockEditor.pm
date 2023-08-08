@@ -14,7 +14,7 @@ use MT::Util;
 use constant { SHORTCUT_COUNT_DEFAULT => 3 };
 
 our @EXPORT_OK = qw(
-    plugin translate blocks to_addable_blocks to_custom_block_types_json
+    component plugin translate blocks to_addable_blocks to_custom_block_types_json
     load_tmpl tmpl_param
 );
 use base qw(Exporter);

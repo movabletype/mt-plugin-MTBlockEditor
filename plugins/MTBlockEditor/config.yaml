@@ -320,10 +320,10 @@ theme_element_handlers:
       import: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::apply
       info: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::info
     exporter:
+      component: MTBlockEditor
       params: be_block_export_ids
       template: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::export_template
       export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::export
-      finalize: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::finalize
       condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::condition
   be_config:
     label: Custom Block Preset (Block Editor)
@@ -332,20 +332,18 @@ theme_element_handlers:
       import: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::apply
       info: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::info
     exporter:
+      component: MTBlockEditor
       params: be_config_export_ids
       template: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export_template
       export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export
-      finalize: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::finalize
       condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::condition
-  # be_pref:
-  #   label: Custom Block Pref (Block Editor)
-  #   order: 720
-  #   importer:
-  #     import: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::apply
-  #     info: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::info
-  #   exporter:
-  #     params: be_block_export_ids
-  #     template: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export_template
-  #     export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export
-  #     finalize: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::finalize
-  #     condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::condition
+  be_pref:
+    label: Custom Block Preference (Block Editor)
+    order: 720
+    importer:
+      import: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Pref::apply
+      info: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Pref::info
+    exporter:
+      component: MTBlockEditor
+      export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Pref::export
+      condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Pref::condition

@@ -49,8 +49,24 @@ sub save {
 sub _validate_label {
     my $self = shift;
 
+    my $label = $self->label;
+
     return $self->error(translate("Invalid value"))
-        unless defined($self->label) && $self->label ne '';
+        unless defined($label) && $label ne '';
+
+    my @same_labels = ref($self)->load({
+            ($self->id ? (id => { op => '!=', value => $self->id }) : ()),
+            label => $label,
+        },
+        { fetchonly => { blog_id => 1 }, });
+
+    return $self->error(translate('An label "[_1]" is already used in the site scope.', $label))
+        if $self->blog_id
+        ? grep { $self->blog_id == $_->blog_id } @same_labels
+        : grep { $_->blog_id } @same_labels;
+
+    return $self->error(translate('An label "[_1]" is already used in the global scope.', $label))
+        if grep { !$_->blog_id } @same_labels;
 
     return 1;
 }
