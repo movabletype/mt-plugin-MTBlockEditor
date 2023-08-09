@@ -8,6 +8,7 @@ use strict;
 use warnings;
 use utf8;
 
+use JSON;
 use MT::Util;
 use MT::Plugin::MTBlockEditor qw(load_tmpl);
 
@@ -15,27 +16,11 @@ sub apply {
     my ($element, $theme, $blog) = @_;
     my $blocks       = $element->{data} || {};
     my $current_lang = MT->current_language;
+    my $model        = MT->model('be_block');
 
-    require JSON;
-    my $json_encoder = JSON->new->utf8(0);
-    for my $k (qw(panel shortcut)) {
-        $json_encoder->filter_json_single_key_object(
-            $k,
-            sub {
-                my ($obj) = @_;
-                return $obj if ref $obj;
-                return $obj ? JSON::true : JSON::false;
-            });
-    }
-
-    my $model = MT->model('be_block');
-
+    require Storable;
     for my $key (keys %{$blocks}) {
-        my $b = $blocks->{$key};
-        MT->set_language($blog->language);
-        $b->{label} = $theme->translate_templatized($b->{label});
-        MT->set_language($current_lang);
-        $b->{addable_block_types} = $json_encoder->encode($b->{addable_block_types});
+        my $b = Storable::dclone($blocks->{$key});
 
         # XXX: In the future, be able to read external files with $key as filename
 
@@ -43,6 +28,18 @@ sub apply {
             identifier => $b->{identifier},
             blog_id    => [0, $blog->id],
         }) and next;
+
+        MT->set_language($blog->language);
+        $b->{label} = $theme->translate_templatized($b->{label});
+        MT->set_language($current_lang);
+
+        for my $k (keys %{ $b->{addable_block_types} }) {
+            for my $opt (@{ $b->{addable_block_types}{$k} }) {
+                $opt->{panel}    = $opt->{panel}    ? JSON::true : JSON::false if exists $opt->{panel};
+                $opt->{shortcut} = $opt->{shortcut} ? JSON::true : JSON::false if exists $opt->{shortcut};
+            }
+        }
+        $b->{addable_block_types} = MT::Util::to_json($b->{addable_block_types});
 
         my $obj = $model->new(
             %$b,

@@ -8,40 +8,38 @@ use strict;
 use warnings;
 use utf8;
 
+use JSON;
+use MT::Util;
 use MT::Plugin::MTBlockEditor qw(load_tmpl);
 
 sub apply {
     my ($element, $theme, $blog) = @_;
     my $configs      = $element->{data} || {};
     my $current_lang = MT->current_language;
+    my $model        = MT->model('be_config');
 
-    require JSON;
-    my $json_encoder = JSON->new->utf8(0);
-    for my $k (qw(panel shortcut)) {
-        $json_encoder->filter_json_single_key_object(
-            $k,
-            sub {
-                my ($obj) = @_;
-                return $obj if ref $obj;
-                return $obj ? JSON::true : JSON::false;
-            });
-    }
-
-    my $model = MT->model('be_config');
-
+    require Storable;
     for my $key (keys %{$configs}) {
-        my $c = $configs->{$key};
+        my $c = Storable::dclone($configs->{$key});
+
+        # XXX: In the future, be able to read external files with $key as filename
+
         MT->set_language($blog->language);
         $c->{label} = $theme->translate_templatized($c->{label});
         MT->set_language($current_lang);
-        $c->{block_display_options} = $json_encoder->encode($c->{block_display_options});
-
-        # XXX: In the future, be able to read external files with $key as filename
 
         $model->exist({
             label   => $c->{label},
             blog_id => [0, $blog->id],
         }) and next;
+
+        for my $k (keys %{ $c->{block_display_options} }) {
+            for my $opt (@{ $c->{block_display_options}{$k} }) {
+                $opt->{panel}    = $opt->{panel}    ? JSON::true : JSON::false if exists $opt->{panel};
+                $opt->{shortcut} = $opt->{shortcut} ? JSON::true : JSON::false if exists $opt->{shortcut};
+            }
+        }
+        $c->{block_display_options} = MT::Util::to_json($c->{block_display_options});
 
         my $obj = $model->new(
             %$c,
