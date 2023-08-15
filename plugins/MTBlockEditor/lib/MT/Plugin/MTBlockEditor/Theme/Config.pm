@@ -10,7 +10,7 @@ use utf8;
 
 use JSON;
 use MT::Util;
-use MT::Plugin::MTBlockEditor qw(load_tmpl);
+use MT::Plugin::MTBlockEditor qw(load_tmpl translate_label);
 
 sub apply {
     my ($element, $theme, $blog) = @_;
@@ -25,7 +25,7 @@ sub apply {
         # XXX: In the future, be able to read external files with $key as filename
 
         MT->set_language($blog->language);
-        $c->{label} = $theme->translate_templatized($c->{label});
+        $c->{label} = translate_label($c->{label}, $theme);
         MT->set_language($current_lang);
 
         $model->exist({
