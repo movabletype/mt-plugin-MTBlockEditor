@@ -31,6 +31,7 @@ sub apply {
 
         MT->set_language($blog->language);
         $b->{label} = $theme->translate_templatized($b->{label});
+        $b->{html}  = _apply_html($b->{html}, $theme);
         MT->set_language($current_lang);
 
         for my $k (keys %{ $b->{addable_block_types} }) {
@@ -105,10 +106,10 @@ sub export {
     for my $b (@blocks) {
         $data->{ $b->identifier } = +{
             addable_block_types => $json_decoder->decode($b->addable_block_types || '{}'),
+            html                => _export_html($b->html),
             map { $_ => $b->$_ } qw(
                 can_remove_block
                 class_name
-                html
                 icon
                 identifier
                 label
@@ -117,7 +118,44 @@ sub export {
             ),
         };
     }
+
     return $data;
+}
+
+sub _apply_html {
+    my ($html, $theme) = @_;
+
+    return $html unless ref $html eq 'HASH';
+
+    my $translated_meta = {};
+    for my $meta_key (keys %{ $html->{context} }) {
+        my $meta_hash = $html->{context}{$meta_key};
+        my $result    = {};
+        for my $k (keys %{$meta_hash}) {
+            my $v = $meta_hash->{$k};
+            next if ref $v;
+            $result->{$k} = $k eq 'label' ? translate_label($v) : $theme->translate_templatized($v);
+        }
+        $translated_meta->{$meta_key} = $result;
+    }
+
+    qq{<!-- mt-beb t="core-context" m='@{[MT::Util::to_json($translated_meta)]}' --><!-- /mt-beb -->} . $html->{text};
+}
+
+sub _export_html {
+    my ($html) = @_;
+
+    $html =~ s{\A<!--\s*mt-beb\s*t="core-context"\s*m='([^']+)'\s*--><!--\s*/mt-beb\s*-->}{}
+        or return $html;
+    my $meta_json = $1;
+
+    require JSON;
+    my $json_decoder = JSON->new->utf8(0)->boolean_values(0, 1);
+
+    +{
+        context => $json_decoder->decode($meta_json),
+        text    => $html,
+    };
 }
 
 1;
