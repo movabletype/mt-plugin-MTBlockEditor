@@ -10,7 +10,7 @@ use utf8;
 
 use JSON;
 use MT::Util;
-use MT::Plugin::MTBlockEditor qw(load_tmpl);
+use MT::Plugin::MTBlockEditor qw(load_tmpl translate_label);
 
 sub apply {
     my ($element, $theme, $blog) = @_;
@@ -30,8 +30,9 @@ sub apply {
         }) and next;
 
         MT->set_language($blog->language);
-        $b->{label} = $theme->translate_templatized($b->{label});
-        $b->{html}  = _apply_html($b->{html}, $theme);
+        $b->{label}          = translate_label($b->{label}, $theme);
+        $b->{preview_header} = $theme->translate_templatized($b->{preview_header});
+        $b->{html}           = _apply_html($b->{html}, $theme);
         MT->set_language($current_lang);
 
         for my $k (keys %{ $b->{addable_block_types} }) {
