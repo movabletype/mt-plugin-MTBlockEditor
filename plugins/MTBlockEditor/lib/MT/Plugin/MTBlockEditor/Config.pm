@@ -4,9 +4,9 @@ use strict;
 use warnings;
 use utf8;
 
-use MT::Util qw();
-use MT::Plugin::MTBlockEditor qw(translate);
-use base qw( MT::Object );
+use MT::Util                  qw();
+use MT::Plugin::MTBlockEditor qw(translate translate_label);
+use base                      qw( MT::Object );
 
 __PACKAGE__->install_properties({
     column_defs => {
@@ -79,6 +79,26 @@ sub _validate_block_display_options {
         unless ref($options) eq 'HASH' && ref($options->{common}) eq 'ARRAY';
 
     return 1;
+}
+
+sub new_from_json {
+    my $class = shift;
+    my ($column_values, $component) = @_;
+
+    $component ||= component();
+
+    $class->new(
+        label                 => translate_label($column_values->{label}, $component),
+        block_display_options => MT::Util::to_json(delete $column_values->{block_display_options} || {}),
+    );
+}
+
+sub export_to_json {
+    my $self = shift;
+    {
+        label                 => $self->label,
+        block_display_options => MT::Util::from_json($self->block_display_options || '{}'),
+    };
 }
 
 # define for MT::BackupRestore

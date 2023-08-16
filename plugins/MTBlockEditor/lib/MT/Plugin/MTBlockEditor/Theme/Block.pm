@@ -10,19 +10,25 @@ use utf8;
 
 use JSON;
 use MT::Util;
-use MT::Plugin::MTBlockEditor qw(load_tmpl translate_label);
+use MT::Plugin::MTBlockEditor qw(load_tmpl);
 
 sub apply {
     my ($element, $theme, $blog) = @_;
     my $blocks       = $element->{data} || {};
     my $current_lang = MT->current_language;
     my $model        = MT->model('be_block');
+    my $fmgr         = MT::FileMgr->new('Local');
 
     require Storable;
-    for my $key (keys %{$blocks}) {
-        my $b = Storable::dclone($blocks->{$key});
-
-        # XXX: In the future, be able to read external files with $key as filename
+    for my $identifier (keys %{$blocks}) {
+        my $b         = Storable::dclone($blocks->{$identifier});
+        my $json_file = File::Spec->catdir($theme->path, 'block_editor_blocks', $identifier . '.json');
+        if ($fmgr->exists($json_file)) {
+            $b = {
+                %$b,
+                %{ MT::Util::from_json($fmgr->get_data($json_file)) },
+            };
+        }
 
         $model->exist({
             identifier => $b->{identifier},
@@ -30,23 +36,10 @@ sub apply {
         }) and next;
 
         MT->set_language($blog->language);
-        $b->{label}          = translate_label($b->{label}, $theme);
-        $b->{preview_header} = $theme->translate_templatized($b->{preview_header});
-        $b->{html}           = _apply_html($b->{html}, $theme);
+        my $obj = $model->new_from_json($b, $theme);
         MT->set_language($current_lang);
 
-        for my $k (keys %{ $b->{addable_block_types} }) {
-            for my $opt (@{ $b->{addable_block_types}{$k} }) {
-                $opt->{panel}    = $opt->{panel}    ? JSON::true : JSON::false if exists $opt->{panel};
-                $opt->{shortcut} = $opt->{shortcut} ? JSON::true : JSON::false if exists $opt->{shortcut};
-            }
-        }
-        $b->{addable_block_types} = MT::Util::to_json($b->{addable_block_types});
-
-        my $obj = $model->new(
-            %$b,
-            blog_id => $blog->id,
-        );
+        $obj->blog_id($blog->id);
         $obj->save or die $obj->errstr;
     }
 
@@ -67,8 +60,7 @@ sub condition {
 }
 
 sub export_template {
-    my $app = shift;
-    my ($blog, $saved) = @_;
+    my ($app, $blog, $saved) = @_;
     my $checked_ids = $saved ? +{ map { $_ => 1 } @{ $saved->{be_block_export_ids} } } : +{};
     my $blocks      = [
         map {
@@ -88,8 +80,7 @@ sub export_template {
 }
 
 sub export {
-    my $app = shift;
-    my ($blog, $setting) = @_;
+    my ($app, $blog, $setting) = @_;
     my @blocks;
     if ($setting) {
         @blocks = MT->model('be_block')->load({ id => $setting->{be_block_export_ids} });
@@ -100,63 +91,37 @@ sub export {
     }
     return unless scalar @blocks;
 
-    require JSON;
-    my $json_decoder = JSON->new->utf8(0)->boolean_values(0, 1);
-
-    my $data = {};
-    for my $b (@blocks) {
-        $data->{ $b->identifier } = +{
-            addable_block_types => $json_decoder->decode($b->addable_block_types || '{}'),
-            html                => _export_html($b->html),
-            map { $_ => $b->$_ } qw(
-                can_remove_block
-                class_name
-                icon
-                identifier
-                label
-                preview_header
-                root_block
-            ),
-        };
-    }
-
-    return $data;
+    return { map { $_->identifier => $_ } @blocks };
 }
 
-sub _apply_html {
-    my ($html, $theme) = @_;
+sub finalize {
+    my ($app, $blog, $theme_hash, $tmpdir, $setting) = @_;
 
-    return $html unless ref $html eq 'HASH';
+    return 1 unless $theme_hash->{elements}{be_block};
+    my $blocks = $theme_hash->{elements}{be_block}{data};
 
-    my $translated_meta = {};
-    for my $meta_key (keys %{ $html->{context} }) {
-        my $meta_hash = $html->{context}{$meta_key};
-        my $result    = {};
-        for my $k (keys %{$meta_hash}) {
-            my $v = $meta_hash->{$k};
-            next if ref $v;
-            $result->{$k} = $k eq 'label' ? translate_label($v) : $theme->translate_templatized($v);
-        }
-        $translated_meta->{$meta_key} = $result;
+    require MT::FileMgr;
+    require File::Spec;
+    my $fmgr   = MT::FileMgr->new('Local');
+    my $outdir = File::Spec->catdir($tmpdir, 'block_editor_blocks');
+    $fmgr->mkpath($outdir)
+        or return $app->error($app->translate(
+        'Failed to make directory for export: [_1]',
+        $fmgr->errstr,
+        ));
+
+    for my $identifier (keys %$blocks) {
+        my $block = $blocks->{$identifier};
+        $blocks->{$identifier} = {};    # placeholder
+        my $path = File::Spec->catfile($outdir, $identifier . '.json');
+        defined $fmgr->put_data(MT::Util::to_json($block->export_to_json, { utf8 => 1, pretty => 1 }), $path)
+            or return $app->error($app->translate(
+            'Failed to export data: [_1]',
+            $fmgr->errstr,
+            ));
     }
 
-    qq{<!-- mt-beb t="core-context" m='@{[MT::Util::to_json($translated_meta)]}' --><!-- /mt-beb -->} . $html->{text};
-}
-
-sub _export_html {
-    my ($html) = @_;
-
-    $html =~ s{\A<!--\s*mt-beb\s*t="core-context"\s*m='([^']+)'\s*--><!--\s*/mt-beb\s*-->}{}
-        or return $html;
-    my $meta_json = $1;
-
-    require JSON;
-    my $json_decoder = JSON->new->utf8(0)->boolean_values(0, 1);
-
-    +{
-        context => $json_decoder->decode($meta_json),
-        text    => $html,
-    };
+    return 1;
 }
 
 1;
