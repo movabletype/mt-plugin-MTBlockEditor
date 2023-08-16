@@ -17,34 +17,33 @@ sub apply {
     my $configs      = $element->{data} || {};
     my $current_lang = MT->current_language;
     my $model        = MT->model('be_config');
+    my $fmgr         = MT::FileMgr->new('Local');
 
     require Storable;
     for my $key (keys %{$configs}) {
-        my $c = Storable::dclone($configs->{$key});
-
-        # XXX: In the future, be able to read external files with $key as filename
+        my $c         = Storable::dclone($configs->{$key});
+        my $json_file = File::Spec->catdir($theme->path, 'block_editor_configs', $key . '.json');
+        if ($fmgr->exists($json_file)) {
+            $c = {
+                %$c,
+                %{ MT::Util::from_json($fmgr->get_data($json_file)) },
+            };
+        }
 
         MT->set_language($blog->language);
-        $c->{label} = translate_label($c->{label}, $theme);
+        my $check_label = translate_label($c->{label}, $theme);
         MT->set_language($current_lang);
 
         $model->exist({
-            label   => $c->{label},
+            label   => $check_label,
             blog_id => [0, $blog->id],
         }) and next;
 
-        for my $k (keys %{ $c->{block_display_options} }) {
-            for my $opt (@{ $c->{block_display_options}{$k} }) {
-                $opt->{panel}    = $opt->{panel}    ? JSON::true : JSON::false if exists $opt->{panel};
-                $opt->{shortcut} = $opt->{shortcut} ? JSON::true : JSON::false if exists $opt->{shortcut};
-            }
-        }
-        $c->{block_display_options} = MT::Util::to_json($c->{block_display_options});
+        MT->set_language($blog->language);
+        my $obj = $model->new_from_json($c, $theme);
+        MT->set_language($current_lang);
 
-        my $obj = $model->new(
-            %$c,
-            blog_id => $blog->id,
-        );
+        $obj->blog_id($blog->id);
         $obj->save or die $obj->errstr;
     }
 
@@ -98,22 +97,41 @@ sub export {
     }
     return unless scalar @configs;
 
-    require JSON;
-    my $json_decoder = JSON->new->utf8(0)->boolean_values(0, 1);
-
     my $data = {};
     for my $c (@configs) {
-        my $key = $c->label;
-        for (my $number = 1; $number <= 100; $number++) {
-            last unless $data->{$key};
-            $key = $c->label . '_' . $number;
-        }
-        $data->{$key} = +{
-            block_display_options => $json_decoder->decode($c->block_display_options || '{}'),
-            map { $_ => $c->$_ } qw( label ),
-        };
+        $data->{ 'config_' . $c->id } = $c;
     }
     return $data;
+}
+
+sub finalize {
+    my ($app, $blog, $theme_hash, $tmpdir, $setting) = @_;
+
+    return 1 unless $theme_hash->{elements}{be_config};
+    my $configs = $theme_hash->{elements}{be_config}{data};
+
+    require MT::FileMgr;
+    require File::Spec;
+    my $fmgr   = MT::FileMgr->new('Local');
+    my $outdir = File::Spec->catdir($tmpdir, 'block_editor_configs');
+    $fmgr->mkpath($outdir)
+        or return $app->error($app->translate(
+        'Failed to make directory for export: [_1]',
+        $fmgr->errstr,
+        ));
+
+    for my $key (keys %$configs) {
+        my $config = $configs->{$key};
+        $configs->{$key} = {};    # placeholder
+        my $path = File::Spec->catfile($outdir, $key . '.json');
+        defined $fmgr->put_data(MT::Util::to_json($config->export_to_json, { utf8 => 1, pretty => 1 }), $path)
+            or return $app->error($app->translate(
+            'Failed to export data: [_1]',
+            $fmgr->errstr,
+            ));
+    }
+
+    return 1;
 }
 
 1;

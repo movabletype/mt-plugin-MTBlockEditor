@@ -325,6 +325,7 @@ theme_element_handlers:
       template: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::export_template
       export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::export
       condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::condition
+      finalize: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Block::finalize
   be_config:
     label: Custom Block Preset (Block Editor)
     order: 710
@@ -337,6 +338,7 @@ theme_element_handlers:
       template: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export_template
       export: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::export
       condition: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::condition
+      finalize: $MTBlockEditor::MT::Plugin::MTBlockEditor::Theme::Config::finalize
   be_pref:
     label: Custom Block Preference (Block Editor)
     order: 720
