@@ -86,7 +86,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
 
       showAlert({
         msg: window.trans(
-          "You can upload image files of size {{_1}} or less.",
+          "You can upload image files of size [_1] or less.",
           `${Math.round(maxIconSize / 1024)}KB`
         ),
       });
