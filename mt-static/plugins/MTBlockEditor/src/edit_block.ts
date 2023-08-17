@@ -234,9 +234,9 @@ async function applyBlockEditorForSetup(): Promise<void> {
   }
 
   async function importBlock(fileInputElm): Promise<void> {
-    const identifierValue = (
-      document.getElementById("identifier") as HTMLInputElement
-    ).value;
+    const identifierValue = (document.getElementById(
+      "identifier"
+    ) as HTMLInputElement).value;
     if (identifierValue !== "") {
       window.confirm(window.trans("Are you sure you want to overwrite it?"));
     }
@@ -272,19 +272,20 @@ async function applyBlockEditorForSetup(): Promise<void> {
     unserializeBlockPreferences();
     await applyBlockEditorForSetup();
     document
-      .querySelectorAll("#icon, #wrap_root_block, #can_remove_block")
+      .querySelectorAll<HTMLInputElement>(
+        "#icon, #wrap_root_block, #can_remove_block"
+      )
       .forEach((elm) => {
         elm.dispatchEvent(new Event("change"));
+        const datasetToggle = elm.dataset.bsToggle || elm.dataset.toggle;
+        const datasetTarget = elm.dataset.bsTarget || elm.dataset.target;
         if (
-          elm instanceof HTMLInputElement &&
           elm.type === "checkbox" &&
-          elm.dataset.toggle === "collapse" &&
-          elm.dataset.target
+          datasetToggle === "collapse" &&
+          datasetTarget
         ) {
-          const target = document.querySelector(
-            elm.dataset.target
-          ) as HTMLElement;
-          target.classList.toggle("show", elm.checked);
+          const target = document.querySelector<HTMLElement>(datasetTarget);
+          target?.classList.toggle("show", elm.checked);
         }
       });
 
