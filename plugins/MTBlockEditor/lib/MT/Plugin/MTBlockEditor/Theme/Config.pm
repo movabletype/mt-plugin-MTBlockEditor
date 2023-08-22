@@ -19,6 +19,8 @@ sub apply {
     my $model        = MT->model('be_config');
     my $fmgr         = MT::FileMgr->new('Local');
 
+    my %objs = ();
+
     require Storable;
     for my $key (keys %{$configs}) {
         my $c         = Storable::dclone($configs->{$key});
@@ -34,17 +36,37 @@ sub apply {
         my $check_label = translate_label($c->{label}, $theme);
         MT->set_language($current_lang);
 
-        $model->exist({
+        my $obj = $model->load({
             label   => $check_label,
             blog_id => [0, $blog->id],
-        }) and next;
+        });
+        if (!$obj) {
+            MT->set_language($blog->language);
+            $obj = $model->new_from_json($c, $theme);
+            MT->set_language($current_lang);
 
-        MT->set_language($blog->language);
-        my $obj = $model->new_from_json($c, $theme);
-        MT->set_language($current_lang);
+            $obj->blog_id($blog->id);
+            $obj->save or die $obj->errstr;
+        }
 
-        $obj->blog_id($blog->id);
-        $obj->save or die $obj->errstr;
+        $objs{$obj->label} = $obj;
+    }
+
+    my $iter = MT->model('content_type')->load_iter({ blog_id => $blog->id });
+    while (my $ct = $iter->()) {
+        my $applied = 0;
+        my $fields = $ct->fields;
+        for my $field (@$fields) {
+            my $config_label = $field->{options}{be_config}
+                or next;
+            my $config_obj = $objs{$config_label}
+                or next;
+            $field->{options}{be_config} = $config_obj->id;
+            $applied++;
+        }
+        next unless $applied;
+        $ct->fields($fields);
+        $ct->save or die $ct->errstr;
     }
 
     1;
@@ -109,6 +131,19 @@ sub finalize {
 
     return 1 unless $theme_hash->{elements}{be_config};
     my $configs = $theme_hash->{elements}{be_config}{data};
+
+    if ($theme_hash->{elements}{default_content_types}) {
+        my $types = $theme_hash->{elements}{default_content_types}{data};
+        for my $type (@$types) {
+            for my $field (@{$type->{fields}}) {
+                my $config_id = $field->{be_config}
+                    or next;
+                my $obj = $configs->{ 'config_' . $config_id }
+                    or next;
+                $field->{be_config} = $obj->label;
+            }
+        }
+    }
 
     require MT::FileMgr;
     require File::Spec;
