@@ -29,6 +29,9 @@ jobs:
             git clone -b develop --depth 1  https://github.com/movabletype/movabletype.git mt
             cp -r mt/* .
             cp mt/.proverc .
+            if [ -f t/cpanfile ]; then
+              cpanm --installdeps -n . --cpanfile=t/cpanfile
+            fi
             prove -j4 -PMySQLPool=MT::Test::Env -It/lib plugins/MTBlockEditor/t
 
   test-js:
