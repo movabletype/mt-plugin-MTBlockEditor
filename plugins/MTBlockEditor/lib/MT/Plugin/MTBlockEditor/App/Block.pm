@@ -25,8 +25,7 @@ sub edit_be_block {
     if ($id) {
         $obj = MT->model('be_block')->load({ blog_id => $blog_id, id => $id })
             or $app->return_to_dashboard(redirect => 1);
-    }
-    else {
+    } else {
         $obj = MT->model('be_block')->new;
         $obj->set_defaults;
     }
