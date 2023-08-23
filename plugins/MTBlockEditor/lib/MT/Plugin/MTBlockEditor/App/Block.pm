@@ -39,7 +39,7 @@ sub edit_be_block {
     $param->{saved} = !!$app->param('saved');
 
     $param->{shortcut_count_default} = MT::Plugin::MTBlockEditor->SHORTCUT_COUNT_DEFAULT;
-    my @block_types = grep { $_->identifier ne $param->{identifier} } @{ blocks({ blog_id => $blog_id }) };
+    my @block_types = grep { $_->identifier ne ($param->{identifier} || '') } @{ blocks({ blog_id => $blog_id }) };
     $param->{block_types}             = to_addable_blocks(\@block_types);
     $param->{custom_block_types_json} = to_custom_block_types_json(\@block_types);
     $param->{block_type_ids}          = [map { $_->type_id } @block_types];
