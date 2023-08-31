@@ -187,8 +187,6 @@ list_properties:
       base: __virtual.blog_name
       label: Site Name
       order: 300
-      view:
-        - system
   be_config:
     label:
       label: Label
