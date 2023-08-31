@@ -231,4 +231,18 @@ HTML
     };
 };
 
+subtest 'to_xml()' => sub {
+    require MT::BackupRestore;
+
+    subtest 'root_block="div"' => sub {
+        my $obj = $model->new(%valid_params, root_block => 'div');
+        like $obj->to_xml, qr/\A<\w+[^>]+root_block=(['"])div\1/;
+    };
+
+    subtest 'root_block=""' => sub {
+        my $obj = $model->new(%valid_params, root_block => '');
+        like $obj->to_xml, qr/\A<\w+ root_block=(['"])\1/;
+    };
+};
+
 done_testing;

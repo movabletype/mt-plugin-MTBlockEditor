@@ -5,6 +5,7 @@ use warnings;
 use utf8;
 
 use JSON;
+use Class::Method::Modifiers qw(around);
 use MT::Util;
 use MT::Plugin::MTBlockEditor qw(translate);
 use base qw(MT::Object Class::Accessor::Fast);
@@ -265,6 +266,17 @@ sub parents {
         blog_id  => [MT->model('blog'), MT->model('website')],
         optional => 1,
     };
+}
+
+sub to_xml {
+    my $self = shift;
+    my $xml  = $self->SUPER::to_xml(@_);
+
+    if (defined($self->root_block) && $self->root_block eq '') {
+        $xml =~ s/(<\w+\s+)(\w+=)(["'])/${1}root_block=$3$3$2$3/;
+    }
+
+    $xml;
 }
 
 1;
