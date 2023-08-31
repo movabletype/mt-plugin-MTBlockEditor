@@ -74,7 +74,7 @@ sub _validate_label {
 sub _validate_block_display_options {
     my $self = shift;
 
-    my $options = MT::Util::from_json($self->block_display_options);
+    my $options = eval { MT::Util::from_json($self->block_display_options) };
     return $self->error(translate("Invalid value"))
         unless ref($options) eq 'HASH' && ref($options->{common}) eq 'ARRAY';
 
