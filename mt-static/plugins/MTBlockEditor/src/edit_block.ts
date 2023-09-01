@@ -308,6 +308,9 @@ async function applyBlockEditorForSetup(): Promise<void> {
     });
   });
 
+  const importModalElm = document.querySelector(
+    "#import-block-modal"
+  ) as HTMLElement;
   document
     .getElementById("import-block-form")
     ?.addEventListener("submit", async function (ev) {
@@ -315,8 +318,15 @@ async function applyBlockEditorForSetup(): Promise<void> {
       const fileInputElm = (ev.target as HTMLFormElement).file;
       await importBlock(fileInputElm);
 
-      $("#import-block-modal").modal("hide");
+      $(importModalElm).modal("hide");
       fileInputElm.value = "";
+    });
+  importModalElm
+    .querySelectorAll(".btn-close, .mt-close-dialog")
+    .forEach((elm) => {
+      elm.addEventListener("click", () => {
+        $(importModalElm).modal("hide");
+      });
     });
 })();
 
