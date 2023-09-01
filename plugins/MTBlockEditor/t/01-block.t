@@ -191,6 +191,29 @@ subtest 'save()' => sub {
                 icon       => "a" x $model->MAX_ICON_SIZE_HARD . "a",
             ))->save;
     };
+
+    subtest 'class_name' => sub {
+        ok $model->new(
+            %valid_params,
+            (
+                identifier => create_md5_id(),
+                class_name => '0',
+            ))->save;
+
+        ok $model->new(
+            %valid_params,
+            (
+                identifier => create_md5_id(),
+                class_name => 'a' x 100,
+            ))->save;
+
+        ok !$model->new(
+            %valid_params,
+            (
+                identifier => create_md5_id(),
+                class_name => 'a' x 101,
+            ))->save;
+    };
 };
 
 subtest 'type_id()' => sub {
