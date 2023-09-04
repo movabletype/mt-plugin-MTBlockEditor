@@ -32,6 +32,26 @@ async function applyBlockEditorForSetup(): Promise<void> {
   return;
 }
 
+function updateFormState() {
+  document
+    .querySelectorAll<HTMLInputElement>(
+      "#icon, #wrap_root_block, #can_remove_block"
+    )
+    .forEach((elm) => {
+      elm.dispatchEvent(new Event("change"));
+      const datasetToggle = elm.dataset.bsToggle || elm.dataset.toggle;
+      const datasetTarget = elm.dataset.bsTarget || elm.dataset.target;
+      if (
+        elm.type === "checkbox" &&
+        datasetToggle === "collapse" &&
+        datasetTarget
+      ) {
+        const target = document.querySelector<HTMLElement>(datasetTarget);
+        target?.classList.toggle("show", elm.checked);
+      }
+    });
+}
+
 // icon
 (() => {
   const icon = document.querySelector("#icon") as HTMLInputElement;
@@ -271,23 +291,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
 
     unserializeBlockPreferences();
     await applyBlockEditorForSetup();
-    document
-      .querySelectorAll<HTMLInputElement>(
-        "#icon, #wrap_root_block, #can_remove_block"
-      )
-      .forEach((elm) => {
-        elm.dispatchEvent(new Event("change"));
-        const datasetToggle = elm.dataset.bsToggle || elm.dataset.toggle;
-        const datasetTarget = elm.dataset.bsTarget || elm.dataset.target;
-        if (
-          elm.type === "checkbox" &&
-          datasetToggle === "collapse" &&
-          datasetTarget
-        ) {
-          const target = document.querySelector<HTMLElement>(datasetTarget);
-          target?.classList.toggle("show", elm.checked);
-        }
-      });
+    updateFormState();
 
     dismissAlert();
   }
@@ -336,3 +340,7 @@ serializeBlockPreferences();
 document
   .querySelectorAll("#block_display_options-list input")
   .forEach((elm) => elm.addEventListener("change", serializeBlockPreferences));
+
+window.addEventListener("load", () => {
+  updateFormState();
+});
