@@ -4,7 +4,7 @@
   <mtapp:setting
      id="be_entry_config_id"
      label="<__trans phrase="Preset For Entry">"> 
-     <select name="be_entry_config_id" class="form-control">
+     <select name="be_entry_config_id" class="custom-select form-control">
        <option value="0"><__trans phrase="Default" /></option>
        <mt:Loop name="be_configs">
        <option value="<mt:Var name="id" />" <mt:if name="be_entry_config_id" eq="$id">selected</mt:if>><mt:Var name="label" escape="html" /></option>
@@ -15,7 +15,7 @@
   <mtapp:setting
      id="be_page_config_id"
      label="<__trans phrase="Preset For Page">"> 
-     <select name="be_page_config_id" class="form-control">
+     <select name="be_page_config_id" class="custom-select form-control">
        <option value="0"><__trans phrase="Default" /></option>
        <mt:Loop name="be_configs">
        <option value="<mt:Var name="id" />" <mt:if name="be_page_config_id" eq="$id">selected</mt:if>><mt:Var name="label" escape="html" /></option>
