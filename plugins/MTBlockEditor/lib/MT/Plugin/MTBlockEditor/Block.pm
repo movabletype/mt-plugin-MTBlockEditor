@@ -6,8 +6,8 @@ use utf8;
 
 use JSON;
 use MT::Util;
-use MT::Plugin::MTBlockEditor qw(translate);
-use base qw(MT::Object Class::Accessor::Fast);
+use MT::Plugin::MTBlockEditor qw(component translate translate_label);
+use base                      qw(MT::Object Class::Accessor::Fast);
 
 use constant {
     ROOT_BLOCK_DEFAULT => 'div',
@@ -256,6 +256,80 @@ sub TO_JSON {
         addableBlockTypes => MT::Util::from_json($self->addable_block_types || '{}'),
         showPreview       => $self->show_preview ? JSON::true : JSON::false,
     };
+}
+
+sub new_from_json {
+    my $class = shift;
+    my ($column_values, $component) = @_;
+
+    $component ||= component();
+
+    $class->new(
+        label               => translate_label($column_values->{label}, $component),
+        preview_header      => $component->translate_templatized($column_values->{preview_header}),
+        html                => $class->_import_html($column_values->{html}, $component),
+        addable_block_types => MT::Util::to_json(delete $column_values->{block_display_options} || {}),
+        root_block          => $column_values->{wrap_root_block} ? ROOT_BLOCK_DEFAULT : '',
+        map { $_ => $column_values->{$_} } qw(
+            identifier
+            class_name
+            icon
+            can_remove_block
+            show_preview
+        ));
+}
+
+sub export_to_json {
+    my $self = shift;
+    {
+        identifier            => $self->identifier,
+        class_name            => $self->class_name,
+        label                 => $self->label,
+        icon                  => $self->icon,
+        html                  => $self->_export_html,
+        can_remove_block      => $self->can_remove_block ? JSON::true : JSON::false,
+        wrap_root_block       => $self->root_block       ? JSON::true : JSON::false,
+        preview_header        => $self->preview_header,
+        block_display_options => MT::Util::from_json($self->addable_block_types || '{}'),
+        show_preview          => $self->show_preview ? JSON::true : JSON::false,
+    };
+}
+
+sub _export_html {
+    my $self = shift;
+
+    my $html = $self->html;
+    $html =~ s{\A<!--\s*mt-beb\s*t="core-context"\s*m='([^']+)'\s*--><!--\s*/mt-beb\s*-->}{}
+        or return $html;
+    my $meta_json = $1;
+
+    +{
+        context => MT::Util::from_json($meta_json),
+        text    => $html,
+    };
+}
+
+sub _import_html {
+    my $self = shift;
+    my ($html, $component) = @_;
+
+    return $html unless ref $html eq 'HASH';
+
+    $component ||= component();
+
+    my $translated_meta = {};
+    for my $meta_key (keys %{ $html->{context} }) {
+        my $meta_hash = $html->{context}{$meta_key};
+        my $result    = {};
+        for my $k (keys %{$meta_hash}) {
+            my $v = $meta_hash->{$k};
+            next if ref $v;
+            $result->{$k} = $k eq 'label' ? translate_label($v, $component) : $component->translate_templatized($v);
+        }
+        $translated_meta->{$meta_key} = $result;
+    }
+
+    qq{<!-- mt-beb t="core-context" m='@{[MT::Util::to_json($translated_meta)]}' --><!-- /mt-beb -->} . $component->translate_templatized($html->{text});
 }
 
 # define for MT::BackupRestore
