@@ -212,8 +212,6 @@ list_properties:
       base: __virtual.blog_name
       label: Site Name
       order: 300
-      view:
-        - system
 
 list_actions:
   be_block:
