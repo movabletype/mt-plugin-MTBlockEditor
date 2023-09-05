@@ -82,6 +82,13 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     'Preset For Entry'        => '記事編集時に利用するプリセット',
     'Preset For Page'         => 'ウェブページ編集時に利用するプリセット',
 
+    'Custom Block (Block Editor)'            => 'カスタムブロック（ブロックエディタ）',
+    'Custom Block Preset (Block Editor)'     => 'プリセット（ブロックエディタ）',
+    'Custom Block Preference (Block Editor)' => '設定（ブロックエディタ）',
+
+    'Failed to make directory for export: [_1]' => 'エクスポート用のディレクトリの作成に失敗しました: [_1]',
+    'Failed to export data: [_1]'               => 'エクスポートデータの書き出しに失敗しました: [_1]',
+
     # mt-static/plugins/MTBlockEditor/src
     'MTImage'                                                                         => '画像',
     'MTFile'                                                                          => 'ファイル',

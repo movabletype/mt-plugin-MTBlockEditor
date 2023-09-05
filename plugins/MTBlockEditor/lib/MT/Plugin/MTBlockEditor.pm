@@ -14,8 +14,8 @@ use MT::Util;
 use constant { SHORTCUT_COUNT_DEFAULT => 3 };
 
 our @EXPORT_OK = qw(
-    plugin translate blocks to_addable_blocks to_custom_block_types_json
-    load_tmpl tmpl_param
+    component plugin translate blocks to_addable_blocks to_custom_block_types_json
+    load_tmpl tmpl_param translate_label
 );
 use base qw(Exporter);
 
@@ -25,6 +25,14 @@ sub component {
 
 sub translate {
     MT->component(component())->translate(@_);
+}
+
+sub translate_label {
+    my ($label, $component) = @_;
+
+    $component ||= plugin();
+    my $translated_label = $component->translate($label);
+    $label eq $translated_label ? $component->translate_templatized($label) : $translated_label;
 }
 
 sub plugin {
@@ -74,7 +82,7 @@ sub to_addable_blocks {
                 qw(
                     type_id is_default_visible
                     is_default_block is_default_hidden
-                    ) }
+                ) }
         } grep { !$_->is_form_element } @$block_types
     ];
 }

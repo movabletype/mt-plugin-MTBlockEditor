@@ -257,7 +257,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
                 {focus ? (
                   <textarea
                     className="mt-be-input"
-                    name="caption"
+                    data-property-name="caption"
                     data-min-rows="1"
                     style={{ width: "100%" }}
                   />

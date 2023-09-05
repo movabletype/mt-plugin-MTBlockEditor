@@ -224,7 +224,7 @@ subtest 'update' => sub {
         subtest 'has permission' => sub {
             for my $u ($admin) {
                 my $config = MT::Test::MTBlockEditor::make_be_config(
-                    label   => 'Test',
+                    label   => 'Test System Scope ' . rand(),
                     blog_id => 0,
                 );
 
@@ -253,7 +253,7 @@ subtest 'update' => sub {
         subtest 'has not permission' => sub {
             for my $u ($designer, $author) {
                 my $config = MT::Test::MTBlockEditor::make_be_config(
-                    label   => 'Test',
+                    label   => 'Test System Scope No Permission' . rand(),
                     blog_id => 0,
                 );
 
@@ -283,9 +283,9 @@ subtest 'update' => sub {
     subtest 'blog scope' => sub {
         subtest 'has permission' => sub {
             for my $u ($admin, $designer) {
-                my $config = MT::Test::MTBlockEditor::make_be_config(label => 'Test');
+                my $config = MT::Test::MTBlockEditor::make_be_config(label => 'Test Blog Scope ' . rand());
 
-                my $new_label = 'Update Config By ' . $u->id;
+                my $new_label = 'Update Config By ' . $u->id . ':' . rand();
                 $app = _run_app(
                     'MT::App::CMS',
                     {
@@ -308,7 +308,7 @@ subtest 'update' => sub {
         };
 
         subtest 'has not permission' => sub {
-            my $config = MT::Test::MTBlockEditor::make_be_config(label => 'Test');
+            my $config = MT::Test::MTBlockEditor::make_be_config(label => 'Test Blog Scope No Permission ' . rand());
 
             my $new_label = 'Updated By Author';
             $app = _run_app(
