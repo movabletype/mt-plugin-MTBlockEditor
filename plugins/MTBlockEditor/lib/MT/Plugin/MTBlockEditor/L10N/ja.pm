@@ -107,6 +107,9 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
 
 	'Importing MTBlockEditor asset associations ... ( [_1] )' => 'ブロックエディタのデータとアセットの関連付けを復元しています...( [_1] )',
 
+    # validation
+    'This field must be filled in with letters, numbers, or underscores.' => 'このフィールドにはアルファベット、数字、もしくはアンダースコアで入力してください。',
+
     (
         $block_editor_plugin
         ? ()

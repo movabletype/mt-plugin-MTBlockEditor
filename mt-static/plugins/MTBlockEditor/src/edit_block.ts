@@ -9,6 +9,7 @@ import {
 } from "./util";
 import JSON from "./util/JSON";
 import { apply, unload } from "./block-editor";
+import { initMtValidate } from "./form";
 
 import blockSchema from "./schemas/block.json";
 
@@ -340,6 +341,11 @@ serializeBlockPreferences();
 document
   .querySelectorAll("#block_display_options-list input")
   .forEach((elm) => elm.addEventListener("change", serializeBlockPreferences));
+
+jQuery("#block-form").on("submit", () => {
+  return jQuery(`#block-form input[type="text"]`).mtValidate("simple");
+});
+initMtValidate();
 
 window.addEventListener("load", () => {
   updateFormState();
