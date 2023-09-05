@@ -241,7 +241,7 @@ subtest 'to_xml()' => sub {
 
     subtest 'root_block=""' => sub {
         my $obj = $model->new(%valid_params, root_block => '');
-        like $obj->to_xml, qr/\A<\w+ root_block=(['"])\1/;
+        like $obj->to_xml, qr/\A<\w+ root_block=(['"])\1 /;
     };
 };
 

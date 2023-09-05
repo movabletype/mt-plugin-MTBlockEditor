@@ -273,7 +273,7 @@ sub to_xml {
     my $xml  = $self->SUPER::to_xml(@_);
 
     if (defined($self->root_block) && $self->root_block eq '') {
-        $xml =~ s/(<\w+\s+)(\w+=)(["'])/${1}root_block=$3$3$2$3/;
+        $xml =~ s/(<\w+\s+)(\w+=)(["'])/${1}root_block=$3$3 $2$3/;
     }
 
     $xml;
