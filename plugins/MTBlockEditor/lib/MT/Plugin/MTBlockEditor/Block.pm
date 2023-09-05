@@ -27,7 +27,7 @@ __PACKAGE__->install_properties({
         },
         class_name => {
             type     => 'string',
-            size     => 50,
+            size     => 100,
             not_null => 1,
             default  => "",
         },
