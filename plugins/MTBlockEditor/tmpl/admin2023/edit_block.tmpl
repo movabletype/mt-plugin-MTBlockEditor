@@ -39,8 +39,8 @@
 
 <div class="row flex-row-reverse mb-5">
   <div class="col-auto">
-    <button type="button" class="btn btn-default" id="import-block" data-bs-toggle="modal" data-bs-target="#import-block-modal"><__trans phrase="Import Custom Block"></button>
-    <button type="button" class="btn btn-default" id="export-block"><__trans phrase="Export Custom Block"></button>
+    <button type="button" class="btn btn-default" id="import-block" data-bs-toggle="modal" data-bs-target="#import-block-modal"><__trans phrase="Import"></button>
+    <button type="button" class="btn btn-default" id="export-block"><__trans phrase="Export"></button>
   </div>
 </div>
 
@@ -48,11 +48,13 @@
   <form id="import-block-form" role="form" class="form-horizontal">
   <div class="modal-dialog">
     <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="mt-0 modal-title"><__trans phrase="Import Custom Block"></h4>
+        <button type="button" class="close btn-close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
       <div class="modal-body">
-        <div class="help-block">
-          <div><__trans phrase=""></div>
-        </div>
-
         <mtapp:setting
            id="import-file"
            label="<__trans phrase="File">"
@@ -61,13 +63,16 @@
            hint="<__trans phrase="* You can import custom block from your JSON file.">"
            hint_id="importFile"
            show_hint="1">
-          <input name="file" type="file" accept="application/json" required id="import-file" class="form-control border-0 p-0" aria-describedby="importFile" />
+          <input name="file" type="file" accept="application/json" required id="import-file" class="d-block" aria-describedby="importFile" />
         </mtapp:setting>
 
 
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary"><__trans phrase="Import Custom Block"></button>
+        <button type="submit" class="btn btn-primary"><__trans phrase="Import"></button>
+        <button type="button" accesskey="x" class="cancel action button mt-close-dialog btn btn-default" title="<__trans phrase="Cancel (x)">">
+          <__trans phrase="Cancel">
+        </button>
       </div>
     </div>
   </div>

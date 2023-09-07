@@ -50,8 +50,9 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
 
     "Manage Custom Block"                                     => 'カスタムブロック',
     "Manage Custom Block Preset"                              => 'プリセット',
-    "Import Custom Block"                                     => '読み込む',
-    "Export Custom Block"                                     => '書き出す',
+    "Import Custom Block"                                     => 'カスタムブロックの読み込み',
+    "Import"                                                  => '読み込む',
+    "Export"                                                  => '書き出す',
     'Icon'                                                    => 'アイコン',
     'Block'                                                   => "ブロック",
     "Custom Script"                                           => "カスタムスクリプト",
