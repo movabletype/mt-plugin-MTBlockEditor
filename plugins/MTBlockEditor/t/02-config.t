@@ -67,25 +67,25 @@ subtest 'create()' => sub {
     subtest 'block_display_options' => sub {
         ok $model->new(
             blog_id               => $website->id,
-            label                 => '0',
+            label                 => 'ok1',
             block_display_options => '{"common":["xx"]}',
         )->save;
 
         ok !$model->new(
             blog_id               => $website->id,
-            label                 => '',
+            label                 => 'ok2',
             block_display_options => 'aaa',
         )->save;
 
         ok !$model->new(
             blog_id               => $website->id,
-            label                 => '',
+            label                 => 'ok3',
             block_display_options => '{}',
         )->save;
 
         ok !$model->new(
             blog_id               => $website->id,
-            label                 => '',
+            label                 => 'ok4',
             block_display_options => '{"post":[]}',
         )->save;
     };

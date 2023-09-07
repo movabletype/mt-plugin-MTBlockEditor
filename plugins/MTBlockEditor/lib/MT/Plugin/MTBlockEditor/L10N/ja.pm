@@ -50,8 +50,9 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
 
     "Manage Custom Block"                                     => 'カスタムブロック',
     "Manage Custom Block Preset"                              => 'プリセット',
-    "Import Custom Block"                                     => '読み込む',
-    "Export Custom Block"                                     => '書き出す',
+    "Import Custom Block"                                     => 'カスタムブロックの読み込み',
+    "Import"                                                  => '読み込む',
+    "Export"                                                  => '書き出す',
     'Icon'                                                    => 'アイコン',
     'Block'                                                   => "ブロック",
     "Custom Script"                                           => "カスタムスクリプト",
@@ -82,6 +83,13 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     'Preset For Entry'        => '記事編集時に利用するプリセット',
     'Preset For Page'         => 'ウェブページ編集時に利用するプリセット',
 
+    'Custom Block (Block Editor)'            => 'カスタムブロック（ブロックエディタ）',
+    'Custom Block Preset (Block Editor)'     => 'プリセット（ブロックエディタ）',
+    'Custom Block Preference (Block Editor)' => '設定（ブロックエディタ）',
+
+    'Failed to make directory for export: [_1]' => 'エクスポート用のディレクトリの作成に失敗しました: [_1]',
+    'Failed to export data: [_1]'               => 'エクスポートデータの書き出しに失敗しました: [_1]',
+
     # mt-static/plugins/MTBlockEditor/src
     'MTImage'                                                                         => '画像',
     'MTFile'                                                                          => 'ファイル',
@@ -99,6 +107,9 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     'This format does not support this web browser. Please switch to another format.' => '現在ご利用のウェブブラウザではこのフォーマットを利用することができません。編集する場合には別のフォーマットを選択してください。',
 
 	'Importing MTBlockEditor asset associations ... ( [_1] )' => 'ブロックエディタのデータとアセットの関連付けを復元しています...( [_1] )',
+
+    # validation
+    'This field must be filled in with letters, numbers, or underscores.' => 'このフィールドにはアルファベット、数字、もしくはアンダースコアで入力してください。',
 
     (
         $block_editor_plugin

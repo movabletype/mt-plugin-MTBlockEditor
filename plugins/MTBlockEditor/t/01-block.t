@@ -191,6 +191,29 @@ subtest 'save()' => sub {
                 icon       => "a" x $model->MAX_ICON_SIZE_HARD . "a",
             ))->save;
     };
+
+    subtest 'class_name' => sub {
+        ok $model->new(
+            %valid_params,
+            (
+                identifier => create_md5_id(),
+                class_name => '0',
+            ))->save;
+
+        ok $model->new(
+            %valid_params,
+            (
+                identifier => create_md5_id(),
+                class_name => 'a' x 100,
+            ))->save;
+
+        ok !$model->new(
+            %valid_params,
+            (
+                identifier => create_md5_id(),
+                class_name => 'a' x 101,
+            ))->save;
+    };
 };
 
 subtest 'type_id()' => sub {
@@ -228,6 +251,20 @@ HTML
                 identifier => create_md5_id(),
             ));
         ok !$block->should_be_compiled;
+    };
+};
+
+subtest 'to_xml()' => sub {
+    require MT::BackupRestore;
+
+    subtest 'root_block="div"' => sub {
+        my $obj = $model->new(%valid_params, root_block => 'div');
+        like $obj->to_xml, qr/\A<\w+[^>]+root_block=(['"])div\1/;
+    };
+
+    subtest 'root_block=""' => sub {
+        my $obj = $model->new(%valid_params, root_block => '');
+        like $obj->to_xml, qr/\A<\w+ root_block=(['"])\1 /;
     };
 };
 

@@ -1,0 +1,25 @@
+{
+   "block_display_options" : {
+      "common" : [
+         {
+            "index" : 0,
+            "panel" : true,
+            "shortcut" : true,
+            "typeId" : "core-text"
+         },
+         {
+            "index" : 1,
+            "panel" : true,
+            "shortcut" : true,
+            "typeId" : "mt-image"
+         },
+         {
+            "index" : 2,
+            "panel" : true,
+            "shortcut" : true,
+            "typeId" : "mt-file"
+         }
+      ]
+   },
+   "label" : "CONFIG_LABEL_1"
+}

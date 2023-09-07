@@ -10,6 +10,7 @@ const config = {
     "loader_entry.min": ["./mt-static/plugins/MTBlockEditor/src/loader_entry.ts"],
     "config.min": ["./mt-static/plugins/MTBlockEditor/src/config.ts"],
     "edit_block.min": ["./mt-static/plugins/MTBlockEditor/src/edit_block.ts"],
+    "theme_export.min": ["./mt-static/plugins/MTBlockEditor/src/theme_export.ts"],
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],

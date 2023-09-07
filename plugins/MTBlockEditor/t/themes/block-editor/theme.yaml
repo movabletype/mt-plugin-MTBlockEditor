@@ -1,0 +1,44 @@
+id: blockeditor
+label: BlockEditor
+name: BlockEditor
+version: "1.0"
+description: <__trans phrase="__DESCRIPTION">
+protected: 1
+l10n_lexicon:
+  en_us: l10n_en_us.yaml
+  ja: l10n_ja.yaml
+elements:
+  be_pref:
+    component: MTBlockEditor
+    data:
+      entry_config: <__trans phrase="CONFIG_LABEL_1">
+      page_config: <__trans phrase="CONFIG_LABEL_2">
+    importer: be_pref
+  be_block:
+    component: MTBlockEditor
+    data:
+      block: {}
+    importer: be_block
+  be_config:
+    component: MTBlockEditor
+    data:
+      config1: {}
+      config2: {}
+    importer: be_config
+  default_content_types:
+    component: ~
+    data:
+      - description: ""
+        fields:
+          - be_config: <__trans phrase="CONFIG_LABEL_2">
+            display: default
+            full_rich_text: 1
+            initial_value: ""
+            input_format: block_editor
+            label: Content
+            order: 0
+            required: 1
+            type: multi_line_text
+        name: Webpage
+        user_disp_option: 1
+    importer: default_content_types

@@ -224,7 +224,7 @@ $1
 <mtapp:ContentFieldOption
    id="multi_line_text-be_config"
    label="<__trans phrase="Preset For Movable Type Block Editor">">
-  <select ref="be_config" name="be_config" id="multi_line_text-be_config" class="custom-select form-control">
+  <select ref="be_config" name="be_config" id="multi_line_text-be_config" class="custom-select form-control form-select">
     @{[ map { my ($id, $label) = ($_->id, encode_html($_->label)); qq{
       <option value="$id" selected={ options.be_configs[$id] }>$label</option>
     } } @$configs ]}

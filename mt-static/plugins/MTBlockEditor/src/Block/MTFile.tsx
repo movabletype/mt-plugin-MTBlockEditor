@@ -144,7 +144,7 @@ body { display: none }
               </label>
               <label className="mt-be-label-name">
                 <div>{window.trans("Text to display")}</div>
-                <input name="text" style={{ width: "100%" }} />
+                <input data-property-name="text" style={{ width: "100%" }} />
               </label>
             </div>
           ) : (

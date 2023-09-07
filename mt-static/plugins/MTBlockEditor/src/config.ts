@@ -1,5 +1,6 @@
 import $ from "jquery";
 import { serializeBlockPreferences, unserializeBlockPreferences } from "./util";
+import { initMtValidate } from "./form";
 
 $("#block_display_options-list").sortable({
   items: ".sort-enabled",
@@ -17,3 +18,8 @@ serializeBlockPreferences();
 document
   .querySelectorAll("#block_display_options-list input")
   .forEach((elm) => elm.addEventListener("change", serializeBlockPreferences));
+
+jQuery("#config-form").on("submit", () => {
+  return jQuery(`#config-form input[type="text"]`).mtValidate("simple");
+});
+initMtValidate();
