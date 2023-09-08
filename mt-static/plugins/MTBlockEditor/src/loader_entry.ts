@@ -16,20 +16,23 @@ import { waitFor } from "./util";
 
 const serializeMethods: SerializeMethod[] = [];
 
-async function initSelect(select): Promise<void> {
+async function initSelectElms(
+  selectElms: NodeListOf<HTMLSelectElement>
+): Promise<void> {
   const targets = [
     ...document.querySelectorAll(
       "#editor-input-content, #editor-input-extended"
     ),
   ] as HTMLInputElement[]; // convert to array in order to invoke targets.map
 
+  let lastValue = "";
+
   const handlers = targets.map((target: HTMLInputElement) => {
     let editor: Editor | null = null;
-    let lastValue = "";
 
-    const inputElm = document.createElement("TEXTAREA") as HTMLTextAreaElement;
+    const inputElm = document.createElement("textarea");
     inputElm.id = target.id + "-mt-be";
-    const wrap = document.createElement("DIV");
+    const wrap = document.createElement("div");
     wrap.classList.add("mt-block-editor-wrap-entry");
     wrap.appendChild(inputElm);
 
@@ -42,11 +45,11 @@ async function initSelect(select): Promise<void> {
       });
     });
 
-    return async () => {
+    return async (nextValue: string) => {
       const oldLastValue = lastValue;
-      lastValue = select.value;
+      lastValue = nextValue;
 
-      if (select.value === "block_editor") {
+      if (nextValue === "block_editor") {
         await waitFor(() => target.closest(".mt-editor-manager-wrap"));
 
         inputElm.value = target.value;
@@ -113,29 +116,34 @@ async function initSelect(select): Promise<void> {
     };
   });
 
-  select.addEventListener("change", (ev) => {
-    if (!ev.isTrusted) {
-      return;
-    }
+  selectElms.forEach((select) => {
+    select.addEventListener("change", (ev) => {
+      if (!ev.isTrusted) {
+        return;
+      }
 
-    ev.stopImmediatePropagation();
-    ev.stopPropagation();
-    ev.preventDefault();
+      ev.stopImmediatePropagation();
+      ev.stopPropagation();
+      ev.preventDefault();
 
-    Promise.all(handlers.map((f) => f())).then(() => {
-      $(select).trigger("change");
+      Promise.all(handlers.map((f) => f(select.value))).then(() => {
+        $(select).trigger("change");
+      });
     });
   });
 
-  handlers.forEach((f) => f());
+  handlers.forEach((f) => f(selectElms[0].value));
 }
 
 (async () => {
-  const select = document.getElementById("convert_breaks") as HTMLSelectElement;
-  const form = select.form as HTMLFormElement;
+  const selectElms = document.querySelectorAll<HTMLSelectElement>(
+    "#convert_breaks, #convert_breaks_for_mobile"
+  );
 
-  initSelect(select);
-  form.querySelectorAll('button[type="submit"]').forEach((elm) => {
-    initButton(elm as HTMLElement, serializeMethods);
-  });
+  initSelectElms(selectElms);
+  selectElms[0].form
+    ?.querySelectorAll('button[type="submit"]')
+    .forEach((elm) => {
+      initButton(elm as HTMLElement, serializeMethods);
+    });
 })();
