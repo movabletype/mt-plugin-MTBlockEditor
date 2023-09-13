@@ -203,10 +203,10 @@
         <div class="col-auto w-25">
           <div class="row">
             <span class="col-auto w-50 text-right">
-              <input type="checkbox" name="panel" class="align-middle" <mt:If name="is_default_visible"> checked="checked"</mt:If>/>
+              <input type="checkbox" name="panel" class="form-check-input align-middle" <mt:If name="is_default_visible"> checked="checked"</mt:If>/>
             </span>
             <span class="col-auto w-50 text-right">
-              <input type="checkbox" name="shortcut" class="align-middle" <mt:Unless name="block_display_options"><mt:If name="__counter__" le="$shortcut_count_default"> checked="checked"</mt:If></mt:Unless> />
+              <input type="checkbox" name="shortcut" class="form-check-input align-middle" <mt:Unless name="block_display_options"><mt:If name="__counter__" le="$shortcut_count_default"> checked="checked"</mt:If></mt:Unless> />
             </span>
           </div>
         </div>
