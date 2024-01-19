@@ -145,9 +145,9 @@
      id="wrap_root_block"
      label="<__trans phrase="Wrap in root element">">
     <div class="form-group">
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" value="1" name="wrap_root_block" class="custom-control-input" id="wrap_root_block"<mt:if name="wrap_root_block"> checked="checked"</mt:if> data-bs-toggle="collapse" data-bs-target="#wrap-root-block-option" aria-expanded="<mt:if name="wrap_root_block">true<mt:else>false</mt:if>" aria-controls="wrap-root-block-option" />
-        <label class="custom-control-label" for="wrap_root_block"><__trans phrase="Wrap edited content in root DIV element."></label>
+      <div class="custom-control custom-checkbox form-check">
+        <input type="checkbox" value="1" name="wrap_root_block" class="form-check-input" id="wrap_root_block"<mt:if name="wrap_root_block"> checked="checked"</mt:if> data-bs-toggle="collapse" data-bs-target="#wrap-root-block-option" aria-expanded="<mt:if name="wrap_root_block">true<mt:else>false</mt:if>" aria-controls="wrap-root-block-option" />
+        <label class="form-check-label" for="wrap_root_block"><__trans phrase="Wrap edited content in root DIV element."></label>
       </div>
     </div>
   </mtapp:setting>
@@ -168,9 +168,9 @@
      id="can_remove_block"
      label="<__trans phrase="Can add and remove block">">
     <div class="form-group">
-      <div class="custom-control custom-checkbox">
-        <input type="checkbox" value="1" name="can_remove_block" class="custom-control-input" id="can_remove_block"<mt:if name="can_remove_block"> checked="checked"</mt:if> data-bs-toggle="collapse" data-bs-target="#can-remove-block-option" aria-expanded="<mt:if name="can_remove_block">true<mt:else>false</mt:if>" aria-controls="can-remove-block-option" />
-        <label class="custom-control-label" for="can_remove_block"><__trans phrase="Enabled to add and remove block."></label>
+      <div class="custom-control custom-checkbox form-check">
+        <input type="checkbox" value="1" name="can_remove_block" class="form-check-input" id="can_remove_block"<mt:if name="can_remove_block"> checked="checked"</mt:if> data-bs-toggle="collapse" data-bs-target="#can-remove-block-option" aria-expanded="<mt:if name="can_remove_block">true<mt:else>false</mt:if>" aria-controls="can-remove-block-option" />
+        <label class="form-check-label" for="can_remove_block"><__trans phrase="Enabled to add and remove block."></label>
       </div>
     </div>
   </mtapp:setting>
@@ -203,10 +203,10 @@
         <div class="col-auto w-25">
           <div class="row">
             <span class="col-auto w-50 text-right">
-              <input type="checkbox" name="panel" class="align-middle" <mt:If name="is_default_visible"> checked="checked"</mt:If>/>
+              <input type="checkbox" name="panel" class="form-check-input align-middle" <mt:If name="is_default_visible"> checked="checked"</mt:If>/>
             </span>
             <span class="col-auto w-50 text-right">
-              <input type="checkbox" name="shortcut" class="align-middle" <mt:Unless name="block_display_options"><mt:If name="__counter__" le="$shortcut_count_default"> checked="checked"</mt:If></mt:Unless> />
+              <input type="checkbox" name="shortcut" class="form-check-input align-middle" <mt:Unless name="block_display_options"><mt:If name="__counter__" le="$shortcut_count_default"> checked="checked"</mt:If></mt:Unless> />
             </span>
           </div>
         </div>
@@ -223,9 +223,9 @@
      label="<__trans phrase="Preview settings">"
      hint='<__trans phrase="You can keep the editing status even when not in focus by unchecking this check box.">'
      show_hint="1">
-    <div class="custom-control custom-checkbox">
-      <input type="checkbox" value="1" name="show_preview" class="custom-control-input" id="show_preview"<mt:if name="show_preview"> checked="checked"</mt:if>/>
-      <label class="custom-control-label" for="show_preview"><__trans phrase="Show preview"></label>
+    <div class="custom-control custom-checkbox form-check">
+      <input type="checkbox" value="1" name="show_preview" class="form-check-input" id="show_preview"<mt:if name="show_preview"> checked="checked"</mt:if>/>
+      <label class="form-check-label" for="show_preview"><__trans phrase="Show preview"></label>
     </div>
   </mtapp:setting>
 
