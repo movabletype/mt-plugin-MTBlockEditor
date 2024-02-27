@@ -12,6 +12,8 @@ use warnings;
 use base 'MT::Plugin::MTBlockEditor::L10N';
 use vars qw( %Lexicon );
 
+my $block_editor_plugin = eval { MT->component('BlockEditor') };
+
 %Lexicon = (
     "BLOCK_LABEL_CORE_TEXT"           => "Text Block",
     "BLOCK_LABEL_CORE_TABLE"          => "Table",
@@ -24,6 +26,23 @@ use vars qw( %Lexicon );
     "BLOCK_LABEL_SIXAPART_INPUT"      => "Text",
     "BLOCK_LABEL_SIXAPART_TEXTAREA"   => "Textarea",
     "BLOCK_LABEL_SIXAPART_SELECT"     => "Select",
+
+    "Manage Custom Block Preset" => 'Manage Preset',
+
+    (
+        $block_editor_plugin
+        ? (
+            'Movable Type Block Editor'            => 'MT Block Editor',
+            'Movable Type Block Editor Settings'   => 'MT Block Editor Settings',
+            'Preset For Movable Type Block Editor' => 'Preset For MT Block Editor',
+            )
+        : (
+            'Movable Type Block Editor'            => 'Block Editor',
+            'Movable Type Block Editor Settings'   => 'Block Editor Settings',
+            'Preset For Movable Type Block Editor' => 'Preset For Block Editor',
+            'MT Block Editor Setting'              => 'Block Editor Setting',
+        )
+    ),
 );
 
 1;
