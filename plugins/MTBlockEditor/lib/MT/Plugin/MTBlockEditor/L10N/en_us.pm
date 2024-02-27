@@ -13,9 +13,17 @@ use base 'MT::Plugin::MTBlockEditor::L10N';
 use vars qw( %Lexicon );
 
 %Lexicon = (
-
-    '__TEXT_BLOCK__' => 'Text',
-
+    "BLOCK_LABEL_CORE_TEXT"           => "Text Block",
+    "BLOCK_LABEL_CORE_TABLE"          => "Table",
+    "BLOCK_LABEL_CORE_HORIZONTALRULE" => "Horizontalrule",
+    "BLOCK_LABEL_CORE_HTML"           => "HTML",
+    "BLOCK_LABEL_CORE_COLUMNS"        => "Columns",
+    "BLOCK_LABEL_MT_IMAGE"            => "Image",
+    "BLOCK_LABEL_MT_FILE"             => "File",
+    "BLOCK_LABEL_SIXAPART_OEMBED"     => "oEmbed",
+    "BLOCK_LABEL_SIXAPART_INPUT"      => "Text",
+    "BLOCK_LABEL_SIXAPART_TEXTAREA"   => "Textarea",
+    "BLOCK_LABEL_SIXAPART_SELECT"     => "Select",
 );
 
 1;
