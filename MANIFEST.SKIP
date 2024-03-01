@@ -49,6 +49,7 @@ mt-static/plugins/MTBlockEditor/src/
 # test
 plugins/MTBlockEditor/t/
 plugins/MTBlockEditor/xt/
+plugins/MTBlockEditor/php/tests
 
 # distribution files and directories
 ^MTBlockEditor

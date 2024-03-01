@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 
+use Encode;
 use FindBin;
 use lib "$FindBin::Bin/../../../t/lib";
 
@@ -15,11 +16,12 @@ BEGIN {
 
 use MT;
 use MT::Test;
+use MT::Test::PHP;
 use MT::Test::Fixture;
 use MT::Test::Image;
 use MT::Test::Tag;
 
-plan tests => 1 * blocks;
+plan tests => (1 + 2) * blocks;
 
 filters {
     template => [qw( chomp )],
@@ -86,6 +88,31 @@ MT::Test::Tag->run_perl_tests(
         $ctx->stash('entry' => $entry);
     });
 
+if (MT::Test::PHP->php_version >= 7.4) {
+    MT::Test::Tag->run_php_tests(
+        $blog->id,
+        sub {
+            my ($block) = @_;
+
+            return <<"PHP";
+\$ctx->__stash['vars']['content'] = <<<'HTML'
+@{[$block->content ? Encode::encode('utf-8', $block->content) : '']}
+HTML;
+require_once('class.mt_entry.php');
+\$entry = new Entry;
+\$entry->Load(@{[$entry->id]});
+\$ctx->stash('entry', \$entry);
+PHP
+        });
+}
+else {
+    SKIP: {
+        skip 'PHP 7.4 or later is required', 2 * blocks;
+    }
+}
+
+done_testing;
+
 __END__
 
 === Load blocks via MT tag
@@ -112,11 +139,11 @@ __END__
 <mt:If name="type" eq="core-columns" ->
 <div class="row">
 <mt:BlockEditorBlocks ->
-  <div class="col">
+<div class="col">
 <mt:BlockEditorBlocks ->
-    <mt:Var name="__value__" -/>
+<mt:Var name="__value__" -/>
 </mt:BlockEditorBlocks>
-  </div>
+</div>
 </mt:BlockEditorBlocks>
 </div>
 <mt:Else>
