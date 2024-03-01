@@ -86,7 +86,7 @@ subtest 'entry' => sub {
 
     # loaded
     like $out, qr{mt-block-editor\.js};
-    like $out, qr{<option value="block_editor">Movable Type Block Editor</option>};
+    like $out, qr{<option value="block_editor">MT Block Editor</option>};
 };
 
 subtest 'content_data' => sub {
@@ -105,7 +105,7 @@ subtest 'content_data' => sub {
 
     # loaded
     like $out, qr{mt-block-editor\.js};
-    like $out, qr{<option value="block_editor">Movable Type Block Editor</option>};
+    like $out, qr{<option value="block_editor">MT Block Editor</option>};
 };
 
 subtest 'cfg_entry' => sub {
