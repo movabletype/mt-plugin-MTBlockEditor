@@ -12,8 +12,12 @@ use MT::Util qw(encode_html);
 use Class::Method::Modifiers qw(install_modifier);
 use MT::Plugin::MTBlockEditor qw(plugin blocks to_custom_block_types_json tmpl_param);
 
+my $Initialized;
+
 sub init_app {
     my ($cb, $app) = @_;
+
+    return if $Initialized;
 
     require MT::ContentFieldType::Common;
     install_modifier(
@@ -56,6 +60,8 @@ sub init_app {
 
             $html;
         });
+
+    $Initialized = 1;
 }
 
 sub insert_after {

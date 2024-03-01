@@ -18,6 +18,9 @@ jobs:
       docker-image:
         type: string
         default: movabletype/test:buster
+      phpunit:
+        type: boolean
+        default: true
     docker:
       - image: << parameters.docker-image >>
     steps:
@@ -26,13 +29,16 @@ jobs:
       - run:
           name: Test
           command: |
-            git clone -b develop --depth 1  https://github.com/movabletype/movabletype.git mt
+            git clone -b develop --depth 1 https://github.com/movabletype/movabletype.git mt
             cp -r mt/* .
             cp mt/.proverc .
             if [ -f t/cpanfile ]; then
               cpanm --installdeps -n . --cpanfile=t/cpanfile
             fi
             prove -j4 -PMySQLPool=MT::Test::Env -It/lib plugins/MTBlockEditor/t
+            if [ "<< parameters.phpunit >>" = "true" ]; then
+              phpunit plugins/MTBlockEditor/php
+            fi
 
   test-js:
     docker:
@@ -75,20 +81,15 @@ workflows:
   test-and-build:
     jobs:
       - test-perl:
-          name: test-perl with centos6
-          docker-image: movabletype/test:centos6
-      - test-perl:
-          name: test-perl with jessie
-          docker-image: movabletype/test:jessie
-      - test-perl:
           name: test-perl with buster
           docker-image: movabletype/test:buster
-      - test-perl:
-          name: test-perl with fedora
-          docker-image: movabletype/test:fedora
+          phpunit: false
       - test-perl:
           name: test-perl with bullseye
           docker-image: movabletype/test:bullseye
+      - test-perl:
+          name: test-perl with fedora39
+          docker-image: movabletype/test:fedora
       - test-perl:
           name: test-perl with cloud7
           docker-image: movabletype/test:cloud7
