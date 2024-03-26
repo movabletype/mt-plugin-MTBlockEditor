@@ -5,9 +5,31 @@ use warnings;
 use utf8;
 
 use parent qw(XML::SAX::Base);
+use MT::Util qw(encode_html);
 
 our @RESERVED_KEYS    = qw(t m h);
 our %RESERVED_KEY_MAP = map { $_ => 1 } @RESERVED_KEYS;
+
+# same as block-editor/src/util/dom.ts
+# https://github.com/movabletype/mt-block-editor/blob/master/src/util/dom.ts
+my %single_quote_entity_map = (
+    "\t" => "&#x08;",
+    "\n" => "&#x0A;",
+    "\r" => "&#x0D;",
+    "&"  => "&amp;",
+    "'"  => "&#x27;",
+    "<"  => "&lt;",
+    ">"  => "&gt;",
+    "\x{2018}" => "&#x2018;", # left single quotation mark
+    "\x{2019}" => "&#x2019;", # right single quotation mark
+    "\x{201C}" => "&#x201C;", # left double quotation mark
+    "\x{201D}" => "&#x201D;", # right double quotation mark
+);
+sub escape_single_quote_attribute {
+    my ($str) = @_;
+    $str =~ s/([@{[join '', keys %single_quote_entity_map]}])/$single_quote_entity_map{$1}/go;
+    return $str;
+}
 
 sub new {
     my $class = shift;
@@ -66,7 +88,9 @@ sub start_element {
                 $value = join(',', @values);
             }
         }
-        $self->{__replaced} .= qq{$name=$q$value$q };
+        $self->{__replaced} .= "$name=$q"
+            . ($q eq "'" ? escape_single_quote_attribute($value) : encode_html($value))
+            . "$q ";
     }
     $self->{__replaced} .= "-->";
 }
