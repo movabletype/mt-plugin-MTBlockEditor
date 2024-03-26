@@ -133,4 +133,25 @@ subtest 'restore asset id' => sub {
     }
 };
 
+subtest 'restore asset id with custom block' => sub {
+    my $old_block_count  = MT->model('be_block')->count;
+    my $old_config_count = MT->model('be_config')->count;
+
+    my (@errors, %error_assets);
+    my ($deferred, $blogs, $assets) = MT::BackupRestore->restore_directory(
+        "$FindBin::Bin/backup/asset-custom", \@errors, \%error_assets,
+        $backup_schema_version,
+        0, sub { print $_[0], "\n"; });
+    my $blog_id  = $blogs->[0];
+    my $asset_id = $assets->[0];
+
+    ok !@errors;
+    ok !%error_assets;
+    ok !%$deferred;
+
+    my ($entry) = MT->model('entry')->load({ blog_id => $blog_id });
+    my $entry_text_blocks = $parser->parse({ content => $entry->text });
+    is $entry_text_blocks->[0]{meta}{assetId}, $asset_id;
+};
+
 done_testing();

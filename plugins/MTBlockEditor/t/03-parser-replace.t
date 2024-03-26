@@ -5,8 +5,14 @@ use utf8;
 use JSON::XS;
 use FindBin;
 use Test::More;
+use MT::Test::Env;
 
 use lib qw(lib extlib), "$FindBin::Bin/../lib";
+
+BEGIN {
+    my $test_env = MT::Test::Env->new;
+    $ENV{MT_CONFIG} = $test_env->config_file;
+}
 
 use_ok 'MT::BlockEditor::Parser';
 
