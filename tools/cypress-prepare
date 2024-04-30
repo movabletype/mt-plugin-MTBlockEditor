@@ -4,7 +4,7 @@
 
 const readdir = require("fs/promises").readdir;
 const semver = require("semver");
-const cpx = require("cpx");
+const fs = require('fs-extra');
 
 const TARGETS = [
   "mt-block-editor",
@@ -20,9 +20,11 @@ async function main(args) {
       semver.compare(b, a)
     )[0];
 
-    cpx.copy(`${srcParent}/${latestVersion}/**/*`, `./cypress/resources/dist/${t}`, {
-      clean: true,
-    });
+    fs.emptyDirSync(`./cypress/resources/dist/${t}`);
+    fs.copySync(
+      `${srcParent}/${latestVersion}`,
+      `./cypress/resources/dist/${t}`
+    );
   });
 }
 
