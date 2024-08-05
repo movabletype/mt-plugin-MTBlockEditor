@@ -90,6 +90,10 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     'Failed to make directory for export: [_1]' => 'エクスポート用のディレクトリの作成に失敗しました: [_1]',
     'Failed to export data: [_1]'               => 'エクスポートデータの書き出しに失敗しました: [_1]',
 
+    # Oembed.pm
+    'Unsupported URL.'                        => 'サポートされていないURLです。',
+    'Can not get oEmbed data from [_1]: [_2]' => '[_1]からoEmbedのデータを取得できませんでした: [_2]',
+
     # mt-static/plugins/MTBlockEditor/src
     'MTImage'                                                                         => '画像',
     'MTFile'                                                                          => 'ファイル',

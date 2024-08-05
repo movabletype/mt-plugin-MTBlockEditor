@@ -51,17 +51,23 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
     },
     block: {
       "sixapart-oembed": {
-        resolver: ({ url, maxwidth, maxheight }) => {
-          return fetch(
-            window.CMSScriptURI +
-              "?" +
-              new URLSearchParams({
-                __mode: "mt_be_oembed",
-                url: url,
-                maxwidth: maxwidth || "",
-                maxheight: maxheight || "",
-              })
-          ).then((res) => res.json());
+        resolver: async ({ url, maxwidth, maxheight }) => {
+          const data = await (
+            await fetch(
+              window.CMSScriptURI +
+                "?" +
+                new URLSearchParams({
+                  __mode: "mt_be_oembed",
+                  url: url,
+                  maxwidth: maxwidth || "",
+                  maxheight: maxheight || "",
+                })
+            )
+          ).json();
+          if (data.error?.message) {
+            throw new Error(data.error.message);
+          }
+          return data;
         },
       },
     },
