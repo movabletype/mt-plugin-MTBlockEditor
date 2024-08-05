@@ -96,6 +96,15 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
     });
     ed.on("change", setDirty);
 
+    const scriptElm = document.getElementById("mt-block-editor-loader");
+    const iframeBaseUrl = scriptElm?.dataset?.mtBlockEditorIframeBaseUrl;
+    if (iframeBaseUrl) {
+      ed.on("beforeRenderIframePreview", (ev) => {
+        const base = document.createElement("base");
+        base.href = iframeBaseUrl;
+        ev.head = base.outerHTML + ev.head;
+      });
+    }
     return ed;
   });
 }
