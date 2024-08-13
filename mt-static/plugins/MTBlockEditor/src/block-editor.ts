@@ -51,17 +51,23 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
     },
     block: {
       "sixapart-oembed": {
-        resolver: ({ url, maxwidth, maxheight }) => {
-          return fetch(
-            window.CMSScriptURI +
-              "?" +
-              new URLSearchParams({
-                __mode: "mt_be_oembed",
-                url: url,
-                maxwidth: maxwidth || "",
-                maxheight: maxheight || "",
-              })
-          ).then((res) => res.json());
+        resolver: async ({ url, maxwidth, maxheight }) => {
+          const data = await (
+            await fetch(
+              window.CMSScriptURI +
+                "?" +
+                new URLSearchParams({
+                  __mode: "mt_be_oembed",
+                  url: url,
+                  maxwidth: maxwidth || "",
+                  maxheight: maxheight || "",
+                })
+            )
+          ).json();
+          if (data.error?.message) {
+            throw new Error(data.error.message);
+          }
+          return data;
         },
       },
     },
@@ -96,6 +102,15 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
     });
     ed.on("change", setDirty);
 
+    const scriptElm = document.getElementById("mt-block-editor-loader");
+    const iframeBaseUrl = scriptElm?.dataset?.mtBlockEditorIframeBaseUrl;
+    if (iframeBaseUrl) {
+      ed.on("beforeRenderIframePreview", (ev) => {
+        const base = document.createElement("base");
+        base.href = iframeBaseUrl;
+        ev.head = base.outerHTML + ev.head;
+      });
+    }
     return ed;
   });
 }

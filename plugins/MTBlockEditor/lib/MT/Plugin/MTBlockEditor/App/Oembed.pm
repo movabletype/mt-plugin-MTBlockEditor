@@ -9,6 +9,7 @@ use warnings;
 use utf8;
 
 use MT::Util;
+use MT::Plugin::MTBlockEditor qw(translate);
 
 sub get_oembed_url {
     my ($url) = @_;
@@ -82,16 +83,26 @@ sub resolve {
     my $maxwidth  = $app->param('maxwidth');
     my $maxheight = $app->param('maxheight');
 
-    return error($app, 'Invalid request', 400) unless $url;
+    return error($app, translate('Invalid request.'), 400) unless $url;
 
     my $oembed_url = get_oembed_url($url);
 
-    return error($app, "Unsupported URL: ${url}", 400) unless $oembed_url;
+    return error($app, translate('Unsupported URL.'), 400) unless $oembed_url;
 
     my $ua  = MT->new_ua;
     my $res = $ua->get($oembed_url . "&format=json" . ($maxwidth ? "&maxwidth=${maxwidth}" : "") . ($maxheight ? "&maxheight=${maxheight}" : ""));
 
-    return error($app, "Can not get oEmbed data from URL: ${oembed_url}", 500)
+    if ($res->code >= 500) {
+        MT->log({
+            message  => translate('Can not get oEmbed data from [_1]: [_2]', $oembed_url, $res->decoded_content),
+            class    => 'system',
+            category => 'MTBlockEditor',
+            level    => MT::Log::ERROR(),
+        });
+        return error($app, translate('Can not get oEmbed data from [_1]: [_2]', $oembed_url, translate('An error occurred.')), 500);
+    }
+
+    return error($app, translate('Can not get oEmbed data from [_1]: [_2]', $oembed_url, $res->decoded_content), 500)
         unless $res->is_success;
 
     response($app, Encode::decode('UTF-8', $res->content));
