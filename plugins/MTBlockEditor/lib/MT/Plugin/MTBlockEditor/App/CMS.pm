@@ -129,8 +129,9 @@ sub _template_param_edit_content {
 
     $param->{shortcut_count_default} = MT::Plugin::MTBlockEditor->SHORTCUT_COUNT_DEFAULT;
     my @block_types = grep { $_->is_default_visible } @{ blocks({ blog_id => $blog_id }) };
-    $param->{custom_block_types_json} = to_custom_block_types_json(\@block_types);
-    $param->{block_type_ids}          = [map { $_->type_id } @block_types];
+    $param->{custom_block_types_json}      = to_custom_block_types_json(\@block_types);
+    $param->{block_type_ids}               = [map { $_->type_id } @block_types];
+    $param->{block_editor_iframe_base_url} = $blog ? $blog->site_url : '';
 
     my %block_display_options_map;
     for (MT->model('be_config')->load({ blog_id => [0, $blog_id] })) {
