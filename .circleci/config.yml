@@ -32,7 +32,10 @@ jobs:
             git clone -b develop --depth 1 https://github.com/movabletype/movabletype.git mt
             cp -r mt/* .
             cp mt/.proverc .
-            prove -j4 -PMySQLPool=MT::Test::Env -It/lib plugins/MTBlockEditor/t
+            # with AdminThemeID=legacy(before admin2023)
+            env MT_TEST_ENV_ADMIN_THEME_ID=legacy prove -j4 -PMySQLPool=MT::Test::Env -It/lib plugins/MTBlockEditor/t
+            # with AdminThemeID=admin2023
+            env MT_TEST_ENV_ADMIN_THEME_ID=admin2023 prove -j4 -PMySQLPool=MT::Test::Env -It/lib plugins/MTBlockEditor/t
             if [ "<< parameters.phpunit >>" = "true" ]; then
               /docker-entrypoint.sh
               phpunit plugins/MTBlockEditor/php
