@@ -52,7 +52,14 @@ export function assignBlockTypeOptions(
 export function assignCommonApplyOptions(opts: ApplyOptions): void {
   const editorCommonOptions = window.MT?.Editor?.defaultCommonOptions || {};
   if (editorCommonOptions["content_css_list"]) {
-    opts.stylesheets = editorCommonOptions["content_css_list"];
+    const toAbsoluteUrl = (url: string): string => {
+      const resolver = document.createElement("a");
+      resolver.href = url;
+      return resolver.href;
+    };
+    opts.stylesheets = editorCommonOptions["content_css_list"].map(
+      toAbsoluteUrl
+    );
   }
   if (editorCommonOptions["body_class_list"]) {
     const list = editorCommonOptions["body_class_list"].filter(
