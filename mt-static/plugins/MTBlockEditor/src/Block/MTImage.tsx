@@ -37,6 +37,22 @@ interface HtmlProps {
   block: MTImage;
 }
 
+const getDecodedMultiLineTextContent = (
+  element: HTMLElement | null
+): string => {
+  if (!element) {
+    return "";
+  }
+  const decoder = document.createElement("div");
+  return element.innerHTML
+    .split(/<br[^>]*>/)
+    .map((str) => {
+      decoder.innerHTML = str;
+      return decoder.textContent;
+    })
+    .join("\n");
+};
+
 const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
   const { editor } = useEditorContext();
   const [, setBlock] = useState(Object.assign({}, block));
@@ -548,7 +564,7 @@ class MTImage extends Block {
       imageWidth: (img?.width || "").toString(),
       imageHeight: (img?.height || "").toString(),
       alternativeText: img?.alt || "",
-      caption: figCaption?.innerHTML.replace(/<br[^>]*>/g, "\n") || "",
+      caption: getDecodedMultiLineTextContent(figCaption),
       assetUrl: a?.getAttribute("href") || "",
       linkToOriginal: !!(a && !a.getAttribute("target")),
     };
