@@ -539,9 +539,9 @@ class MTImage extends Block {
   }: NewFromHtmlOptions): Promise<MTImage> {
     const domparser = new DOMParser();
     const doc = domparser.parseFromString(html, "text/html");
-    const img = doc.querySelector("IMG") as HTMLImageElement;
-    const figCaption = doc.querySelector("FIGCAPTION") as HTMLElement;
-    const a = doc.querySelector("A") as HTMLAnchorElement;
+    const img = doc.querySelector("img");
+    const figCaption = doc.querySelector("figcaption");
+    const a = doc.querySelector("a");
 
     const props: Partial<MTImage> = {
       url: img?.getAttribute("src") || "",
