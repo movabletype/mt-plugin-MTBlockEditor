@@ -52,6 +52,10 @@ async function initSelectElms(
       if (nextValue === "block_editor") {
         await waitFor(() => target.closest(".mt-editor-manager-wrap"));
 
+        if ("MTRichTextEditor" in window) {
+          await (window.MTRichTextEditor as any).save();
+        }
+
         inputElm.value = target.value;
         target.closest(".mt-editor-manager-wrap")?.appendChild(wrap);
 
@@ -88,16 +92,29 @@ async function initSelectElms(
           `;
         }
 
-        await waitFor(() =>
+        if ("MTRichTextEditor" in window) {
+          setTimeout(() => {
+            const wrap = target.closest(
+              ".mt-editor-manager-wrap"
+            ) as HTMLElement;
+            (wrap.childNodes as NodeListOf<HTMLElement>).forEach((child) => {
+              if (!child.classList.contains("mt-block-editor-wrap-entry")) {
+                child.classList.add("d-none");
+              }
+            });
+          });
+        } else {
+          await waitFor(() =>
+            target
+              .closest(".mt-editor-manager-wrap")
+              ?.querySelector(".tox-tinymce")
+          );
+
           target
             .closest(".mt-editor-manager-wrap")
             ?.querySelector(".tox-tinymce")
-        );
-
-        target
-          .closest(".mt-editor-manager-wrap")
-          ?.querySelector(".tox-tinymce")
-          ?.classList.add("d-none");
+            ?.classList.add("d-none");
+        }
 
         return;
       } else if (oldLastValue === "block_editor") {
@@ -108,10 +125,18 @@ async function initSelectElms(
         editor = null;
         target.value = inputElm.value;
         wrap.remove();
-        target
-          .closest(".mt-editor-manager-wrap")
-          ?.querySelector(".tox-tinymce")
-          ?.classList.remove("d-none");
+
+        if ("MTRichTextEditor" in window) {
+          const wrap = target.closest(".mt-editor-manager-wrap") as HTMLElement;
+          (wrap.childNodes as NodeListOf<HTMLElement>).forEach((child) => {
+            child.classList.remove("d-none");
+          });
+        } else {
+          target
+            .closest(".mt-editor-manager-wrap")
+            ?.querySelector(".tox-tinymce")
+            ?.classList.remove("d-none");
+        }
       }
     };
   });
