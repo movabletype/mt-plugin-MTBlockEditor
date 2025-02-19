@@ -5,11 +5,12 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../../../t/lib", "$FindBin::Bin/lib";
 use Test::More;
+use CGI;
 use MT::Test::Env;
 our $test_env;
 
 BEGIN {
-    $test_env = MT::Test::Env->new;
+    $test_env = MT::Test::Env->new(AdminThemeID => $ENV{MT_TEST_ENV_ADMIN_THEME_ID} // 'admin2023');
     $ENV{MT_CONFIG} = $test_env->config_file;
 }
 
@@ -101,11 +102,12 @@ subtest 'create' => sub {
             });
         $out = delete $app->{__test_output};
         unlike $out, qr{\bid=([0-9]+)};
-        is $count,   MT->model('be_block')->count;
+        is $count, MT->model('be_block')->count;
     };
 };
 
 subtest 'read' => sub {
+    my $existing_block = MT::Test::MTBlockEditor::make_be_block(label => '"Existing Block"');
     my $block = MT::Test::MTBlockEditor::make_be_block();
     subtest 'has permission' => sub {
         for my $u ($admin, $designer) {
@@ -122,6 +124,7 @@ subtest 'read' => sub {
             $out = delete $app->{__test_output};
             like $out, qr/Status: 200/;
             like $out, qr/value="@{[$block->label]}"/;
+            like $out, qr/\Q<div class="col" for="block-show-@{[$existing_block->type_id]}">@{[CGI::escapeHTML($existing_block->label)]}<\/div>\E/;
         }
     };
 
