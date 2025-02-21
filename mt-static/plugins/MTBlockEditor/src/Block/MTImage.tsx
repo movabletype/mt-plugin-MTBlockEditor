@@ -37,6 +37,22 @@ interface HtmlProps {
   block: MTImage;
 }
 
+const getDecodedMultiLineTextContent = (
+  element: HTMLElement | null
+): string => {
+  if (!element) {
+    return "";
+  }
+  const decoder = document.createElement("div");
+  return element.innerHTML
+    .split(/<br[^>]*>/)
+    .map((str) => {
+      decoder.innerHTML = str;
+      return decoder.textContent;
+    })
+    .join("\n");
+};
+
 const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
   const { editor } = useEditorContext();
   const [, setBlock] = useState(Object.assign({}, block));
@@ -539,16 +555,16 @@ class MTImage extends Block {
   }: NewFromHtmlOptions): Promise<MTImage> {
     const domparser = new DOMParser();
     const doc = domparser.parseFromString(html, "text/html");
-    const img = doc.querySelector("IMG") as HTMLImageElement;
-    const figCaption = doc.querySelector("FIGCAPTION") as HTMLElement;
-    const a = doc.querySelector("A") as HTMLAnchorElement;
+    const img = doc.querySelector("img");
+    const figCaption = doc.querySelector("figcaption");
+    const a = doc.querySelector("a");
 
     const props: Partial<MTImage> = {
       url: img?.getAttribute("src") || "",
       imageWidth: (img?.width || "").toString(),
       imageHeight: (img?.height || "").toString(),
       alternativeText: img?.alt || "",
-      caption: figCaption?.innerHTML.replace(/<br[^>]*>/g, "\n") || "",
+      caption: getDecodedMultiLineTextContent(figCaption),
       assetUrl: a?.getAttribute("href") || "",
       linkToOriginal: !!(a && !a.getAttribute("target")),
     };
