@@ -163,6 +163,18 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       `
       );
 
+      // fallback to "none" if an element unavailable in the MTBlockEditor is checked
+      const unavailableAlignElm = doc.querySelector(
+        "[id^=align-left-]:checked, [id^=align-right-]:checked"
+      ) as HTMLInputElement | null;
+      if (unavailableAlignElm) {
+        unavailableAlignElm.checked = false;
+        const fallbackElm = doc.querySelector(
+          "[id^=align-none-]"
+        ) as HTMLInputElement;
+        fallbackElm.checked = true;
+      }
+
       // extra fields
       const placeholder = doc.querySelector(
         "[id^=include_prefs-]"
