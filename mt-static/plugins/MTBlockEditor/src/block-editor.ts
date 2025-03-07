@@ -74,9 +74,7 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
   };
 
   const tinyMCEDefaultSettings =
-    "tinyMCEDefaultSettings" in opts
-      ? opts.tinyMCEDefaultSettings
-      : buildTinyMCEDefaultSettings();
+    "tinyMCEDefaultSettings" in opts ? opts.tinyMCEDefaultSettings : buildTinyMCEDefaultSettings();
 
   // deep merge
   const block = Object.assign({}, defaults.block, opts.block || {});
@@ -120,7 +118,5 @@ export function isSupportedEnvironment(): boolean {
 }
 
 export function unload(opt: { id: string }): Promise<void> {
-  return window.MTBlockEditor
-    ? window.MTBlockEditor.unload(opt)
-    : Promise.resolve();
+  return window.MTBlockEditor ? window.MTBlockEditor.unload(opt) : Promise.resolve();
 }

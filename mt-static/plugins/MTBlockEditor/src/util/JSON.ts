@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+
 function JSONStringify(data: any): string {
-  const prototype = (Array.prototype as any) as {
+  const prototype = Array.prototype as any as {
     toJSON: ((obj: any) => string) | null;
   };
 

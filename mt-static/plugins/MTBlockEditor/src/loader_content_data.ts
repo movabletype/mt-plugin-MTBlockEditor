@@ -1,11 +1,6 @@
 import $ from "jquery";
 import { Editor } from "mt-block-editor-block";
-import {
-  apply,
-  unload,
-  isSupportedEnvironment,
-  ApplyOptions,
-} from "./block-editor";
+import { apply, unload, isSupportedEnvironment, ApplyOptions } from "./block-editor";
 import {
   assignBlockTypeOptions,
   assignCommonApplyOptions,
@@ -18,9 +13,7 @@ const serializeMethods: SerializeMethod[] = [];
 async function initSelect(select): Promise<void> {
   let editor: Editor | null = null;
   let lastValue = "";
-  const target = document.getElementById(
-    select.dataset.target
-  ) as HTMLInputElement;
+  const target = document.getElementById(select.dataset.target) as HTMLInputElement;
   const inputElm = document.createElement("TEXTAREA") as HTMLTextAreaElement;
   inputElm.id = select.dataset.target + "-mt-be";
   const wrap = document.createElement("DIV");
@@ -60,9 +53,9 @@ async function initSelect(select): Promise<void> {
         },
       };
 
-      const blockDisplayOptionId = (document.getElementById(
-        `content-field-${fieldId}-be_config`
-      ) as HTMLInputElement).value;
+      const blockDisplayOptionId = (
+        document.getElementById(`content-field-${fieldId}-be_config`) as HTMLInputElement
+      ).value;
       assignBlockTypeOptions(blockDisplayOptionId, opts);
       assignCommonApplyOptions(opts);
 
@@ -78,10 +71,7 @@ async function initSelect(select): Promise<void> {
         `;
       }
 
-      select
-        .closest(".mt-contentblock")
-        .querySelector(".editor-content")
-        .classList.add("d-none");
+      select.closest(".mt-contentblock").querySelector(".editor-content").classList.add("d-none");
     } else if (oldLastValue === "block_editor") {
       await unload({
         id: inputElm.id,

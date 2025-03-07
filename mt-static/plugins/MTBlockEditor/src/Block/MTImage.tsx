@@ -13,11 +13,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "mt-block-editor-block/Component";
-import Block, {
-  Metadata,
-  NewFromHtmlOptions,
-  EditorOptions,
-} from "mt-block-editor-block/Block";
+import Block, { Metadata, NewFromHtmlOptions, EditorOptions } from "mt-block-editor-block/Block";
 import { useCommands } from "mt-block-editor-block/Hook";
 import { useEditorContext } from "mt-block-editor-block/Context";
 import { edit as editIcon, link as linkIcon } from "mt-block-editor-block/icon";
@@ -37,9 +33,7 @@ interface HtmlProps {
   block: MTImage;
 }
 
-const getDecodedMultiLineTextContent = (
-  element: HTMLElement | null
-): string => {
+const getDecodedMultiLineTextContent = (element: HTMLElement | null): string => {
   if (!element) {
     return "";
   }
@@ -85,9 +79,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
 
     const newData: Partial<MTImage> = {};
 
-    const blogId = (document.querySelector(
-      "[name=blog_id]"
-    ) as HTMLInputElement).value;
+    const blogId = (document.querySelector("[name=blog_id]") as HTMLInputElement).value;
     const dummyFieldId = `mt-block-editor-${block.id}-${new Date().getTime()}`;
     const $div = $("<div/>", { id: dummyFieldId });
     $div.appendTo("body").data("mt-editor", {
@@ -101,9 +93,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
             assetUrl: img.dataset.url,
             url: img.src,
             imageHeight: newData.imageWidth
-              ? Math.round(
-                  (parseInt(newData.imageWidth) / img.width) * img.height
-                ) + ""
+              ? Math.round((parseInt(newData.imageWidth) / img.width) * img.height) + ""
               : "",
             alignment: img.className?.replace(/^mt-image-/, ""),
             hasCaption: (newData.caption || "") !== "",
@@ -164,9 +154,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       );
 
       // extra fields
-      const placeholder = doc.querySelector(
-        "[id^=include_prefs-]"
-      ) as HTMLInputElement;
+      const placeholder = doc.querySelector("[id^=include_prefs-]") as HTMLInputElement;
       const extraFields = doc.createElement("template");
       extraFields.innerHTML = `
 <div class="row">
@@ -210,9 +198,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       });
 
       // image and thumbnail width
-      const thumbWidth = doc.querySelector(
-        `input[id^="thumb_width-"]`
-      ) as HTMLInputElement;
+      const thumbWidth = doc.querySelector(`input[id^="thumb_width-"]`) as HTMLInputElement;
       thumbWidth.parentElement?.classList.add("d-none");
       const imageWidth = doc.querySelector("#imageWidth") as HTMLInputElement;
       if (!imageWidth.value) {
@@ -224,9 +210,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       imageWidth.dispatchEvent(new Event("input"));
 
       // link to original asset
-      const linkToOriginal = doc.querySelector(
-        "input[id^=link_to_popup-]"
-      ) as HTMLInputElement;
+      const linkToOriginal = doc.querySelector("input[id^=link_to_popup-]") as HTMLInputElement;
       linkToOriginal.name = ""; // Do not send this value to the backend
       newData.linkToOriginal = linkToOriginal.checked = block.linkToOriginal;
       linkToOriginal.addEventListener("change", () => {
@@ -248,11 +232,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       <BlockLabel block={block}>
         {src ? (
           block.hasCaption ? (
-            <figure
-              style={
-                block.alignment === "none" ? { display: "inline-block" } : {}
-              }
-            >
+            <figure style={block.alignment === "none" ? { display: "inline-block" } : {}}>
               <img
                 src={src}
                 alt={block.alternativeText}
@@ -303,11 +283,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
             </p>
           )
         ) : (
-          <button
-            type="button"
-            className="mt-be-btn-default"
-            onClick={showModal}
-          >
+          <button type="button" className="mt-be-btn-default" onClick={showModal}>
             {blankMessage}
           </button>
         )}
@@ -315,21 +291,14 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       {focus && (
         <>
           <BlockToolbar>
-            <BlockToolbarButton
-              icon={editIcon}
-              label={window.trans("Edit")}
-              onClick={showModal}
-            />
+            <BlockToolbarButton icon={editIcon} label={window.trans("Edit")} onClick={showModal} />
             <BlockToolbarButton
               icon={linkIcon}
               label={window.trans("Insert Link")}
               onClick={() => setLinkDialogOpen(true)}
             />
           </BlockToolbar>
-          <Dialog
-            open={isLinkDialogOpen}
-            onClose={() => setLinkDialogOpen(false)}
-          >
+          <Dialog open={isLinkDialogOpen} onClose={() => setLinkDialogOpen(false)}>
             <DialogHeader>
               <h4 className="mt-be-dialog-title">{i18n.t("Insert Link")}</h4>
             </DialogHeader>
@@ -347,21 +316,11 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
                 </label>
                 <label className="mt-be-label-name">
                   <div className="mt-be-label-block">{i18n.t("Title")}</div>
-                  <input
-                    className="mt-be-input"
-                    name="linkTitle"
-                    defaultValue={block.linkTitle}
-                  />
+                  <input className="mt-be-input" name="linkTitle" defaultValue={block.linkTitle} />
                 </label>
                 <label className="mt-be-label-name">
-                  <div className="mt-be-label-block">
-                    {i18n.t("Target Attribute")}
-                  </div>
-                  <select
-                    name="linkTarget"
-                    className="mt-be-input"
-                    defaultValue={block.linkTarget}
-                  >
+                  <div className="mt-be-label-block">{i18n.t("Target Attribute")}</div>
+                  <select name="linkTarget" className="mt-be-input" defaultValue={block.linkTarget}>
                     <option value="_self">{i18n.t("None")}</option>
                     <option value="_blank">{i18n.t("New window")}</option>
                   </select>
@@ -387,11 +346,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
                       return;
                     }
 
-                    const keys = [
-                      "linkUrl",
-                      "linkTitle",
-                      "linkTarget",
-                    ] as const;
+                    const keys = ["linkUrl", "linkTitle", "linkTarget"] as const;
                     keys.forEach((name) => {
                       block[name] = (form[name] as HTMLInputElement).value;
                     });
@@ -412,8 +367,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
 
 const Html: React.FC<HtmlProps> = ({ block }: HtmlProps) => {
   const imageClassName =
-    "asset asset-image" +
-    (block.alignment === "center" ? " mt-image-center" : "");
+    "asset asset-image" + (block.alignment === "center" ? " mt-image-center" : "");
 
   let img = block.caption ? (
     <img
@@ -454,11 +408,7 @@ const Html: React.FC<HtmlProps> = ({ block }: HtmlProps) => {
   );
   if (block.linkUrl) {
     img = (
-      <a
-        href={block.linkUrl}
-        target={block.linkTarget}
-        title={block.linkTitle || undefined}
-      >
+      <a href={block.linkUrl} target={block.linkTarget} title={block.linkTitle || undefined}>
         {img}
       </a>
     );
@@ -466,9 +416,7 @@ const Html: React.FC<HtmlProps> = ({ block }: HtmlProps) => {
 
   return block.caption ? (
     <figure
-      className={
-        "mt-figure" + (block.alignment === "center" ? " mt-figure-center" : "")
-      }
+      className={"mt-figure" + (block.alignment === "center" ? " mt-figure-center" : "")}
       style={block.alignment === "none" ? { display: "inline-block" } : {}}
     >
       {img}
@@ -544,15 +492,11 @@ class MTImage extends Block {
 
   static async new({ editor }: { editor: MTBlockEditor }): Promise<MTImage> {
     const opts = editor.opts.block["mt-image"] || {};
-    const showModal =
-      typeof opts.showModalOnNew === "boolean" ? opts.showModalOnNew : true;
+    const showModal = typeof opts.showModalOnNew === "boolean" ? opts.showModalOnNew : true;
     return new this({ showModal: showModal });
   }
 
-  static async newFromHtml({
-    html,
-    meta,
-  }: NewFromHtmlOptions): Promise<MTImage> {
+  static async newFromHtml({ html, meta }: NewFromHtmlOptions): Promise<MTImage> {
     const domparser = new DOMParser();
     const doc = domparser.parseFromString(html, "text/html");
     const img = doc.querySelector("img");
