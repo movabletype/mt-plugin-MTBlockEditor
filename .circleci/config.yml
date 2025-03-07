@@ -47,7 +47,9 @@ jobs:
     steps:
       - checkout
       - node/install-packages
-      - run: npm run check-types && npm run lint
+      - run: npm run build-schema
+      - run: npm run check-types
+      - run: npm run lint
       - run: npm run format
       - run: npm run cypress:run
 
