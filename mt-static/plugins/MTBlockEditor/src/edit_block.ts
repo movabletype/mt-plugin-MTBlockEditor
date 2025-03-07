@@ -136,23 +136,25 @@ function updateFormState(): void {
   const form = htmlElm.form as HTMLFormElement;
 
   let doClick = false;
-  form.querySelectorAll(`button[type="submit"]`).forEach((elm) => {
-    elm.addEventListener("click", (ev) => {
-      if (doClick) {
-        doClick = false;
-        return;
-      }
+  form
+    .querySelectorAll<HTMLButtonElement>(`button[type="submit"]`)
+    .forEach((elm) => {
+      elm.addEventListener("click", (ev) => {
+        if (doClick) {
+          doClick = false;
+          return;
+        }
 
-      ev.stopImmediatePropagation();
-      ev.stopPropagation();
-      ev.preventDefault();
+        ev.stopImmediatePropagation();
+        ev.stopPropagation();
+        ev.preventDefault();
 
-      editor.serialize().then(() => {
-        doClick = true;
-        elm.click();
+        editor.serialize().then(() => {
+          doClick = true;
+          elm.click();
+        });
       });
     });
-  });
 })();
 
 // export and import

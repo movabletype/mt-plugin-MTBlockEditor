@@ -17,6 +17,7 @@ interface JQueryStatic {
   ) => void;
   mtValidateAddMessages: (messages: Record<string, string>) => void;
   mtValidateMessages: Record<string, string>;
+  mtCheckbox(): void;
 }
 
 interface EditorDisplayOptions {
