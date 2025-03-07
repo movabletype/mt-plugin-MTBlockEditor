@@ -33,7 +33,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
   return;
 }
 
-function updateFormState() {
+function updateFormState(): void {
   document
     .querySelectorAll<HTMLInputElement>(
       "#icon, #wrap_root_block, #can_remove_block"
