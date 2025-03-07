@@ -41,7 +41,7 @@
     "eslint-plugin-react": "^7.21.5",
     "fs-extra": "^11.2.0",
     "jsdom": "^25.0.1",
-    "mt-block-editor-block": "^1.1.13",
+    "mt-block-editor-block": "^1.1.18",
     "prettier": "^2.2.1",
     "semver": "^5.7.1",
     "typescript": "^5.8.2",
