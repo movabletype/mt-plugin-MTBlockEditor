@@ -159,9 +159,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
       ) as HTMLInputElement | null;
       if (unavailableAlignElm) {
         unavailableAlignElm.checked = false;
-        const fallbackElm = doc.querySelector(
-          "[id^=align-none-]"
-        ) as HTMLInputElement;
+        const fallbackElm = doc.querySelector("[id^=align-none-]") as HTMLInputElement;
         fallbackElm.checked = true;
       }
 
