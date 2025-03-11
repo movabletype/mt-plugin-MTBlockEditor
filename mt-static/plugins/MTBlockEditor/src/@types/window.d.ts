@@ -11,12 +11,11 @@ interface JQuery {
 interface JQueryStatic {
   _data: (elm: HTMLElement, key: string) => Record<string, unknown>;
   mtValidateAddRules: (
-    rules:
-      | Record<string, (JQuery) => boolean>
-      | Record<"error" | "errstr", boolean | string>
+    rules: Record<string, (JQuery) => boolean> | Record<"error" | "errstr", boolean | string>
   ) => void;
   mtValidateAddMessages: (messages: Record<string, string>) => void;
   mtValidateMessages: Record<string, string>;
+  mtCheckbox(): void;
 }
 
 interface EditorDisplayOptions {
