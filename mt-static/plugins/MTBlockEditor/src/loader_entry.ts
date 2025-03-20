@@ -1,11 +1,6 @@
 import $ from "jquery";
 import { Editor } from "mt-block-editor-block";
-import {
-  apply,
-  unload,
-  isSupportedEnvironment,
-  ApplyOptions,
-} from "./block-editor";
+import { apply, unload, isSupportedEnvironment, ApplyOptions } from "./block-editor";
 import {
   assignBlockTypeOptions,
   assignCommonApplyOptions,
@@ -14,15 +9,21 @@ import {
 } from "./loader/common";
 import { waitFor } from "./util";
 
+interface MTRichTextEditor {
+  save(): Promise<void>;
+}
+
+declare global {
+  interface Window {
+    MTRichTextEditor?: MTRichTextEditor;
+  }
+}
+
 const serializeMethods: SerializeMethod[] = [];
 
-async function initSelectElms(
-  selectElms: NodeListOf<HTMLSelectElement>
-): Promise<void> {
+async function initSelectElms(selectElms: NodeListOf<HTMLSelectElement>): Promise<void> {
   const targets = [
-    ...document.querySelectorAll(
-      "#editor-input-content, #editor-input-extended"
-    ),
+    ...document.querySelectorAll("#editor-input-content, #editor-input-extended"),
   ] as HTMLInputElement[]; // convert to array in order to invoke targets.map
 
   let lastValue = "";
@@ -53,19 +54,18 @@ async function initSelectElms(
         await waitFor(() => target.closest(".mt-editor-manager-wrap"));
 
         if ("MTRichTextEditor" in window) {
-          await (window.MTRichTextEditor as any).save();
+          await (window.MTRichTextEditor as MTRichTextEditor).save();
         }
 
         inputElm.value = target.value;
         target.closest(".mt-editor-manager-wrap")?.appendChild(wrap);
 
         const fieldName =
-          (document.querySelector(
-            `#editor-header .tab[mt\\:command="set-editor-${target.id.replace(
-              /.*-/,
-              ""
-            )}"] a`
-          ) as HTMLElement).textContent || "";
+          (
+            document.querySelector(
+              `#editor-header .tab[mt\\:command="set-editor-${target.id.replace(/.*-/, "")}"] a`
+            ) as HTMLElement
+          ).textContent || "";
         const opts: ApplyOptions = {
           id: inputElm.id,
           mode: "composition",
@@ -74,9 +74,8 @@ async function initSelectElms(
           },
         };
 
-        const blockDisplayOptionId = (document.getElementById(
-          "text-be_config"
-        ) as HTMLInputElement).value;
+        const blockDisplayOptionId = (document.getElementById("text-be_config") as HTMLInputElement)
+          .value;
         assignBlockTypeOptions(blockDisplayOptionId, opts);
         assignCommonApplyOptions(opts);
 
@@ -94,9 +93,7 @@ async function initSelectElms(
 
         if ("MTRichTextEditor" in window) {
           setTimeout(() => {
-            const wrap = target.closest(
-              ".mt-editor-manager-wrap"
-            ) as HTMLElement;
+            const wrap = target.closest(".mt-editor-manager-wrap") as HTMLElement;
             (wrap.childNodes as NodeListOf<HTMLElement>).forEach((child) => {
               if (!child.classList.contains("mt-block-editor-wrap-entry")) {
                 child.classList.add("d-none");
@@ -105,9 +102,7 @@ async function initSelectElms(
           });
         } else {
           await waitFor(() =>
-            target
-              .closest(".mt-editor-manager-wrap")
-              ?.querySelector(".tox-tinymce")
+            target.closest(".mt-editor-manager-wrap")?.querySelector(".tox-tinymce")
           );
 
           target
@@ -166,9 +161,7 @@ async function initSelectElms(
   );
 
   initSelectElms(selectElms);
-  selectElms[0].form
-    ?.querySelectorAll('button[type="submit"]')
-    .forEach((elm) => {
-      initButton(elm as HTMLElement, serializeMethods);
-    });
+  selectElms[0].form?.querySelectorAll('button[type="submit"]').forEach((elm) => {
+    initButton(elm as HTMLElement, serializeMethods);
+  });
 })();

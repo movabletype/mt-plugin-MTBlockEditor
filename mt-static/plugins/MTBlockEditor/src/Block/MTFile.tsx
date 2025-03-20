@@ -8,11 +8,7 @@ import {
   BlockSetupCommon,
   BlockLabel,
 } from "mt-block-editor-block/Component";
-import Block, {
-  Metadata,
-  NewFromHtmlOptions,
-  EditorOptions,
-} from "mt-block-editor-block/Block";
+import Block, { Metadata, NewFromHtmlOptions, EditorOptions } from "mt-block-editor-block/Block";
 import { useEditorContext } from "mt-block-editor-block/Context";
 import { edit as editIcon } from "mt-block-editor-block/icon";
 
@@ -41,9 +37,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
 
     const newData = {};
 
-    const blogId = (document.querySelector(
-      "[name=blog_id]"
-    ) as HTMLInputElement).value;
+    const blogId = (document.querySelector("[name=blog_id]") as HTMLInputElement).value;
     const dummyFieldId = `mt-block-editor-${block.id}-${new Date().getTime()}`;
     const $div = $("<div/>", { id: dummyFieldId });
     $div.appendTo("body").data("mt-editor", {
@@ -52,18 +46,14 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
           const template = document.createElement("template");
           template.innerHTML = html;
 
-          const a = template.content.querySelector(
-            "a"
-          ) as HTMLAnchorElement | null;
+          const a = template.content.querySelector("a") as HTMLAnchorElement | null;
           if (a) {
             Object.assign(newData, {
               assetUrl: a.getAttribute("href"),
               text: block.text || a.textContent,
             });
           } else {
-            const img = template.content.querySelector(
-              "img"
-            ) as HTMLImageElement;
+            const img = template.content.querySelector("img") as HTMLImageElement;
             Object.assign(newData, {
               assetUrl: img.dataset.url || img.src,
               text: block.text || img.alt,
@@ -151,22 +141,14 @@ body { display: none }
             <a href="javascript: void(0)">{block.text}</a>
           )
         ) : (
-          <button
-            type="button"
-            className="mt-be-btn-default"
-            onClick={showModal}
-          >
+          <button type="button" className="mt-be-btn-default" onClick={showModal}>
             {blankMessage}
           </button>
         )}
       </BlockLabel>
       {focus && (
         <BlockToolbar>
-          <BlockToolbarButton
-            icon={editIcon}
-            label={window.trans("Edit")}
-            onClick={showModal}
-          />
+          <BlockToolbarButton icon={editIcon} label={window.trans("Edit")} onClick={showModal} />
         </BlockToolbar>
       )}
     </div>
@@ -222,15 +204,11 @@ class MTFile extends Block {
 
   static async new({ editor }: { editor: MTBlockEditor }): Promise<MTFile> {
     const opts = editor.opts.block["mt-file"] || {};
-    const showModal =
-      typeof opts.showModalOnNew === "boolean" ? opts.showModalOnNew : true;
+    const showModal = typeof opts.showModalOnNew === "boolean" ? opts.showModalOnNew : true;
     return new this({ showModal: showModal });
   }
 
-  static async newFromHtml({
-    html,
-    meta,
-  }: NewFromHtmlOptions): Promise<MTFile> {
+  static async newFromHtml({ html, meta }: NewFromHtmlOptions): Promise<MTFile> {
     const domparser = new DOMParser();
     const doc = domparser.parseFromString(html, "text/html");
     const a = doc.querySelector("A") as HTMLAnchorElement;

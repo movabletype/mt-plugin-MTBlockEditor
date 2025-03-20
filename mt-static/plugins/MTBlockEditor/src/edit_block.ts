@@ -18,9 +18,7 @@ async function applyBlockEditorForSetup(): Promise<void> {
   editor = await apply({
     id: "html",
     mode: "setup",
-    panelBlockTypes: JSON.parse(
-      document.getElementById("html")?.dataset.mtBlockTypeIds || "[]"
-    ),
+    panelBlockTypes: JSON.parse(document.getElementById("html")?.dataset.mtBlockTypeIds || "[]"),
     block: {
       "mt-image": {
         showModalOnNew: false,
@@ -33,20 +31,14 @@ async function applyBlockEditorForSetup(): Promise<void> {
   return;
 }
 
-function updateFormState() {
+function updateFormState(): void {
   document
-    .querySelectorAll<HTMLInputElement>(
-      "#icon, #wrap_root_block, #can_remove_block"
-    )
+    .querySelectorAll<HTMLInputElement>("#icon, #wrap_root_block, #can_remove_block")
     .forEach((elm) => {
       elm.dispatchEvent(new Event("change"));
       const datasetToggle = elm.dataset.bsToggle || elm.dataset.toggle;
       const datasetTarget = elm.dataset.bsTarget || elm.dataset.target;
-      if (
-        elm.type === "checkbox" &&
-        datasetToggle === "collapse" &&
-        datasetTarget
-      ) {
+      if (elm.type === "checkbox" && datasetToggle === "collapse" && datasetTarget) {
         const target = document.querySelector<HTMLElement>(datasetTarget);
         target?.classList.toggle("show", elm.checked);
       }
@@ -58,9 +50,7 @@ function updateFormState() {
   const icon = document.querySelector("#icon") as HTMLInputElement;
   const iconImage = document.querySelector("#icon-image") as HTMLInputElement;
   const iconFile = document.querySelector("#icon-file") as HTMLInputElement;
-  const resetIconImage = document.querySelector(
-    "#reset-icon-image"
-  ) as HTMLAnchorElement;
+  const resetIconImage = document.querySelector("#reset-icon-image") as HTMLAnchorElement;
   const maxIconSize = parseInt(iconFile.dataset.mtMaxIconSize || "0");
 
   icon.addEventListener("change", () => {
@@ -84,7 +74,7 @@ function updateFormState() {
     ev.preventDefault();
     try {
       iconFile.value = "";
-    } catch (e) {
+    } catch {
       // ignore
     }
     icon.value = "";
@@ -101,7 +91,7 @@ function updateFormState() {
     if (!/^image/.test(file.type) || file.size > maxIconSize) {
       try {
         iconFile.value = "";
-      } catch (e) {
+      } catch {
         // ignore
       }
 
@@ -136,7 +126,7 @@ function updateFormState() {
   const form = htmlElm.form as HTMLFormElement;
 
   let doClick = false;
-  form.querySelectorAll(`button[type="submit"]`).forEach((elm) => {
+  form.querySelectorAll<HTMLButtonElement>(`button[type="submit"]`).forEach((elm) => {
     elm.addEventListener("click", (ev) => {
       if (doClick) {
         doClick = false;
@@ -199,9 +189,7 @@ function updateFormState() {
     });
 
     const blockDisplayOptions: MTBlockEditor.Serialize.BlockDisplayOptions = {};
-    const blockDisplayOptionsData = JSON.parse(
-      form.block_display_options.value
-    );
+    const blockDisplayOptionsData = JSON.parse(form.block_display_options.value);
     blockDisplayOptionsData.common.forEach((b) => {
       blockDisplayOptions[b.typeId] = {
         order: b.index,
@@ -255,9 +243,7 @@ function updateFormState() {
   }
 
   async function importBlock(fileInputElm): Promise<void> {
-    const identifierValue = (document.getElementById(
-      "identifier"
-    ) as HTMLInputElement).value;
+    const identifierValue = (document.getElementById("identifier") as HTMLInputElement).value;
     if (identifierValue !== "") {
       window.confirm(window.trans("Are you sure you want to overwrite it?"));
     }
@@ -267,7 +253,7 @@ function updateFormState() {
       ? (() => {
           try {
             return JSON.parse(json);
-          } catch (e) {
+          } catch {
             return null;
           }
         })()
@@ -313,26 +299,20 @@ function updateFormState() {
     });
   });
 
-  const importModalElm = document.querySelector(
-    "#import-block-modal"
-  ) as HTMLElement;
-  document
-    .getElementById("import-block-form")
-    ?.addEventListener("submit", async function (ev) {
-      ev.preventDefault();
-      const fileInputElm = (ev.target as HTMLFormElement).file;
-      await importBlock(fileInputElm);
+  const importModalElm = document.querySelector("#import-block-modal") as HTMLElement;
+  document.getElementById("import-block-form")?.addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+    const fileInputElm = (ev.target as HTMLFormElement).file;
+    await importBlock(fileInputElm);
 
+    $(importModalElm).modal("hide");
+    fileInputElm.value = "";
+  });
+  importModalElm.querySelectorAll(".btn-close, .mt-close-dialog").forEach((elm) => {
+    elm.addEventListener("click", () => {
       $(importModalElm).modal("hide");
-      fileInputElm.value = "";
     });
-  importModalElm
-    .querySelectorAll(".btn-close, .mt-close-dialog")
-    .forEach((elm) => {
-      elm.addEventListener("click", () => {
-        $(importModalElm).modal("hide");
-      });
-    });
+  });
 })();
 
 $("#block_display_options-list").sortable({

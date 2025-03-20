@@ -10,7 +10,7 @@ export default defineConfig(() => {
       environment: "jsdom",
       setupFiles: [
         "./test/setup.ts",
-        "./mt-static/plugins/MTBlockEditor/dist/mt-block-editor/1.1.53/mt-block-editor.js",
+        "./mt-static/plugins/MTBlockEditor/dist/mt-block-editor/1.1.56/mt-block-editor.js",
       ],
     },
     resolve: {
