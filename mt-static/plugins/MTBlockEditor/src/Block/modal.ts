@@ -79,6 +79,22 @@ export async function initModal({
         template.innerHTML = assetRowHtml;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         assetRow = template.content as any as Element;
+
+        // clone jQuery event from first row
+        const $cloneIdInput = win
+          .jQuery("#asset-table tbody tr:first-child input[name='id']")
+          .clone(true);
+        const targetIdInput = assetRow.querySelector<HTMLInputElement>("input[name='id']");
+        if (targetIdInput) {
+          targetIdInput.getAttributeNames().forEach((attrName) => {
+            $cloneIdInput.attr(attrName, targetIdInput.getAttribute(attrName) ?? "");
+          });
+          $cloneIdInput.val(targetIdInput.value);
+
+          // replace targetIdInput with $cloneIdInput
+          $cloneIdInput.insertAfter(targetIdInput);
+          targetIdInput.remove();
+        }
       }
 
       win.jQuery(".indicator, #listing-table-overlay").hide();
