@@ -102,6 +102,12 @@ workflows:
           name: test-perl with fedora39
           docker-image: movabletype/test:fedora
       - test-perl:
+          name: test-perl with fedora40
+          docker-image: movabletype/test:fedora40
+      - test-perl:
+          name: test-perl with fedora41
+          docker-image: movabletype/test:fedora41
+      - test-perl:
           name: test-perl with cloud7
           docker-image: movabletype/test:cloud7
       - test-js
