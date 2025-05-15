@@ -2,10 +2,7 @@ import { ApplyOptions } from "../block-editor";
 
 export type SerializeMethod = () => Promise<void>;
 
-export function assignBlockTypeOptions(
-  blockDisplayOptionId: string,
-  opts: ApplyOptions
-): void {
+export function assignBlockTypeOptions(blockDisplayOptionId: string, opts: ApplyOptions): void {
   const scriptElm = document.getElementById("mt-block-editor-loader");
   const dataset = scriptElm?.dataset;
   if (!dataset) {
@@ -13,9 +10,7 @@ export function assignBlockTypeOptions(
   }
 
   const blockDisplayOptionsJSON =
-    JSON.parse(dataset.mtBlockDisplayOptionsMap || "{}")[
-      blockDisplayOptionId
-    ] || null;
+    JSON.parse(dataset.mtBlockDisplayOptionsMap || "{}")[blockDisplayOptionId] || null;
 
   let panelBlockTypes: string[] = [];
   let shortcutBlockTypes: string[] = [];
@@ -52,20 +47,20 @@ export function assignBlockTypeOptions(
 export function assignCommonApplyOptions(opts: ApplyOptions): void {
   const editorCommonOptions = window.MT?.Editor?.defaultCommonOptions || {};
   if (editorCommonOptions["content_css_list"]) {
-    opts.stylesheets = editorCommonOptions["content_css_list"];
+    const toAbsoluteUrl = (url: string): string => {
+      const resolver = document.createElement("a");
+      resolver.href = url;
+      return resolver.href;
+    };
+    opts.stylesheets = editorCommonOptions["content_css_list"].map(toAbsoluteUrl);
   }
   if (editorCommonOptions["body_class_list"]) {
-    const list = editorCommonOptions["body_class_list"].filter(
-      (c) => c !== "wysiwyg"
-    );
+    const list = editorCommonOptions["body_class_list"].filter((c) => c !== "wysiwyg");
     opts.rootClassName = list.join(" ");
   }
 }
 
-export function initButton(
-  elm: HTMLElement,
-  serializeMethods: SerializeMethod[]
-): void {
+export function initButton(elm: HTMLElement, serializeMethods: SerializeMethod[]): void {
   let doClick = false;
   elm.addEventListener(
     "click",

@@ -100,6 +100,9 @@ subtest 'export' => sub {
     $ct->fields($fields);
     $ct->save or die $ct->errstr;
 
+    $blog->site_path('/var/www/html');
+    $blog->parent_id(0);
+
     $blog->be_entry_config_id($config_1->id);
     $blog->be_page_config_id($config_2->id);
     $blog->save;

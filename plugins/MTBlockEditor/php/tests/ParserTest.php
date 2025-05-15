@@ -21,7 +21,7 @@ class ParserTest extends TestCase
         $this->assertEquals($expected, $blocks);
     }
 
-    public function parseTestDataProvider()
+    public static function parseTestDataProvider()
     {
         return [
             'columns' => [

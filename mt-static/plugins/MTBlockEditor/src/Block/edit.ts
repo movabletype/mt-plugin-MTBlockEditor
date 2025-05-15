@@ -11,11 +11,7 @@ function buildEditData(block, template): Record<string, unknown> {
 const editHandlers = {
   id: (Symbol ? Symbol("update block") : "update block") as symbol, // avoid error on IE
   merge(a, b) {
-    return Object.keys(a.data.last).every(
-      (k) => a.data.last[k] === b.data.last[k]
-    )
-      ? a
-      : null;
+    return Object.keys(a.data.last).every((k) => a.data.last[k] === b.data.last[k]) ? a : null;
   },
   undo(hist, { setFocusedIds }) {
     const block = hist.block;
