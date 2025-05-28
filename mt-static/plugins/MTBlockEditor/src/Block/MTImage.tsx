@@ -118,6 +118,9 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
           setBlock(Object.assign({}, block));
           setModalActive(false);
         },
+        options: {
+          imageSupportedAligns: ["center", "none"],
+        },
       });
       return;
     }
