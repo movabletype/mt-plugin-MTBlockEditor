@@ -73,8 +73,23 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
     },
   };
 
-  const tinyMCEDefaultSettings =
-    "tinyMCEDefaultSettings" in opts ? opts.tinyMCEDefaultSettings : buildTinyMCEDefaultSettings();
+  const textBlockSettings = {
+    tinyMCESettings: {
+      ...("tinyMCEDefaultSettings" in opts
+        ? opts.tinyMCEDefaultSettings
+        : buildTinyMCEDefaultSettings()),
+      extended_valid_elements: [
+        // we embed 'a[onclick]' by inserting image with popup
+        `a[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}|href|target|name]`,
+        // allow SPAN element without attributes
+        `span[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}]`,
+        // allow SCRIPT element
+        "script[id|name|type|src|integrity|crossorigin]",
+      ].join(","),
+    },
+  };
+  defaults.block["core-text"] = { ...textBlockSettings };
+  defaults.block["core-table"] = { ...textBlockSettings };
 
   // deep merge
   const block = Object.assign({}, defaults.block, opts.block || {});
@@ -86,18 +101,6 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
 
   applyOpts.stylesheets = applyOpts.stylesheets || [];
   return window.MTBlockEditor?.apply(applyOpts).then((ed) => {
-    ed.on("buildTinyMCESettings", ({ settings }) => {
-      Object.assign(settings, tinyMCEDefaultSettings);
-
-      settings.extended_valid_elements = [
-        // we embed 'a[onclick]' by inserting image with popup
-        `a[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}|href|target|name]`,
-        // allow SPAN element without attributes
-        `span[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}]`,
-        // allow SCRIPT element
-        "script[id|name|type|src|integrity|crossorigin]",
-      ].join(",");
-    });
     ed.on("change", setDirty);
 
     const scriptElm = document.getElementById("mt-block-editor-loader");
