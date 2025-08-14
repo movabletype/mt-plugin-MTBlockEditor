@@ -1,0 +1,5 @@
+<mt:include name="script.tmpl" component="MTBlockEditor">
+<mt:setvarblock name="js_include" append="1">
+<link rel="stylesheet" href="<$mt:var name="static_uri"$>plugins/MTBlockEditor/css/style.css?v=<mt:Var name="mt_block_editor_version" />" type="text/css" />
+<script src="<$mt:var name="static_uri"$>plugins/MTBlockEditor/dist/loader<mt:Var name="loader_variant" />.min.js?v=<mt:Var name="mt_block_editor_version" />" type="module" id="mt-block-editor-loader" data-mt-block-type-ids="<mt:var name="block_type_ids" to_json="1" encode_html="1">" data-mt-block-editor-shortcut-count-default="<mt:Var name="shortcut_count_default" encode_html="1"/>" data-mt-block-display-options-map="<mt:Var name="block_display_options_map" to_json="1" encode_html="1">" data-mt-block-editor-iframe-base-url="<mt:Var name="block_editor_iframe_base_url" encode_html="1"/>"></script>
+</mt:setvarblock>
