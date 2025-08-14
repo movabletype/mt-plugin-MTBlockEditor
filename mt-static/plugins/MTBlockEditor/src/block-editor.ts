@@ -73,7 +73,11 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
     },
   };
 
-  const textBlockSettings = {
+  const textBlockSettings: {
+    tinyMCESettings: Partial<TinyMCESettings>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mtRichTextEditorSettings?: any;
+  } = {
     tinyMCESettings: {
       ...("tinyMCEDefaultSettings" in opts
         ? opts.tinyMCEDefaultSettings
@@ -88,6 +92,39 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
       ].join(","),
     },
   };
+
+  try {
+    // Apply MTRichTextEditor block and color settings, if available.
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mtRichTextEditorSettings: any = {
+      toolbarOptions: {},
+    };
+
+    const customSettings = JSON.parse(
+      document.querySelector<HTMLScriptElement>("[data-mt-rich-text-editor-settings]")?.dataset
+        .mtRichTextEditorSettings || "{}"
+    );
+    if (customSettings?.blocks) {
+      mtRichTextEditorSettings.toolbarOptions.block = {
+        blocks: customSettings.blocks,
+      };
+    }
+
+    if (customSettings?.colors) {
+      mtRichTextEditorSettings.toolbarOptions.foregroundColor = {
+        presetColors: customSettings.colors,
+      };
+      mtRichTextEditorSettings.toolbarOptions.backgroundColor = {
+        presetColors: customSettings.colors,
+      };
+    }
+
+    textBlockSettings.mtRichTextEditorSettings = mtRichTextEditorSettings;
+  } catch (e) {
+    console.error(e);
+  }
+
   defaults.block["core-text"] = { ...textBlockSettings };
   defaults.block["core-table"] = { ...textBlockSettings };
 
