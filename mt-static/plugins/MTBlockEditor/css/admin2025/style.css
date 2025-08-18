@@ -13,7 +13,7 @@
     height: auto;
 }
 
-// workaround for TinyMCE6 dialog MTC-30733
+/* workaround for TinyMCE6 dialog MTC-30733 */
 .mt-mainContentWrapper:has(.tox-dialog-wrap) {
     z-index: 1200;
 }
