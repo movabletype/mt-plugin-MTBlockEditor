@@ -10,12 +10,15 @@ import {
 
 const serializeMethods: SerializeMethod[] = [];
 
+const getTarget = (id: string): HTMLTextAreaElement =>
+  document.querySelector(`textarea#${id}`) as HTMLTextAreaElement;
+
 async function initSelect(select): Promise<void> {
   let editor: Editor | null = null;
   let lastValue = "";
-  const target = document.getElementById(select.dataset.target) as HTMLInputElement;
+  const targetId = select.dataset.target;
   const inputElm = document.createElement("TEXTAREA") as HTMLTextAreaElement;
-  inputElm.id = select.dataset.target + "-mt-be";
+  inputElm.id = targetId + "-mt-be";
   const wrap = document.createElement("DIV");
   wrap.classList.add("mt-block-editor-wrap");
   wrap.appendChild(inputElm);
@@ -25,7 +28,7 @@ async function initSelect(select): Promise<void> {
       return;
     }
     return editor.serialize().then(() => {
-      target.value = inputElm.value;
+      getTarget(targetId).value = inputElm.value;
     });
   });
 
@@ -37,9 +40,10 @@ async function initSelect(select): Promise<void> {
   async function handleSelect(): Promise<void> {
     const oldLastValue = lastValue;
     lastValue = select.value;
-
     if (select.value === "block_editor") {
-      inputElm.value = target.value;
+      window.app?.editors[targetId].setMode("0");
+
+      inputElm.value = getTarget(targetId).value;
       select.closest(".mt-contentblock").appendChild(wrap);
 
       const opts: ApplyOptions = {
@@ -78,28 +82,35 @@ async function initSelect(select): Promise<void> {
       });
 
       editor = null;
-      target.value = inputElm.value;
       wrap.remove();
       select
         .closest(".mt-contentblock")
         .querySelector(".editor-content")
         .classList.remove("d-none");
+
+      getTarget(targetId).value = inputElm.value;
     }
   }
 
-  select.addEventListener("change", (ev) => {
-    if (!ev.isTrusted) {
-      return;
+  select.addEventListener(
+    "change",
+    (ev) => {
+      if (!ev.isTrusted) {
+        return;
+      }
+
+      ev.stopImmediatePropagation();
+      ev.stopPropagation();
+      ev.preventDefault();
+
+      handleSelect().then(() => {
+        $(select).trigger("change");
+      });
+    },
+    {
+      bubbles: true,
     }
-
-    ev.stopImmediatePropagation();
-    ev.stopPropagation();
-    ev.preventDefault();
-
-    handleSelect().then(() => {
-      $(select).trigger("change");
-    });
-  });
+  );
   handleSelect();
 }
 
