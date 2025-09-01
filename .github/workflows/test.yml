@@ -1,0 +1,101 @@
+name: Test
+on:
+  push:
+    branches:
+      - "**/*"
+    tags:
+      - "v*"
+      - "*@v*"
+
+jobs:
+  perl:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - { image: cloud7 }
+          - { image: buster, phpunit: false }
+          - { image: bullseye }
+          - { image: fedora35 }
+          - { image: fedora37 }
+          - { image: fedora40 }
+          - { image: fedora41 }
+          - { image: fedora42 }
+        admin_theme_id:
+          - legacy
+          - admin2023
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: movabletype/movabletype
+          ref: develop
+          path: mt
+      - uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run tests
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/mt:/app \
+            -v ${{ github.workspace }}/plugins/MTBlockEditor:/app/plugins/MTBlockEditor \
+            -w /app \
+            -e MT_TEST_ENV_ADMIN_THEME_ID=${{ matrix.admin_theme_id }} \
+            ghcr.io/movabletype/movabletype/test:${{ matrix.config.image }} \
+            prove -j4 -PMySQLPool=MT::Test::Env -It/lib \
+              plugins/MTBlockEditor/t
+      - name: phpunit
+        if: matrix.config.phpunit != false
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/mt:/app \
+            -v ${{ github.workspace }}/plugins/MTBlockEditor:/app/plugins/MTBlockEditor \
+            -w /app \
+            -e MT_TEST_ENV_ADMIN_THEME_ID=${{ matrix.admin_theme_id }} \
+            ghcr.io/movabletype/movabletype/test:${{ matrix.config.image }} \
+            phpunit plugins/MTBlockEditor/php
+
+  js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build schema
+        run: npm run build-schema
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Format
+        run: npm run format
+
+      - name: Build
+        run: npm run build
+
+      - name: Cypress run
+        uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c # v6.10.2
+        with:
+          install: false
+          build: npm run cypress:prepare
+
+      - name: Upload Cypress artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/videos
+            cypress/screenshots
