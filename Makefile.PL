@@ -17,7 +17,7 @@ WriteMakefile(
 sub MY::top_targets {
     << 'Makefile';
 npm-install:
-	npm ci
+	npm ci --include=dev
 
 npm-build:
 	npm run build
