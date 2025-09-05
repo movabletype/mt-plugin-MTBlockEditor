@@ -29,7 +29,7 @@ jobs:
 
       - name: Build plugin
         run: |
-         perl Makefile.PL --version $(git describe --tags | sed -e 's/^v//')
+         perl Makefile.PL --version $(if git describe --tags --exact-match >/dev/null 2>&1; then echo ''; else git rev-parse --short HEAD; fi)
          make manifest
          make zipdist
          make dist
