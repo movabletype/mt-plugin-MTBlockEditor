@@ -26,9 +26,16 @@ i18next-parser.config.js
 ^tools/
 docker-compose.yml
 Dockerfile
+.eslintignore
+.eslintrc.json
+rollup.config.ts
+cypress.config.ts
+eslint.config.mjs
+vite.config.ts
 
 # npm working directory
 ^node_modules/
+mt-static/plugins/MTBlockEditor/content-field/node_modules/
 
 # packages
 \.zip$
@@ -41,10 +48,12 @@ Dockerfile
 ^t/
 ^cypress.json
 ^cypress/
+^test/
 
 # source files
 mt-static/plugins/MTBlockEditor/typings/
 mt-static/plugins/MTBlockEditor/src/
+mt-static/plugins/MTBlockEditor/content-field/src/
 
 # test
 plugins/MTBlockEditor/t/
