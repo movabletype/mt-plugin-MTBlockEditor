@@ -243,6 +243,20 @@ $1
 }i;
 }
 
+sub template_param_edit_content_type {
+    my ($cb, $app, $param, $tmpl) = @_;
+    my $blog    = $app->blog;
+    my $blog_id = $blog ? $blog->id : 0;
+
+    my $tmpl_param = tmpl_param();
+    while (my ($k, $v) = each %$tmpl_param) {
+        $param->{$k} = $v;
+    }
+    $param->{mt_block_editor_configs} = [map { { id => $_->id, label => $_->label } } MT->model('be_config')->load({ blog_id => [0, $blog_id] })];
+
+    insert_after($tmpl, undef, 'mt_block_editor_edit_content_type.tmpl');
+}
+
 sub template_source_field_html_multi_line_text {
     my ($cb, $app, $tmpl) = @_;
 
