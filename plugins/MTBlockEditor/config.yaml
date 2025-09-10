@@ -119,6 +119,7 @@ applications:
       view_be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::edit_be_config
     callbacks:
       init_app: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::init_app
+      template_param.edit_content_type: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_edit_content_type
       template_param.edit_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_edit_entry
       template_param.edit_content_data: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_edit_content_data
       template_param.cfg_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_cfg_entry
