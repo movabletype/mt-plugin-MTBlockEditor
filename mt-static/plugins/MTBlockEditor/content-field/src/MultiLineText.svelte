@@ -83,18 +83,20 @@
     </label>
   </ContentFieldOption>
 
-  <ContentFieldOption id="multi_line_text-be_config" label={configLabel}>
-    <!-- selected was removed and bind is used -->
-    <select
-      {...{ ref: "be_config" }}
-      name="be_config"
-      id="multi_line_text-be_config"
-      class="custom-select form-control form-select"
-      bind:value={$fieldsStore[fieldIndex].options.be_config}
-    >
-      {#each configs as config}
-        <option value={config.id}>{config.label}</option>
-      {/each}
-    </select>
-  </ContentFieldOption>
+  {#if configs.length > 0}
+    <ContentFieldOption id="multi_line_text-be_config" label={configLabel}>
+      <!-- selected was removed and bind is used -->
+      <select
+        {...{ ref: "be_config" }}
+        name="be_config"
+        id="multi_line_text-be_config"
+        class="custom-select form-control form-select"
+        bind:value={$fieldsStore[fieldIndex].options.be_config}
+      >
+        {#each configs as config}
+          <option value={config.id}>{config.label}</option>
+        {/each}
+      </select>
+    </ContentFieldOption>
+  {/if}
 </ContentFieldOptionGroup>
