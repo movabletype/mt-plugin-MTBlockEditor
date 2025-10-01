@@ -1,6 +1,6 @@
 id: MTBlockEditor
 name: MTBlockEditor
-version: 1.2.7
+version: 1.3.2
 author_link: http://www.movabletype.org/
 author_name: Six Apart Ltd.
 description: <MT_TRANS phrase="Movable Type Block Editor.">
@@ -119,6 +119,7 @@ applications:
       view_be_config: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::Config::edit_be_config
     callbacks:
       init_app: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::init_app
+      template_param.edit_content_type: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_edit_content_type
       template_param.edit_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_edit_entry
       template_param.edit_content_data: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_edit_content_data
       template_param.cfg_entry: $MTBlockEditor::MT::Plugin::MTBlockEditor::App::CMS::template_param_cfg_entry

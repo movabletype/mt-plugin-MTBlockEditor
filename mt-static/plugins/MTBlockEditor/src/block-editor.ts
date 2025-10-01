@@ -73,8 +73,60 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
     },
   };
 
-  const tinyMCEDefaultSettings =
-    "tinyMCEDefaultSettings" in opts ? opts.tinyMCEDefaultSettings : buildTinyMCEDefaultSettings();
+  const textBlockSettings: {
+    tinyMCESettings: Partial<TinyMCESettings>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mtRichTextEditorSettings?: any;
+  } = {
+    tinyMCESettings: {
+      ...("tinyMCEDefaultSettings" in opts
+        ? opts.tinyMCEDefaultSettings
+        : buildTinyMCEDefaultSettings()),
+      extended_valid_elements: [
+        // we embed 'a[onclick]' by inserting image with popup
+        `a[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}|href|target|name]`,
+        // allow SPAN element without attributes
+        `span[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}]`,
+        // allow SCRIPT element
+        "script[id|name|type|src|integrity|crossorigin]",
+      ].join(","),
+    },
+  };
+
+  try {
+    // Apply MTRichTextEditor block and color settings, if available.
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mtRichTextEditorSettings: any = {
+      toolbarOptions: {},
+    };
+
+    const customSettings = JSON.parse(
+      document.querySelector<HTMLScriptElement>("[data-mt-rich-text-editor-settings]")?.dataset
+        .mtRichTextEditorSettings || "{}"
+    );
+    if (customSettings?.blocks) {
+      mtRichTextEditorSettings.toolbarOptions.block = {
+        blocks: customSettings.blocks,
+      };
+    }
+
+    if (customSettings?.colors) {
+      mtRichTextEditorSettings.toolbarOptions.foregroundColor = {
+        presetColors: customSettings.colors,
+      };
+      mtRichTextEditorSettings.toolbarOptions.backgroundColor = {
+        presetColors: customSettings.colors,
+      };
+    }
+
+    textBlockSettings.mtRichTextEditorSettings = mtRichTextEditorSettings;
+  } catch (e) {
+    console.error(e);
+  }
+
+  defaults.block["core-text"] = { ...textBlockSettings };
+  defaults.block["core-table"] = { ...textBlockSettings };
 
   // deep merge
   const block = Object.assign({}, defaults.block, opts.block || {});
@@ -86,18 +138,6 @@ export function apply(opts: ApplyOptions): Promise<Editor> {
 
   applyOpts.stylesheets = applyOpts.stylesheets || [];
   return window.MTBlockEditor?.apply(applyOpts).then((ed) => {
-    ed.on("buildTinyMCESettings", ({ settings }) => {
-      Object.assign(settings, tinyMCEDefaultSettings);
-
-      settings.extended_valid_elements = [
-        // we embed 'a[onclick]' by inserting image with popup
-        `a[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}|href|target|name]`,
-        // allow SPAN element without attributes
-        `span[${GLOBAL_ATTRIBUTES}|${ALLOWED_EVENT_ATTRIBUTES}]`,
-        // allow SCRIPT element
-        "script[id|name|type|src|integrity|crossorigin]",
-      ].join(",");
-    });
     ed.on("change", setDirty);
 
     const scriptElm = document.getElementById("mt-block-editor-loader");
