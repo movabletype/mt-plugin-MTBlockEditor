@@ -36,7 +36,15 @@ interface Window {
   CMSScriptURI: string;
   uploadFiles: (files: File[]) => void;
   setDirty: (status: boolean) => void;
-  app: { getIndirectMethod: (name: string) => method } | null;
+  app: {
+    getIndirectMethod: (name: string) => method;
+    editors: Record<
+      string,
+      {
+        setMode: (mode: string) => void;
+      }
+    >;
+  } | null;
   trans: (msgId: string, ...params: string[]) => string;
   jQuery: typeof jQuery;
 }

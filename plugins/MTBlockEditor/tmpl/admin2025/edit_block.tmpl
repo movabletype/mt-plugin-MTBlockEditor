@@ -1,0 +1,262 @@
+<mt:if name="id">
+  <mt:setvarblock name="page_title"><__trans phrase="Edit Custom Block"></mt:setvarblock>
+<mt:else>
+  <mt:setvar name="page_title" value="<__trans phrase="Create Custom Block">">
+  <mt:setvar name="new_object" value="1">
+</mt:if>
+<mt:setvar name="screen_id" value="edit_block">
+<mt:setvar name="position_actions_bottom" value="1">
+
+<mt:setvarblock name="system_msg">
+<div id="msg-block">
+<mt:if name="saved">
+  <mtapp:statusmsg
+     id="saved"
+     class="success"
+     can_close="1">
+    <__trans phrase="Your changes have been saved.">
+  </mtapp:statusmsg>
+</mt:if>
+<mt:if name="error">
+  <mtapp:statusmsg
+     id="generic-error"
+     class="error"
+     can_close="0">
+    <mt:var name="error" escape="html">
+  </mtapp:statusmsg>
+</mt:if>
+<mtapp:statusmsg
+   id="blank-blocks"
+   class="error"
+   can_close="0"
+   hidden="1">
+  <__trans phrase="You must enter information into the required blocks highlighted below before the custom block can be created.">
+</mtapp:statusmsg>
+</div>
+</mt:setvarblock>
+
+<mt:setvarblock name="page_content">
+
+<div class="row flex-row-reverse mb-5">
+  <div class="col-auto">
+    <button type="button" class="btn btn-default" id="import-block" data-bs-toggle="modal" data-bs-target="#import-block-modal"><__trans phrase="Import"></button>
+    <button type="button" class="btn btn-default" id="export-block"><__trans phrase="Export"></button>
+  </div>
+</div>
+
+<div id="import-block-modal" class="modal fade" tabindex="-1">
+  <form id="import-block-form" role="form" class="form-horizontal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="mt-0 modal-title"><__trans phrase="Import Custom Block"></h4>
+        <button type="button" class="close btn-close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <mtapp:setting
+           id="import-file"
+           label="<__trans phrase="File">"
+           label_for="import-file"
+           label_class="top-label"
+           hint="<__trans phrase="* You can import custom block from your JSON file.">"
+           hint_id="importFile"
+           show_hint="1">
+          <input name="file" type="file" accept="application/json" required id="import-file" class="d-block" aria-describedby="importFile" />
+        </mtapp:setting>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary"><__trans phrase="Import"></button>
+        <button type="button" accesskey="x" class="cancel action button mt-close-dialog btn btn-default" title="<__trans phrase="Cancel (x)">">
+          <__trans phrase="Cancel">
+        </button>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+
+<form method="post" action="<mt:var name="script_url">" id="block-form">
+  <input type="hidden" name="__mode" value="save" id="__mode" />
+  <input type="hidden" name="_type" value="be_block" />
+  <input type="hidden" name="blog_id" value="<mt:var name="blog_id" default="0">" />
+<mt:if name="id">
+  <input type="hidden" name="id" value="<mt:var name="id" escape="html">" />
+</mt:if>
+  <input type="hidden" name="magic_token" value="<mt:var name="magic_token">" id="magic_token" />
+  <input type="hidden" name="return_args" value="<mt:var name="return_args">" id="return_args" />
+
+  <mtapp:setting
+     id="label"
+     label="<__trans phrase="Label">"
+     label_for="label"
+     required="1">
+    <input type="text" name="label" value="<mt:var name="label" escape="html">" id="label" class="form-control text required"/>
+  </mtapp:setting>
+
+  <mtapp:setting
+     id="icon"
+     label="<__trans phrase="Icon">"
+     label_for="icon"
+     hint='<__trans phrase="You can upload image files of size [_1] or less." params="<mt:var name="max_icon_size_hr">">'
+     show_hint="1">
+    <div>
+      <img id="icon-image" width="30" height="30" class="d-none" />
+      <a href="#" id="reset-icon-image" class="d-none"><__trans phrase="Reset"></a>
+      <input type="hidden" name="icon" id="icon" value="<mt:var name="icon" escape="html">" />
+      <input id="icon-file" type="file" data-mt-max-icon-size="<mt:var name="max_icon_size">"/>
+    </div>
+  </mtapp:setting>
+
+  <mtapp:setting
+     id="identifier"
+     label="<__trans phrase="Identifier">"
+     label_for="identifier"
+     required="1"
+     hint='<__trans phrase="If you change the identifier, you will not be able to edit the block contained in the saved data as the same block.">'
+     show_hint="1">
+    <input type="text" name="identifier" value="<mt:var name="identifier" escape="html">" id="identifier" class="form-control text required be-validate-alnum-underscore" />
+  </mtapp:setting>
+
+  <mtapp:setting
+     id="html"
+     label="<__trans phrase="Block">"
+     label_for="html">
+    <div class="form-control pt-5 pb-5">
+      <textarea id="html" name="html" class="form-control" data-mt-block-type-ids="<mt:var name="block_type_ids" to_json="1" encode_html="1">"><mt:var name="html" escape="html"></textarea>
+    </div>
+  </mtapp:setting>
+
+  <mtapp:setting
+     id="preview_header"
+     label="<__trans phrase="Custom Script">"
+     label_for="preview_header"
+     hint="<__trans phrase="You can customize the display using JavaScript and CSS.">"
+     hint_id="previewHeader"
+     show_hint="1">
+    <textarea id="preview_header" name="preview_header" class="form-control text high"><mt:var name="preview_header" escape="html"></textarea>
+  </mtapp:setting>
+
+  <mtapp:setting
+     id="wrap_root_block"
+     label="<__trans phrase="Wrap in root element">">
+    <div class="form-group">
+      <div class="custom-control custom-checkbox form-check">
+        <input type="checkbox" value="1" name="wrap_root_block" class="form-check-input" id="wrap_root_block"<mt:if name="wrap_root_block"> checked="checked"</mt:if> data-bs-toggle="collapse" data-bs-target="#wrap-root-block-option" aria-expanded="<mt:if name="wrap_root_block">true<mt:else>false</mt:if>" aria-controls="wrap-root-block-option" />
+        <label class="form-check-label" for="wrap_root_block"><__trans phrase="Wrap edited content in root DIV element."></label>
+      </div>
+    </div>
+  </mtapp:setting>
+
+  <div id="wrap-root-block-option" class="setting-option collapse<mt:if name="wrap_root_block"> show</mt:if>">
+  <mtapp:setting
+     id="class_name"
+     label="<__trans phrase="Class Name">"
+     label_for="class_name"
+     hint='<__trans phrase="You can set a class name for the root element.">'
+     hint_id="className"
+     show_hint="1">
+    <input type="text" name="class_name" value="<mt:var name="class_name" escape="html">" id="class_name" class="form-control text" maxlength="100"/>
+  </mtapp:setting>
+  </div>
+
+  <mtapp:setting
+     id="can_remove_block"
+     label="<__trans phrase="Can add and remove block">">
+    <div class="form-group">
+      <div class="custom-control custom-checkbox form-check">
+        <input type="checkbox" value="1" name="can_remove_block" class="form-check-input" id="can_remove_block"<mt:if name="can_remove_block"> checked="checked"</mt:if> data-bs-toggle="collapse" data-bs-target="#can-remove-block-option" aria-expanded="<mt:if name="can_remove_block">true<mt:else>false</mt:if>" aria-controls="can-remove-block-option" />
+        <label class="form-check-label" for="can_remove_block"><__trans phrase="Enabled to add and remove block."></label>
+      </div>
+    </div>
+  </mtapp:setting>
+
+  <div id="can-remove-block-option" class="setting-option collapse<mt:if name="can_remove_block"> show</mt:if>">
+
+  <mtapp:setting
+     id="addable_block_types"
+     label="<__trans phrase="Addable blocks">"
+     label_for="addable_block_types">
+
+    <div class="row mt-draggable border-0 flex-row-reverse">
+      <div class="col-auto w-25">
+        <div class="row">
+          <span class="col-auto w-50 text-right">
+            <__trans phrase="Panel">
+          </span>
+          <span class="col-auto w-50 text-right">
+            <__trans phrase="Shortcut">
+          </span>
+        </div>
+      </div>
+    </div>
+    <div id="block_display_options-list" data-type="common">
+    <mt:Loop name="block_types">
+      <div class="mt-draggable sort-enabled row" data-type-id="<mt:Var name="type_id" />" draggable="true" aria-grabbed="false">
+
+        <div class="col-auto mt-ic_move"><mtapp:svgicon id="ic_move" title="Draggable"></div>
+        <div class="col" for="block-show-<mt:Var name="type_id" />"><mt:Var name="label" escape="html"/></div>
+        <div class="col-auto w-25">
+          <div class="row">
+            <span class="col-auto w-50 text-right">
+              <input type="checkbox" name="panel" class="form-check-input align-middle" <mt:If name="is_default_visible"> checked="checked"</mt:If>/>
+            </span>
+            <span class="col-auto w-50 text-right">
+              <input type="checkbox" name="shortcut" class="form-check-input align-middle" <mt:Unless name="block_display_options"><mt:If name="__counter__" le="$shortcut_count_default"> checked="checked"</mt:If></mt:Unless> />
+            </span>
+          </div>
+        </div>
+      </div>
+    </mt:Loop>
+    </div>
+    <input type="hidden" id="block_display_options" name="addable_block_types" value="<mt:If name="addable_block_types"><mt:Var name="addable_block_types" encode_html="1" /><mt:ElseIf name="default_block_display_options"><mt:Var name="default_block_display_options" encode_html="1"/><mt:Else>{&quot;common&quot;:[]}</mt:If>" />
+  </mtapp:setting>
+
+  </div>
+
+  <mtapp:setting
+     id="show_preview"
+     label="<__trans phrase="Preview settings">"
+     hint='<__trans phrase="You can keep the editing status even when not in focus by unchecking this check box.">'
+     show_hint="1">
+    <div class="custom-control custom-checkbox form-check">
+      <input type="checkbox" value="1" name="show_preview" class="form-check-input" id="show_preview"<mt:if name="show_preview"> checked="checked"</mt:if>/>
+      <label class="form-check-label" for="show_preview"><__trans phrase="Show preview"></label>
+    </div>
+  </mtapp:setting>
+
+<mt:setvarblock name="action_buttons">
+  <button
+     type="submit"
+     accesskey="s"
+     title="<__trans phrase="Save this block (s)">"
+     class="save action primary button btn btn-primary">
+    <__trans phrase="Save">
+  </button>
+<mt:if name="id">
+  <button
+     onclick="doRemoveItems(this.form, '<__trans phrase="block">', '<__trans phrase="blocks">', 'id', {'return_args' : '__mode=list&amp;_type=be_block&amp;blog_id=<mt:var name="blog_id">'})"
+     type="button"
+     accesskey="x"
+     title="<__trans phrase="Delete this block (x)">"
+     class="delete action button btn btn-default">
+    <__trans phrase="Delete">
+  </button>
+</mt:if>
+</mt:setvarblock>
+<mt:include name="include/actions_bar.tmpl" bar_position="bottom" hide_pager="1" settings_bar="1">
+</form>
+</mt:setvarblock>
+
+<mt:include name="include/editor_script.tmpl" id="editor_script_include">
+<mt:include name="script.tmpl">
+<mt:setvarblock name="js_include" append="1">
+<script src="<$mt:var name="static_uri"$>plugins/MTBlockEditor/dist/edit_block.min.js?v=<mt:Var name="mt_block_editor_version" />" type="module"></script>
+</mt:setvarblock>
+
+<mt:include name="layout/default.tmpl">
+<mt:var name="layout">

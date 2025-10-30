@@ -1,0 +1,14 @@
+.mt-block-editor-wrap {
+    margin-top: 20px;
+}
+
+.mt-block-editor-wrap-entry {
+    padding: 20px 0;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 0 0.25rem 0.25rem;
+}
+
+#editor-content textarea.mt-be-input,
+.editor-content textarea.mt-be-input {
+    height: auto;
+}

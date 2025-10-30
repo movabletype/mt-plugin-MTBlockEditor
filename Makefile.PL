@@ -18,9 +18,11 @@ sub MY::top_targets {
     << 'Makefile';
 npm-install:
 	npm ci --include=dev
+	npm ci --include=dev --prefix ./mt-static/plugins/$(NAME)/content-field
 
 npm-build:
 	npm run build
+	npm run build-svelte --prefix ./mt-static/plugins/$(NAME)/content-field
 
 build-js: npm-install npm-build
 

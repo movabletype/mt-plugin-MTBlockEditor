@@ -77,6 +77,56 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
   async function showModal(): Promise<void> {
     setModalActive(true);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((window.MT as any).AssetUploader) {
+      // new uploader
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window.MT as any).AssetUploader.open({
+        selectMetaData: true,
+        multiSelect: false,
+        params: {},
+        initialSelectedData: [
+          {
+            id: block.assetId,
+            imageWidth: block.imageWidth,
+            alternativeText: block.alternativeText,
+            caption: block.caption,
+            alignment: block.alignment,
+          },
+        ],
+        insert: ([data]) => {
+          const newData = {
+            assetId: data.assetId,
+            assetUrl: data.assetUrl,
+            url: data.assetThumbnailUrl,
+            imageWidth: data.assetThumbnailWidth,
+            imageHeight: data.assetThumbnailHeight,
+            // alignment: data.assetThumbnailWidth,
+            alternativeText: data.alternativeText,
+            caption: data.caption,
+            hasCaption: (data.caption || "") !== "",
+          };
+
+          // if (!newData.linkUrl && newData.linkToOriginal) {
+          //   newData.linkUrl = newData.assetUrl;
+          // }
+
+          addEditUpdateBlock(editor, block, newData);
+
+          Object.assign(block, newData);
+          setBlock(Object.assign({}, block));
+          setModalActive(false);
+        },
+        options: {
+          imageSupportedAligns: ["center", "none"],
+        },
+      });
+      return;
+    }
+
+    // legacy uploader
+
     const newData: Partial<MTImage> = {};
 
     const blogId = (document.querySelector("[name=blog_id]") as HTMLInputElement).value;
@@ -113,6 +163,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
         },
       },
     });
+
     $.fn.mtModal.open(
       window.ScriptURI +
         "?" +
