@@ -17,8 +17,8 @@ WriteMakefile(
 sub MY::top_targets {
     << 'Makefile';
 npm-install:
-	npm ci
-	npm ci --prefix ./mt-static/plugins/$(NAME)/content-field
+	npm ci --include=dev
+	npm ci --include=dev --prefix ./mt-static/plugins/$(NAME)/content-field
 
 npm-build:
 	npm run build

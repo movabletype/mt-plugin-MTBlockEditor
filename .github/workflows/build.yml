@@ -1,0 +1,73 @@
+name: Build MFA Plugin
+on:
+  push:
+    branches:
+      - "**/*"
+    tags:
+      - "v*"
+      - "*@v*"
+  # pull_request:
+  #   types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Install libs
+        run: sudo apt-get install --no-install-recommends -y libjson-perl libyaml-perl zip
+
+      - name: Build plugin
+        run: |
+         perl Makefile.PL --version $(if git describe --tags --exact-match >/dev/null 2>&1; then echo ''; else git rev-parse --short HEAD; fi)
+         make manifest
+         make zipdist
+         make dist
+
+      - name: Upload all plugins
+        id: upload-all-plugins
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin
+          path: |
+            MTBlockEditor-*
+
+      - name: Upload tarball
+        id: upload-tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: tarball
+          path: |
+            MTBlockEditor-*.tar.gz
+
+      - name: Add comment to PR
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### Download Links
+            
+            You can download the build artifacts from the following links:
+
+            - **All Plugins**: [Download from Actions Artifacts](${{ steps.upload-all-plugins.outputs.artifact-url }})
+            - **Tarball**: [Download from Actions Artifacts](${{ steps.upload-tarball.outputs.artifact-url }})
+
+      - name: Upload package to GitHub Releases
+        if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8
+        with:
+          draft: true
+          files: |
+            packages/plugin/dist/*.zip
+            packages/plugin/dist/*.tar.gz
