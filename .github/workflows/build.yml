@@ -1,4 +1,4 @@
-name: Build MFA Plugin
+name: Build MTBlockEditor Plugin
 on:
   push:
     branches:
