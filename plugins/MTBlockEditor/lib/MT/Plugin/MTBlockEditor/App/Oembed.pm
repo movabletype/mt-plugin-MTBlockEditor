@@ -46,7 +46,7 @@ sub get_oembed_url {
 
     # x (twitter)
     return "https://publish.twitter.com/oembed?url=${url}"
-        if $url =~ m{^https?://((?:www\.)?(?:twitter|x)\.com/[^/]+/status/\d+)}i;
+        if $url =~ m{^https?://(?:www\.)?(?:twitter|x)\.com/[^/]+/status/\d+}i;
 
     # tiktok
     return "https://www.tiktok.com/oembed?url=${url}"
