@@ -29,6 +29,10 @@ my $admin = $objs->{author}{admin};
 my ($app, $out);
 
 my @services = ({
+        name => "x",
+        url  => "https://x.com/sixapartkk/status/1225330880022896640",
+    },
+    {
         name => "twitter",
         url  => "https://twitter.com/sixapartkk/status/1225330880022896640",
     },

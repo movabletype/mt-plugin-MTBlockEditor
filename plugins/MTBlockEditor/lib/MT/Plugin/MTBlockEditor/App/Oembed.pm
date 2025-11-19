@@ -26,27 +26,31 @@ sub get_oembed_url {
 
     # youtube
     return "https://www.youtube.com/oembed?url=${url}"
-        if $url =~ /youtube|youtu\.be/i;
+        if $url =~ m{^https?://(?:www\.)?(?:youtube\.com|youtu\.be)/}i;
 
     # soundcloud
     return "https://soundcloud.com/oembed?url=${url}"
-        if $url =~ /soundcloud/i;
+        if $url =~ m{^https?://(?:www\.)?soundcloud\.com/}i;
 
     # mixcloud
     return "https://www.mixcloud.com/oembed/?url=${url}"
-        if $url =~ /mixcloud/i;
+        if $url =~ m{^https?://(?:www\.)?mixcloud\.com/}i;
 
     # vimeo
     return "https://vimeo.com/api/oembed.json?url=${url}"
-        if $url =~ /vimeo/i;
+        if $url =~ m{^https?://(?:www\.)?vimeo\.com/}i;
 
     # slideshare
     return "https://www.slideshare.net/api/oembed/2?url=${url}"
-        if $url =~ /slideshare/i;
+        if $url =~ m{^https?://(?:www\.)?slideshare\.net/}i;
 
-    # twitter
+    # x (twitter)
     return "https://publish.twitter.com/oembed?url=${url}"
-        if $url =~ /twitter/i;
+        if $url =~ m{^https?://(?:www\.)?(?:twitter|x)\.com/[^/]+/status/\d+}i;
+
+    # tiktok
+    return "https://www.tiktok.com/oembed?url=${url}"
+        if $url =~ m{^https?://(?:www\.)?tiktok\.com/.*\/video\/.*}i;
 
     # FIXME: access token is required
     # instagram
@@ -54,10 +58,6 @@ sub get_oembed_url {
     #     $url =~ s/^(.+)\?.+$/$1/;
     #     return "https://graph.facebook.com/v10.0/instagram_oembed?url=${url}";
     # }
-
-    # tiktok
-    return "https://www.tiktok.com/oembed?url=${url}"
-        if $url =~ /tiktok\.com\/.*\/video\/.*/i;
 
     return "";
 }
