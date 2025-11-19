@@ -172,7 +172,6 @@ class Parser
 
         $handler = new SAXHandler(['meta' => $meta]);
         $parser = xml_parser_create();
-        xml_set_object($parser, $handler);
         xml_set_element_handler($parser, [$handler, 'start_element'], [$handler, 'end_element']);
         xml_set_character_data_handler($parser, [$handler, 'characters']);
         xml_parse($parser, "<xml>$content</xml>");

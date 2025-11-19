@@ -1,0 +1,47 @@
+{
+  "name": "mt-plugin-MTBlockEditor-contgent-field",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build-svelte:app": "rollup --config rollup.config.ts --configPlugin typescript",
+    "build-svelte": "npm run build-svelte:app",
+    "svelte-dev": "rollup --config rollup.config.ts --configPlugin typescript -w",
+    "svelte-check-types": "tsc",
+    "svelte-format": "prettier --plugin prettier-plugin-svelte --write src/**/*.{ts,tsx,svelte}",
+    "svelte-lint": "eslint --fix --ext .ts --ext .tsx --ext .svelte src"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.2",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@tsconfig/svelte": "^5.0.4",
+    "@types/jquery": "^3.5.32",
+    "@types/node": "^20.12.11",
+    "@typescript-eslint/eslint-plugin": "^7.11.0",
+    "@typescript-eslint/parser": "^7.6.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-svelte": "^2.39.0",
+    "prettier": "^3.3.0",
+    "prettier-plugin-svelte": "^3.2.3",
+    "rollup": "^4.17.2",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "rollup-plugin-esbuild": "^6.1.1",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-svelte": "^7.2.0",
+    "svelte": "^4.2.15",
+    "svelte-check": "^3.8.0",
+    "svelte-preprocess": "^5.0.4",
+    "typescript": "~5.4"
+  },
+  "dependencies": {
+    "@sixapart/mt-toolkit": "^1.0.0",
+    "tslib": "^2.6.0"
+  }
+}
