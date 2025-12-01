@@ -89,6 +89,28 @@ subtest 'entry' => sub {
     like $out, qr{<option value="block_editor">MT Block Editor</option>};
 };
 
+subtest 'content_type' => sub {
+    $app = _run_app(
+        'MT::App::CMS',
+        {
+            __test_user      => $admin,
+            __request_method => 'GET',
+            __mode           => 'view',
+            _type            => 'content_type',
+            id               => $content_type->id,
+            blog_id          => $blog->id,
+        });
+    $out = delete $app->{__test_output};
+
+    like $out, qr{
+        /mt-static/js/build/contenttype.js
+        .*
+        /mt-static/plugins/MTBlockEditor/content-field/dist/index.js
+    }sx, 'content-field/diest/index.js is loaded after contenttype.js';
+    is $out =~ m{/mt-static/plugins/MTBlockEditor/content-field/dist/index.js}g, 1, 'content-field/dist/index.js is included only once';
+    like $out, qr{</html>\s*$}, 'should not break the template';
+};
+
 subtest 'content_data' => sub {
     $app = _run_app(
         'MT::App::CMS',
