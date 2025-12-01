@@ -10,7 +10,7 @@ use utf8;
 
 use MT::Util qw(encode_html);
 use Class::Method::Modifiers qw(install_modifier);
-use MT::Plugin::MTBlockEditor qw(plugin blocks to_custom_block_types_json tmpl_param);
+use MT::Plugin::MTBlockEditor qw(plugin translate blocks to_custom_block_types_json tmpl_param);
 
 my $Initialized;
 
@@ -248,13 +248,18 @@ sub template_param_edit_content_type {
     my $blog    = $app->blog;
     my $blog_id = $blog ? $blog->id : 0;
 
-    my $tmpl_param = tmpl_param();
-    while (my ($k, $v) = each %$tmpl_param) {
-        $param->{$k} = $v;
-    }
-    $param->{mt_block_editor_configs} = [map { { id => $_->id, label => $_->label } } MT->model('be_config')->load({ blog_id => [0, $blog_id] })];
+    my $tmpl_param              = tmpl_param();
+    my $mt_block_editor_configs = [map { { id => $_->id, label => $_->label } } MT->model('be_config')->load({ blog_id => [0, $blog_id] })];
 
-    insert_after($tmpl, undef, 'mt_block_editor_edit_content_type.tmpl');
+    $param->{js_include} .= qq{
+<script
+  src="@{[$param->{static_uri}]}plugins/MTBlockEditor/content-field/dist/index.js?v=@{[$tmpl_param->{mt_block_editor_version}]}"
+  type="module"
+  id="mt-block-editor-content-field"
+  data-mt-block-editor-configs="@{[ encode_html(MT::Util::to_json($mt_block_editor_configs)) ]}"
+  data-mt-block-editor-config-label="@{[ encode_html(translate("Preset For Movable Type Block Editor")) ]}"
+></script>
+};
 }
 
 sub template_source_field_html_multi_line_text {

@@ -89,6 +89,24 @@ subtest 'entry' => sub {
     like $out, qr{<option value="block_editor">MT Block Editor</option>};
 };
 
+subtest 'content_type' => sub {
+    $app = _run_app(
+        'MT::App::CMS',
+        {
+            __test_user      => $admin,
+            __request_method => 'GET',
+            __mode           => 'view',
+            _type            => 'content_type',
+            id               => $content_type->id,
+            blog_id          => $blog->id,
+        });
+    $out = delete $app->{__test_output};
+
+    # loaded
+    like $out, qr{content-field/dist/index.js};
+    like $out, qr{</html>\s*$};
+};
+
 subtest 'content_data' => sub {
     $app = _run_app(
         'MT::App::CMS',
