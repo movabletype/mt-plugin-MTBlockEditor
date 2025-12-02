@@ -65,17 +65,19 @@ sub init_app {
 }
 
 sub insert_after {
-    my ($tmpl, $id, $tokens) = @_;
+    my ($tmpl, $reference_node, $tokens) = @_;
 
-    my $before = $id ? $tmpl->getElementById($id) : undef;
+    if ($reference_node && !ref $reference_node) {
+        $reference_node = $tmpl->getElementById($reference_node); # assume it's an ID
+    }
 
     if (!ref $tokens) {
         $tokens = plugin()->load_tmpl($tokens)->tokens;
     }
 
     foreach my $t (@$tokens) {
-        $tmpl->insertAfter($t, $before);
-        $before = $t;
+        $tmpl->insertAfter($t, $reference_node);
+        $reference_node = $t;
     }
 }
 
@@ -254,7 +256,8 @@ sub template_param_edit_content_type {
     }
     $param->{mt_block_editor_configs} = [map { { id => $_->id, label => $_->label } } MT->model('be_config')->load({ blog_id => [0, $blog_id] })];
 
-    insert_after($tmpl, undef, 'mt_block_editor_edit_content_type.tmpl');
+    my $reference_node = $tmpl->getElementsByName('options_scripts')->[0];
+    insert_after($tmpl, $reference_node, 'mt_block_editor_edit_content_type.tmpl');
 }
 
 sub template_source_field_html_multi_line_text {
