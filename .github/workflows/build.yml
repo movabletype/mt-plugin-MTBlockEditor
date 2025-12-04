@@ -69,5 +69,5 @@ jobs:
         with:
           draft: true
           files: |
-            packages/plugin/dist/*.zip
-            packages/plugin/dist/*.tar.gz
+            MTBlockEditor-*.zip
+            MTBlockEditor-*.tar.gz
