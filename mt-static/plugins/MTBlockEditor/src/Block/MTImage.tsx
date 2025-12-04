@@ -108,10 +108,6 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
             hasCaption: (data.caption || "") !== "",
           };
 
-          // if (!newData.linkUrl && newData.linkToOriginal) {
-          //   newData.linkUrl = newData.assetUrl;
-          // }
-
           addEditUpdateBlock(editor, block, newData);
 
           Object.assign(block, newData);
