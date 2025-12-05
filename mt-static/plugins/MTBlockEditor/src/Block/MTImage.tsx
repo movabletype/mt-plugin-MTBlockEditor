@@ -92,7 +92,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
             imageWidth: block.imageWidth,
             alternativeText: block.alternativeText,
             caption: block.caption,
-            alignment: block.alignment,
+            align: block.alignment,
           },
         ],
         insert: ([data]) => {
@@ -102,15 +102,11 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
             url: data.assetThumbnailUrl,
             imageWidth: data.assetThumbnailWidth,
             imageHeight: data.assetThumbnailHeight,
-            // alignment: data.assetThumbnailWidth,
+            alignment: data.align,
             alternativeText: data.alternativeText,
             caption: data.caption,
             hasCaption: (data.caption || "") !== "",
           };
-
-          // if (!newData.linkUrl && newData.linkToOriginal) {
-          //   newData.linkUrl = newData.assetUrl;
-          // }
 
           addEditUpdateBlock(editor, block, newData);
 
