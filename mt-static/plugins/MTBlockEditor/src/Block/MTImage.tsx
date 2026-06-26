@@ -93,6 +93,7 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
             alternativeText: block.alternativeText,
             caption: block.caption,
             align: block.alignment,
+            linkToOriginal: block.assetUrl === block.linkUrl,
           },
         ],
         insert: ([data]) => {
@@ -106,7 +107,13 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
             alternativeText: data.alternativeText,
             caption: data.caption,
             hasCaption: (data.caption || "") !== "",
-          };
+          } as Partial<MTImage>;
+          if (data.linkToOriginal) {
+            newData.linkUrl = data.assetUrl;
+          } else if (block.linkUrl === block.assetUrl) {
+            // If the link was previously set to the original asset, but the user has unchecked "Link to original", clear the link URL.
+            newData.linkUrl = "";
+          }
 
           addEditUpdateBlock(editor, block, newData);
 
