@@ -20,9 +20,12 @@ import { edit as editIcon, link as linkIcon } from "mt-block-editor-block/icon";
 import i18n from "mt-block-editor-block/i18n";
 
 import imageIcon from "../img/icon/image.svg";
+import removeIcon from "../img/icon/remove.svg";
 import { waitFor } from "../util";
 import { addEditUpdateBlock } from "./edit";
 import { initModal, waitForInsertOptionsForm } from "./modal";
+
+const DEFAULT_LINK_TARGET = "_self";
 
 interface EditorProps {
   focus: boolean;
@@ -276,6 +279,30 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
     });
   }
 
+  function removeImage(): void {
+    const clearData: Partial<MTImage> = {
+      assetId: "",
+      assetUrl: "",
+      url: "",
+      imageWidth: "",
+      imageHeight: "",
+      alternativeText: "",
+      caption: "",
+      hasCaption: false,
+      linkToOriginal: false,
+      linkUrl: "",
+      linkTarget: DEFAULT_LINK_TARGET,
+      linkTitle: "",
+      alignment: "",
+      useThumbnail: false,
+      files: undefined,
+    };
+
+    addEditUpdateBlock(editor, block, clearData);
+    Object.assign(block, clearData);
+    setBlock(Object.assign({}, block));
+  }
+
   if (block.showModal) {
     block.showModal = false;
     showModal();
@@ -354,6 +381,13 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
               label={window.trans("Insert Link")}
               onClick={() => setLinkDialogOpen(true)}
             />
+            {block.url && !modalActive && (
+              <BlockToolbarButton
+                icon={removeIcon}
+                label={window.trans("Remove")}
+                onClick={removeImage}
+              />
+            )}
           </BlockToolbar>
           <Dialog open={isLinkDialogOpen} onClose={() => setLinkDialogOpen(false)}>
             <DialogHeader>
@@ -506,7 +540,7 @@ class MTImage extends Block {
   public files?: File[];
   public linkToOriginal: boolean;
   public linkUrl: string;
-  public linkTarget = "_self";
+  public linkTarget = DEFAULT_LINK_TARGET;
   public linkTitle: string;
 
   public constructor(init?: Partial<MTImage>) {
