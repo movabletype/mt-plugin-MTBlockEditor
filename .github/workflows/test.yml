@@ -22,7 +22,8 @@ jobs:
           - { image: fedora40 }
           - { image: fedora42 }
           - { image: fedora43 }
-          - { image: fedora44 }
+          # skip php tests until ADOdb deprecation warnings on PHP 8.5 are resolved in MT core
+          - { image: fedora44, phpunit: false, skip_php: true }
           - { image: cloud7 }
         admin_theme_id:
           - legacy
@@ -49,6 +50,7 @@ jobs:
             -v ${{ github.workspace }}/plugins/MTBlockEditor:/app/plugins/MTBlockEditor \
             -w /app \
             -e MT_TEST_ENV_ADMIN_THEME_ID=${{ matrix.admin_theme_id }} \
+            -e MT_TEST_SKIP_PHP=${{ matrix.config.skip_php }} \
             ghcr.io/movabletype/movabletype/test:${{ matrix.config.image }} \
             prove -j4 -PMySQLPool=MT::Test::Env -It/lib \
               plugins/MTBlockEditor/t
