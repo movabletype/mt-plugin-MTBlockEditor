@@ -91,7 +91,15 @@ subtest 'mt_be_oembed' => sub {
                 });
             my ($headers, $body) = split(/\r\n\r\n/, delete($app->{__test_output}));
             my $res = eval { MT::Util::from_json(Encode::decode('UTF-8', $body)) };
-            ok $res && $res->{html};
+            my $json_error = $@;
+            my $success    = $res && $res->{html};
+            ok $success;
+
+            unless ($success) {
+                diag "JSON decode error: $json_error" if $json_error;
+                diag "Response headers:\n$headers";
+                diag "Response body:\n$body";
+            }
         }
     }
 
