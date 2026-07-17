@@ -60,10 +60,12 @@ async function initSelectElms(selectElms: NodeListOf<HTMLSelectElement>): Promis
         inputElm.value = target.value;
         target.closest(".mt-editor-manager-wrap")?.appendChild(wrap);
 
+        const editorId = target.id.replace(/.*-/, "");
         const fieldName =
           (
             document.querySelector(
-              `#editor-header .tab[mt\\:command="set-editor-${target.id.replace(/.*-/, "")}"] a`
+              `#editor-header .tab[mt\\:command="set-editor-${editorId}"] a` +
+                `, #editor-header .tab[data-mt-command="set-editor-${editorId}"] a`
             ) as HTMLElement
           ).textContent || "";
         const opts: ApplyOptions = {
