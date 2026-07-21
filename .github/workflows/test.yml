@@ -15,21 +15,26 @@ jobs:
     strategy:
       matrix:
         config:
-          - { image: cloud7 }
-          - { image: buster, phpunit: false }
+          - { image: centos7 }
           - { image: bullseye }
           - { image: fedora35 }
           - { image: fedora37 }
           - { image: fedora40 }
-          - { image: fedora41 }
           - { image: fedora42 }
+          - { image: fedora43 }
+          # skip php tests until ADOdb deprecation warnings on PHP 8.5 are resolved in MT core
+          - { image: fedora44, phpunit: false, skip_php: true }
+          - { image: cloud7 }
         admin_theme_id:
           - legacy
           - admin2023
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
+          persist-credentials: false
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
           repository: movabletype/movabletype
           ref: develop
           path: mt
@@ -45,6 +50,7 @@ jobs:
             -v ${{ github.workspace }}/plugins/MTBlockEditor:/app/plugins/MTBlockEditor \
             -w /app \
             -e MT_TEST_ENV_ADMIN_THEME_ID=${{ matrix.admin_theme_id }} \
+            -e MT_TEST_SKIP_PHP=${{ matrix.config.skip_php }} \
             ghcr.io/movabletype/movabletype/test:${{ matrix.config.image }} \
             prove -j4 -PMySQLPool=MT::Test::Env -It/lib \
               plugins/MTBlockEditor/t
@@ -63,13 +69,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
