@@ -13,6 +13,7 @@ import { useEditorContext } from "mt-block-editor-block/Context";
 import { edit as editIcon } from "mt-block-editor-block/icon";
 
 import fileIcon from "../img/icon/file.svg";
+import removeIcon from "../img/icon/remove.svg";
 import { waitFor } from "../util";
 import { addEditUpdateBlock } from "./edit";
 import { initModal, waitForInsertOptionsForm } from "./modal";
@@ -109,6 +110,19 @@ body { display: none }
     });
   }
 
+  function removeFile(): void {
+    const clearData: Partial<MTFile> = {
+      assetId: "",
+      assetUrl: "",
+      text: "",
+      files: undefined,
+    };
+
+    addEditUpdateBlock(editor, block, clearData);
+    Object.assign(block, clearData);
+    setBlock(Object.assign({}, block));
+  }
+
   if (block.showModal) {
     block.showModal = false;
     showModal();
@@ -149,6 +163,13 @@ body { display: none }
       {focus && (
         <BlockToolbar>
           <BlockToolbarButton icon={editIcon} label={window.trans("Edit")} onClick={showModal} />
+          {block.assetUrl && !modalActive && (
+            <BlockToolbarButton
+              icon={removeIcon}
+              label={window.trans("Remove")}
+              onClick={removeFile}
+            />
+          )}
         </BlockToolbar>
       )}
     </div>
