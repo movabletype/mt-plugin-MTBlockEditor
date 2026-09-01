@@ -81,11 +81,21 @@ const Editor: React.FC<EditorProps> = blockProperty(({ focus, block }) => {
     if ((window.MT as any).AssetUploader) {
       // new uploader
 
+      let files: FileList | undefined;
+      if (block.files && block.files.length >= 1) {
+        const dataTransfer = new DataTransfer();
+        block.files.forEach((file) => dataTransfer.items.add(file));
+        files = dataTransfer.files;
+
+        block.files = [];
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window.MT as any).AssetUploader.open({
         selectMetaData: true,
         multiSelect: false,
         params: {},
+        files,
         initialSelectedData: [
           {
             id: block.assetId,

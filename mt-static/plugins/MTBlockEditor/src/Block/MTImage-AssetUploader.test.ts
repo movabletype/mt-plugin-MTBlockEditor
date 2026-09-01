@@ -33,6 +33,16 @@ import MTImage from "./MTImage";
 interface AssetUploaderOptions {
   initialSelectedData: Record<string, unknown>[];
   insert: (selectedData: Record<string, unknown>[]) => void;
+  files?: FileList;
+}
+
+class FakeDataTransfer {
+  public files: File[] = [];
+  public items = {
+    add: (file: File): void => {
+      this.files.push(file);
+    },
+  };
 }
 
 const openAssetUploader = (block: MTImage): AssetUploaderOptions => {
@@ -50,6 +60,7 @@ describe("MTImage - AssetUploader", () => {
   beforeEach(() => {
     mocks.addEditUpdateBlock.mockReset();
     mocks.assetUploaderOpen.mockReset();
+    vi.stubGlobal("DataTransfer", FakeDataTransfer);
     window.trans = (message) => message;
     window.MT = {
       AssetUploader: {
@@ -138,6 +149,25 @@ describe("MTImage - AssetUploader", () => {
       expect.objectContaining({ linkUrl: "" })
     );
     expect(block.linkUrl).toBe("");
+  });
+
+  it("passes dropped files for immediate upload", async () => {
+    const file = new File(["dummy"], "image.png", { type: "image/png" });
+    const block = await MTImage.newFromFile({ file });
+
+    const options = openAssetUploader(block);
+
+    expect(options.files).toHaveLength(1);
+    expect(options.files?.[0]).toBe(file);
+    expect(block.files).toEqual([]);
+  });
+
+  it("does not pass files when none are dropped", () => {
+    const block = new MTImage({ assetId: "123" });
+
+    const options = openAssetUploader(block);
+
+    expect(options.files).toBeUndefined();
   });
 
   it("preserves an external link when link to original is unchecked", () => {
