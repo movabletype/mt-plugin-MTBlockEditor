@@ -29,16 +29,16 @@ jobs:
           - legacy
           - admin2023
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@v7.0.0
         with:
           persist-credentials: false
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@v7.0.0
         with:
           persist-credentials: false
           repository: movabletype/movabletype
           ref: develop
           path: mt
-      - uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567
+      - uses: docker/login-action@v3.3.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -69,12 +69,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@v7.0.0
         with:
           persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@v7.0.0
         with:
           node-version: 24
           cache: npm
@@ -95,14 +95,14 @@ jobs:
         run: npm run build
 
       - name: Cypress run
-        uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c # v6.10.2
+        uses: cypress-io/github-action@v6.10.2
         with:
           install: false
           build: npm run cypress:prepare
 
       - name: Upload Cypress artifacts on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: cypress-artifacts
           path: |
