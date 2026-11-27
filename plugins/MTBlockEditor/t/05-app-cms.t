@@ -160,6 +160,7 @@ subtest 'update config' => sub {
             __mode             => 'save',
             _type              => 'website',
             id                 => $blog->id,
+            site_url           => 'https://localhost/',
             be_entry_config_id => $config_entry->id,
             be_page_config_id  => $config_page->id,
         });
