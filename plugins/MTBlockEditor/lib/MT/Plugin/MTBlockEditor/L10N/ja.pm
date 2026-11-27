@@ -109,6 +109,7 @@ my $block_editor_plugin = eval { MT->component('BlockEditor') };
     'Invalid file format.'                                                            => 'ファイルのフォーマットが不正です。',
     'Are you sure you want to overwrite it?'                                          => '上書きしてもよろしいですか？',
     'This format does not support this web browser. Please switch to another format.' => '現在ご利用のウェブブラウザではこのフォーマットを利用することができません。編集する場合には別のフォーマットを選択してください。',
+    'Remove'                                                                          => '削除',
 
 	'Importing MTBlockEditor asset associations ... ( [_1] )' => 'ブロックエディタのデータとアセットの関連付けを復元しています...( [_1] )',
 
